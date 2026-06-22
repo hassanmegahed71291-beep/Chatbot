@@ -362,4 +362,256 @@ function explainTools() {
 
 function explainFAQ() {
   return '❓ <b>أسئلة شائعة</b><br><br>' +
-    '<div class="lesson-step"><b>إيه الفرق بين AQL و ISO؟</b>AQL نظام لفحص العينات وتحديد قبول/رف
+    '<div class="lesson-step"><b>إيه الفرق بين AQL و ISO؟</b>AQL نظام لفحص العينات وتحديد قبول/رفض الشحنة. ISO نظام إدارة جودة شامل للشركة كلها (عمليات، توثيق، تحسين مستمر). AQL ممكن يكون جزء من نظام ISO.</div>' +
+    '<div class="lesson-step"><b>هل ممكن أزود حجم العينة من نفسي؟</b>أيوه، تقدر تفحص عينة أكبر من المطلوب لو حابب دقة أعلى، لكن منعرفش تقلل عن الحجم المحدد في الجدول.</div>' +
+    '<div class="lesson-step"><b>لو لقيت عيب Critical واحد بس، هل الشحنة ترفض فوراً؟</b>أيوه، أي عيب Critical واحد كفاية لرفض الشحنة كاملة بغض النظر عن باقي النتائج.</div>' +
+    '<div class="lesson-step"><b>إيه الفرق بين Inline وFinal Inspection؟</b>Inline بيتم أثناء خط الإنتاج للاكتشاف المبكر. Final بيتم بعد التعبئة الكاملة قبل الشحن.</div>' +
+    '<div class="lesson-step"><b>هل لازم أفحص كل لون وكل مقاس؟</b>أيوه، الأفضل توزيع العينة على كل الألوان والمقاسات المتاحة في الشحنة عشان تمثيل دقيق.</div>';
+}
+
+function explainCaseStudy() {
+  return '📊 <b>مثال عملي كامل (Case Study)</b><br><br>' +
+    '<div class="lesson-step"><b>الموقف</b>شحنة جاكيت كلاسيك، الكمية الكلية 600 قطعة.</div>' +
+    '<div class="lesson-step"><b>1️⃣ حجم العينة</b>من الجدول: 501-1200 قطعة → حجم العينة = 80 قطعة.</div>' +
+    '<div class="lesson-step"><b>2️⃣ العيوب المسموحة</b>لعينة 80 قطعة: Critical = 0 / Major = 5 / Minor = 7.</div>' +
+    '<div class="lesson-step"><b>3️⃣ نتيجة الفحص الفعلية</b>تم فحص 80 قطعة ولوحظ: 0 Critical، 4 Major (Open Seam ×2، Loose Button ×2)، 6 Minor (Thread Trimming ×4، Stain ×2).</div>' +
+    '<div class="lesson-step"><b>4️⃣ المقارنة</b>Major: 4 ≤ 5 ✅ | Minor: 6 ≤ 7 ✅ | Critical: 0 = 0 ✅</div>' +
+    '<div class="lesson-step"><b>✅ النتيجة النهائية: PASS</b>الشحنة مقبولة لأن كل التصنيفات في حدود المسموح به.</div>';
+}
+
+const HASSAN_THANKS = [
+  'من Hassan، مدير الجودة: تمام! إنك اطلعت على الموضوع ده معناه إنك جاهز تطبقه صح في شغلك. الجودة بتبدأ بيك 🌟',
+  'من Hassan: شكراً لمجهودك في رفع مستوى الجودة! استمر كده 💪',
+  'من Hassan: المعرفة الدقيقة هي اللي بتفرق بين فريق عادي وفريق محترف 👏',
+  'من Hassan: شكراً لكل واحد فيكم على الجدية والدقة. إحنا مش بس بنفحص ملابس، إحنا بنبني سمعة 🙌'
+];
+
+function showHassanThanks() {
+  const msg = HASSAN_THANKS[Math.floor(Math.random() * HASSAN_THANKS.length)];
+  setTimeout(function() {
+    addBotMsg(msg);
+  }, 800);
+}
+
+function explainProductionLines() {
+  return '🏭 <b>مراحل التصنيع والعيوب المرتبطة بكل مرحلة</b><br><br>' +
+    '<div class="lesson-step"><b>1️⃣ Cutting (القص)</b>قص القماش حسب الباترون. عيوب شائعة: تفاوت في القياسات، خطوط قص غير مستقيمة، اختلاف في اتجاه نسيج القماش (Grain Line).</div>' +
+    '<div class="lesson-step"><b>2️⃣ Sewing (الخياطة)</b>تجميع القطع وخياطتها. عيوب شائعة: Open Seam، Broken Stitches، Uneven Stitching، Puckering.</div>' +
+    '<div class="lesson-step"><b>3️⃣ Finishing (التشطيب)</b>إضافة الأزرار، السحابات، الكي، وقص الخيوط الزايدة. عيوب شائعة: Loose Button، Thread Trimming، Iron Mark، Faulty Zipper.</div>' +
+    '<div class="lesson-step"><b>4️⃣ Quality Control (فحص الجودة)</b>الفحص النهائي قبل التعبئة — هنا بييجي دورك إنك تطبق نظام AQL وتوثق أي عيب.</div>' +
+    '<div class="lesson-step"><b>5️⃣ Packing (التعبئة)</b>تعبئة القطع في الأكياس والكراتين حسب مواصفات العميل.</div>' +
+    '<div class="lesson-step"><b>💡 فايدة معرفة المراحل</b>لو لقيت عيب معين بيتكرر كتير، تقدر تعرف هو جاي من أنهي مرحلة وتبلغ المسؤول عنها مباشرة.</div>';
+}
+
+function explainPackingStandards() {
+  return '📦 <b>معايير التعبئة والشحن</b><br><br>' +
+    '<div class="lesson-step"><b>الكيس الداخلي (Poly Bag)</b>تأكد إنه شفاف، مقاس مناسب للقطعة، ومفيهوش تمزق أو ثقوب.</div>' +
+    '<div class="lesson-step"><b>الكرتونة (Carton)</b>تأكد من قوة الكرتونة وعدم وجود تلف، وإنها مطابقة للوزن المسموح بيه (عشان متتكسرش أثناء الشحن).</div>' +
+    '<div class="lesson-step"><b>الترتيب داخل الكرتونة</b>القطع لازم تكون مرتبة بنفس الطريقة المتفق عليها مع العميل (حسب المقاس أو اللون).</div>' +
+    '<div class="lesson-step"><b>الملصقات (Labels/Stickers)</b>تأكد من وجود الباركود الصحيح، رقم الـ PO، الكمية، والمقاسات على كل كرتونة.</div>' +
+    '<div class="lesson-step"><b>عدد القطع لكل كرتونة</b>طابق العدد الفعلي في الكرتونة مع العدد المكتوب على الملصق (Carton Count).</div>' +
+    '<div class="lesson-step"><b>⚠️ تنبيه مهم</b>أي خطأ في التعبئة أو العلامات ممكن يتسبب في رفض الشحنة بالكامل من الجمارك أو العميل، حتى لو المنتج نفسه ممتاز.</div>';
+}
+
+function calculateAQL(qty) {
+  const SAMPLE_TABLE2 = [
+    [2,8,2],[9,15,3],[16,25,5],[26,50,8],[51,90,13],
+    [91,150,20],[151,280,32],[281,500,50],[501,1200,80],
+    [1201,3200,125],[3201,10000,200]
+  ];
+  const ALLOWED = {
+    2:[0,0],3:[0,0],5:[1,1],8:[1,1],13:[1,2],
+    20:[1,3],32:[2,4],50:[3,5],80:[5,7],125:[7,11],200:[10,14]
+  };
+  let sampleSize = null;
+  for (const row of SAMPLE_TABLE2) {
+    if (qty >= row[0] && qty <= row[1]) { sampleSize = row[2]; break; }
+  }
+  if (qty > 10000) sampleSize = 200;
+  if (!sampleSize) return null;
+  const allowed = ALLOWED[sampleSize] || [0,0];
+  return {sampleSize: sampleSize, major: allowed[0], minor: allowed[1]};
+}
+
+function handleLearnQuery(text) {
+  const lower = text.toLowerCase();
+  if (lower.includes('aql') && (lower.includes('معنى') || lower.includes('ايه') || lower.includes('إيه') || lower.includes('what'))) {
+    addBotMsg(explainAQL());
+    showHassanThanks();
+    return true;
+  }
+  if (lower.includes('sample') || lower.includes('عينة') || lower.includes('عينه')) {
+    addBotMsg(explainSampleSize());
+    return true;
+  }
+  if (lower.includes('مسموح') || lower.includes('allowed') || lower.includes('كام عيب')) {
+    addBotMsg(explainDefectAllowed());
+    return true;
+  }
+  if (lower.includes('خطوات') || lower.includes('طريقة الفحص') || lower.includes('إزاي افحص') || lower.includes('ازاي افحص')) {
+    addBotMsg(explainSteps());
+    showHassanThanks();
+    return true;
+  }
+  if (lower.includes('فرق') && (lower.includes('critical') || lower.includes('major') || lower.includes('minor') || lower.includes('تصنيف'))) {
+    addBotMsg(explainCriticalMajorMinor());
+    return true;
+  }
+  if (lower.includes('مصطلح') || lower.includes('terminology') || lower.includes('shrinkage') || lower.includes('gsm') || lower.includes('colorfastness')) {
+    addBotMsg(explainTerminology());
+    return true;
+  }
+  if (lower.includes('قماش') || lower.includes('أقمشة') || lower.includes('اقمشة') || lower.includes('fabric') || lower.includes('نسيج')) {
+    addBotMsg(explainFabricDefects());
+    return true;
+  }
+  if (lower.includes('أدوات') || lower.includes('ادوات') || lower.includes('tools')) {
+    addBotMsg(explainTools());
+    return true;
+  }
+  if (lower.includes('سؤال') || lower.includes('أسئلة') || lower.includes('faq') || lower.includes('iso')) {
+    addBotMsg(explainFAQ());
+    return true;
+  }
+  if (lower.includes('مثال') || lower.includes('case study') || lower.includes('حالة عملية')) {
+    addBotMsg(explainCaseStudy());
+    showHassanThanks();
+    return true;
+  }
+  if (lower.includes('خطوط الإنتاج') || lower.includes('خطوط الانتاج') || lower.includes('مراحل التصنيع') || lower.includes('cutting') || lower.includes('production line')) {
+    addBotMsg(explainProductionLines());
+    return true;
+  }
+  if (lower.includes('تعبئة') || lower.includes('packing') || lower.includes('شحن') || lower.includes('كرتونة')) {
+    addBotMsg(explainPackingStandards());
+    return true;
+  }
+  // AQL Calculator - detect a quantity number with calc intent
+  if ((lower.includes('احسب') || lower.includes('حاسبة') || lower.includes('كمية') || lower.includes('quantity')) && /\d+/.test(text)) {
+    const numMatch = text.match(/\d+/);
+    const qty = parseInt(numMatch[0]);
+    const result = calculateAQL(qty);
+    if (result) {
+      addBotMsg('📐 <b>نتيجة حساب AQL للكمية ' + qty + ' قطعة:</b><br><br>' +
+        '<div class="lesson-step"><b>حجم العينة المطلوب</b>' + result.sampleSize + ' قطعة</div>' +
+        '<div class="lesson-step"><b>🔴 Critical المسموح</b>0 (غير مسموح إطلاقاً)</div>' +
+        '<div class="lesson-step"><b>🟠 Major المسموح</b>' + result.major + ' عيب كحد أقصى</div>' +
+        '<div class="lesson-step"><b>🟡 Minor المسموح</b>' + result.minor + ' عيب كحد أقصى</div>');
+    } else {
+      addBotMsg('الكمية لازم تكون رقم بين 2 و 10000 عشان أقدر أحسبلك. جرب تاني 🙂');
+    }
+    return true;
+  }
+  return false;
+}
+
+function handleQuery(text) {
+  const lower = text.toLowerCase().trim();
+
+  if (handleLearnQuery(text)) return;
+
+  if (['السلام عليكم','اهلا','أهلا','هاي','hi','hello','مرحبا'].some(function(g){return lower.includes(g);})) {
+    addBotMsg('أهلاً بيك! 👋 أنا مساعد فريق الجودة. اسألني عن أي عيب، أو روح لتبويب "تعلّم AQL" لو عايز تفهم النظام كامل.');
+    return;
+  }
+
+  if (lower.includes('تصنيف') || lower.includes('مستويات')) {
+    addBotMsg('📋 <b>تصنيفات العيوب:</b><br><br>' +
+      '🔴 <b>Critical</b> — عيب خطير، غير مسموح به نهائياً (Not Allowed)<br>' +
+      '🟠 <b>Major</b> — عيب كبير، مسموح بنسبة محدودة (AQL 2.5)<br>' +
+      '🟡 <b>Minor</b> — عيب بسيط، مسموح بنسبة أعلى (AQL 4.0)<br><br>' +
+      'عايز تفاصيل أكتر؟ روح لتبويب "تعلّم AQL" 📚');
+    return;
+  }
+
+  if (lower.includes('critical') && currentTab === 'chat') {
+    const list = DEFECTS[currentGarment].filter(function(d){return d[2] === 'Critical';});
+    addBotMsg('🔴 <b>عيوب Critical (' + (currentGarment === 'jacket' ? 'الجاكيت' : 'البنطلون') + '):</b>' + 
+      list.map(defectCard).join(''));
+    return;
+  }
+  if (lower.includes('major') && currentTab === 'chat') {
+    const list = DEFECTS[currentGarment].filter(function(d){return d[2] === 'Major';});
+    addBotMsg('🟠 <b>عيوب Major (' + (currentGarment === 'jacket' ? 'الجاكيت' : 'البنطلون') + '):</b>' + 
+      list.map(defectCard).join(''));
+    return;
+  }
+  if (lower.includes('minor') && currentTab === 'chat') {
+    const list = DEFECTS[currentGarment].filter(function(d){return d[2] === 'Minor';});
+    addBotMsg('🟡 <b>عيوب Minor (' + (currentGarment === 'jacket' ? 'الجاكيت' : 'البنطلون') + '):</b>' + 
+      list.map(defectCard).join(''));
+    return;
+  }
+
+  if (currentTab === 'chat') {
+    const matches = searchDefect(text);
+    if (matches.length > 0) {
+      if (matches.length === 1) {
+        addBotMsg('لقيت العيب ده: ' + defectCard(matches[0]));
+      } else {
+        addBotMsg('لقيت ' + matches.length + ' نتيجة:' + matches.slice(0, 5).map(defectCard).join(''));
+      }
+      return;
+    }
+  }
+
+  addBotMsg('مش لاقي إجابة واضحة 🤔<br>جرب تسأل عن: "ما معنى AQL؟"، "إزاي أحسب Sample Size؟"، "خطوات الفحص"، أو اكتب اسم عيب معين.');
+}
+
+function sendMsg() {
+  const input = document.getElementById('msgInput');
+  const text = input.value.trim();
+  if (!text) return;
+  addUserMsg(text);
+  input.value = '';
+  userMsgCount++;
+  showTyping();
+  setTimeout(function() {
+    hideTyping();
+    handleQuery(text);
+    if (userMsgCount > 0 && userMsgCount % 4 === 0) {
+      showHassanThanks();
+    }
+  }, 500);
+}
+
+function quickReply(text) {
+  document.getElementById('msgInput').value = text;
+  sendMsg();
+}
+
+function openCalculator() {
+  addBotMsg('📐 <b>حاسبة AQL السريعة</b><br><br>اكتب الكمية الكلية للشحنة في خانة الكتابة تحت، مثلاً: "احسب 600" أو "كمية 600"، وهديك حجم العينة والعيوب المسموحة فوراً.');
+}
+
+function renderQuickReplies() {
+  const qr = document.getElementById('quickReplies');
+  if (currentTab === 'chat') {
+    qr.innerHTML = 
+      '<div class="qr-btn" onclick="quickReply(\'تصنيفات العيوب\')">📋 التصنيفات</div>' +
+      '<div class="qr-btn" onclick="quickReply(\'Critical\')">🔴 Critical</div>' +
+      '<div class="qr-btn" onclick="quickReply(\'Major\')">🟠 Major</div>' +
+      '<div class="qr-btn" onclick="quickReply(\'Minor\')">🟡 Minor</div>';
+  } else {
+    qr.innerHTML = 
+      '<div class="qr-btn" onclick="quickReply(\'ما معنى AQL؟\')">📖 ما هو AQL؟</div>' +
+      '<div class="qr-btn" onclick="quickReply(\'إزاي أحسب Sample Size؟\')">📐 حجم العينة</div>' +
+      '<div class="qr-btn" onclick="quickReply(\'كام عيب مسموح؟\')">⚖️ العيوب المسموحة</div>' +
+      '<div class="qr-btn" onclick="quickReply(\'خطوات الفحص\')">🔍 خطوات الفحص</div>' +
+      '<div class="qr-btn" onclick="quickReply(\'الفرق بين Critical و Major و Minor\')">🎨 الفرق بين التصنيفات</div>' +
+      '<div class="qr-btn" onclick="quickReply(\'مصطلحات مهمة\')">📘 المصطلحات</div>' +
+      '<div class="qr-btn" onclick="quickReply(\'أنواع الأقمشة\')">🧵 الأقمشة</div>' +
+      '<div class="qr-btn" onclick="quickReply(\'أدوات الفحص\')">🛠️ الأدوات</div>' +
+      '<div class="qr-btn" onclick="quickReply(\'أسئلة شائعة\')">❓ أسئلة شائعة</div>' +
+      '<div class="qr-btn" onclick="quickReply(\'مثال عملي\')">📊 مثال عملي</div>' +
+      '<div class="qr-btn" onclick="quickReply(\'خطوط الإنتاج\')">🏭 خطوط الإنتاج</div>' +
+      '<div class="qr-btn" onclick="quickReply(\'معايير التعبئة\')">📦 التعبئة والشحن</div>' +
+      '<div class="qr-btn" onclick="openCalculator()">📐 حاسبة AQL</div>';
+  }
+}
+
+renderQuickReplies();
+addBotMsg('أهلاً بيك مع Hassan مدير الجودة 🤖<br>شكراً إنك بتاخد وقتك تتعلم وتطور نفسك — ده اللي بيخلينا فريق قوي 💪<br><br>اكتب اسم أي عيب عشان أديك تصنيفه، أو روح لتبويب "تعلّم AQL" 📚 عشان تفهم النظام بالكامل.');
+</script>
+</body>
+</html>

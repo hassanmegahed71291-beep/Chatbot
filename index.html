@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Alpha Omega Egypt — AQL Assistant</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#f0f2f5;direction:rtl;height:100vh;display:flex;flex-direction:column}
+.header{background:#1a3a6e;color:#fff;padding:14px 18px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 6px rgba(0,0,0,0.15)}
+.header .icon{width:38px;height:38px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px}
+.header h1{font-size:15px;font-weight:700}
+.header p{font-size:11px;opacity:0.8}
+.tabs{display:flex;background:#fff;border-bottom:1px solid #e0e0e0}
+.tab{flex:1;padding:11px 6px;text-align:center;font-size:12px;font-weight:700;color:#888;cursor:pointer;border-bottom:3px solid transparent}
+.tab.active{color:#1a3a6e;border-bottom-color:#1a3a6e}
+.chat-area{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
+.msg{max-width:88%;padding:11px 14px;border-radius:14px;font-size:14px;line-height:1.7}
+.msg.bot{background:#fff;align-self:flex-start;border-bottom-right-radius:4px;box-shadow:0 1px 3px rgba(0,0,0,0.08)}
+.msg.user{background:#1a3a6e;color:#fff;align-self:flex-end;border-bottom-left-radius:4px}
+.msg.bot b{color:#1a3a6e}
+.msg.bot table{width:100%;border-collapse:collapse;margin-top:8px;font-size:12px}
+.msg.bot table th{background:#1a3a6e;color:#fff;padding:6px 8px;text-align:center}
+.msg.bot table td{padding:6px 8px;border-bottom:1px solid #eee;text-align:center}
+.msg.bot table tr:nth-child(even){background:#f8f9fb}
+.defect-card{background:#fff;border-radius:10px;padding:10px 12px;margin-top:6px;border-right:4px solid #ccc;font-size:13px}
+.defect-card.critical{border-right-color:#c0392b}
+.defect-card.major{border-right-color:#e67e22}
+.defect-card.minor{border-right-color:#d4a017}
+.defect-card .name{font-weight:700;font-size:14px;color:#1a3a6e}
+.defect-card .ar{color:#666;font-size:12px;margin-top:2px}
+.defect-card .badge{display:inline-block;margin-top:6px;font-size:11px;padding:2px 8px;border-radius:10px;font-weight:700}
+.badge-critical{background:#ffcccc;color:#a30000}
+.badge-major{background:#ffe5b4;color:#8a5300}
+.badge-minor{background:#fff3b0;color:#7a6200}
+.lesson-step{background:#f0f6ff;border-right:3px solid #1a3a6e;border-radius:8px;padding:8px 12px;margin-top:8px;font-size:13px}
+.lesson-step b{display:block;color:#1a3a6e;margin-bottom:3px}
+.quick-replies{display:flex;gap:8px;flex-wrap:wrap;padding:0 16px 10px;overflow-x:auto}
+.qr-btn{background:#fff;border:1.5px solid #1a3a6e;color:#1a3a6e;padding:7px 14px;border-radius:18px;font-size:12px;cursor:pointer;font-weight:600;white-space:nowrap;flex-shrink:0}
+.qr-btn:hover{background:#1a3a6e;color:#fff}
+.input-area{background:#fff;padding:12px 16px;display:flex;gap:8px;border-top:1px solid #e0e0e0;align-items:center}
+.input-area input{flex:1;border:1.5px solid #ddd;border-radius:22px;padding:11px 16px;font-size:14px;outline:none}
+.input-area input:focus{border-color:#1a3a6e}
+.send-btn{background:#1a3a6e;color:#fff;border:none;width:42px;height:42px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.send-btn:hover{background:#142d54}
+.typing{display:flex;gap:4px;padding:11px 14px;background:#fff;border-radius:14px;align-self:flex-start;width:fit-content}
+.typing span{width:7px;height:7px;background:#999;border-radius:50%;animation:blink 1.4s infinite}
+.typing span:nth-child(2){animation-delay:0.2s}
+.typing span:nth-child(3){animation-delay:0.4s}
+@keyframes blink{0%,60%,100%{opacity:0.3}30%{opacity:1}}
+.garment-toggle{display:flex;gap:6px;padding:8px 16px;background:#fff;border-bottom:1px solid #eee}
+.gt-btn{flex:1;padding:8px;border:1.5px solid #ddd;border-radius:8px;background:#fff;font-size:12px;font-weight:700;cursor:pointer;text-align:center}
+.gt-btn.active{background:#1a3a6e;color:#fff;border-color:#1a3a6e}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="icon">🤖</div>
+  <div>
+    <h1>AQL Assistant — by Hassan</h1>
+    <p>مدير الجودة | Alpha Omega Egypt</p>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" id="tabChat" onclick="switchTab('chat')">💬 محادثة</div>
+  <div class="tab" id="tabLearn" onclick="switchTab('learn')">📚 تعلّم AQL</div>
+</div>
+
+<div class="garment-toggle" id="garmentToggle">
+  <div class="gt-btn active" id="gtJacket" onclick="setGarment('jacket')">👔 جاكيت</div>
+  <div class="gt-btn" id="gtTrouser" onclick="setGarment('trouser')">👖 بنطلون</div>
+</div>
+
+<div class="chat-area" id="chatArea"></div>
+
+<div class="quick-replies" id="quickReplies"></div>
+
+<div class="input-area">
+  <input type="text" id="msgInput" placeholder="اسأل عن عيب أو عن AQL..." onkeypress="if(event.key==='Enter')sendMsg()">
+  <button class="send-btn" onclick="sendMsg()">➤</button>
+</div>
+
+<script>
+const DEFECTS = {
+  jacket: [
+    ['Wrong Size / Measurement Error','خطأ في المقاس','Critical'],
+    ['Wrong Style / Model','موديل غلط','Critical'],
+    ['Wrong Fabric / Color','قماش أو لون غلط','Critical'],
+    ['Open Seam','خياطة مفتوحة','Major'],
+    ['Broken Stitches','خيوط مقطوعة','Major'],
+    ['Uneven Stitching','خياطة غير منتظمة','Major'],
+    ['Puckering','تجعد في الخياطة','Major'],
+    ['Collar Misalignment','كولر غير مستوي','Major'],
+    ['Collar Shape Defect','شكل الكولر معيب','Major'],
+    ['Lapel Misalignment','لابيل غير مستوي','Major'],
+    ['Lapel Shape Defect','شكل اللابيل معيب','Major'],
+    ['Sleeve Length Variation','تفاوت في طول الكم','Major'],
+    ['Sleeve Width Variation','تفاوت في عرض الكم','Major'],
+    ['Open Sleeve Armhole','فتحة الكم مفتوحة','Major'],
+    ['Shoulder Width Variation','تفاوت في عرض الكتف','Major'],
+    ['Chest Width Variation','تفاوت في عرض الصدر','Major'],
+    ['Back Length Variation','تفاوت في طول الظهر','Major'],
+    ['Lining Defect','عيب في البطانة','Major'],
+    ['Lining Misalignment','بطانة غير مستوية','Major'],
+    ['Pocket Misalignment','جيب غير مستوي','Major'],
+    ['Pocket Shape Defect','شكل الجيب معيب','Major'],
+    ['Chest Pocket Defect','عيب في جيب الصدر','Major'],
+    ['Loose Button','زرار مفكوك','Major'],
+    ['Missing Button','زرار ناقص','Major'],
+    ['Button Hole Defect','عيب في فتحة الزرار','Major'],
+    ['Open Button Hole','فتحة زرار مفتوحة','Major'],
+    ['Padding Visible','حشو ظاهر','Major'],
+    ['Shoulder Pad Misalignment','وتد الكتف غير مستوي','Major'],
+    ['Thread Trimming','خيوط زيادة','Minor'],
+    ['Dust / Dirt','غبار / اتساخ','Minor'],
+    ['Stain','بقعة','Minor'],
+    ['Oil Stain','بقعة زيت','Minor'],
+    ['Iron Mark','أثر المكواة','Minor'],
+    ['Pen Mark','أثر قلم','Minor'],
+    ['Needle Mark','أثر إبرة','Minor'],
+    ['Improper Folding','طي غير صحيح','Minor'],
+    ['Wrong Label','لافتة غلط','Minor'],
+    ['Wrong Tag / Sticker','تاج أو ستيكر غلط','Minor'],
+  ],
+  trouser: [
+    ['Wrong Size / Measurement Error','خطأ في المقاس','Critical'],
+    ['Wrong Style / Model','موديل غلط','Critical'],
+    ['Wrong Fabric / Color','قماش أو لون غلط','Critical'],
+    ['Open Seam','خياطة مفتوحة','Major'],
+    ['Broken Stitches','خيوط مقطوعة','Major'],
+    ['Uneven Stitching','خياطة غير منتظمة','Major'],
+    ['Puckering','تجعد في الخياطة','Major'],
+    ['Waistband Misalignment','حزام غير مستوي','Major'],
+    ['Waistband Width Variation','تفاوت في عرض الحزام','Major'],
+    ['Leg Length Variation','تفاوت في طول الرجل','Major'],
+    ['Leg Width Variation','تفاوت في عرض الرجل','Major'],
+    ['Zipper Length Variation','تفاوت في طول السحاب','Major'],
+    ['Faulty Zipper','سحاب معيب','Major'],
+    ['Misaligned Zipper','سحاب غير مستوي','Major'],
+    ['Loose Button','زرار مفكوك','Major'],
+    ['Missing Button','زرار ناقص','Major'],
+    ['Button Problem','مشكلة في الزرار','Major'],
+    ['Uneven Belt Loops','لوبات حزام غير منتظمة','Major'],
+    ['Loops Slanted','لوبات مائلة','Major'],
+    ['Open Hem','حاشية مفتوحة','Major'],
+    ['Pocket Misalignment','جيب غير مستوي','Major'],
+    ['Pocket Shape Defect','شكل الجيب معيب','Major'],
+    ['Thread Trimming','خيوط زيادة','Minor'],
+    ['Dust / Dirt','غبار / اتساخ','Minor'],
+    ['Stain','بقعة','Minor'],
+    ['Oil Stain','بقعة زيت','Minor'],
+    ['Iron Mark','أثر المكواة','Minor'],
+    ['Pen Mark','أثر قلم','Minor'],
+    ['Needle Mark','أثر إبرة','Minor'],
+    ['Improper Folding','طي غير صحيح','Minor'],
+    ['Wrong Label','لافتة غلط','Minor'],
+    ['Wrong Tag / Sticker','تاج أو ستيكر غلط','Minor'],
+  ]
+};
+
+const SAMPLE_TABLE = [
+  [2,8,2],[9,15,3],[16,25,5],[26,50,8],[51,90,13],
+  [91,150,20],[151,280,32],[281,500,50],[501,1200,80],
+  [1201,3200,125],[3201,10000,200]
+];
+
+let currentGarment = 'jacket';
+let currentTab = 'chat';
+let userMsgCount = 0;
+
+function switchTab(tab) {
+  currentTab = tab;
+  document.getElementById('tabChat').classList.toggle('active', tab === 'chat');
+  document.getElementById('tabLearn').classList.toggle('active', tab === 'learn');
+  document.getElementById('garmentToggle').style.display = tab === 'chat' ? 'flex' : 'none';
+  renderQuickReplies();
+  if (tab === 'learn' && document.getElementById('chatArea').dataset.learnInit !== '1') {
+    document.getElementById('chatArea').dataset.learnInit = '1';
+    addBotMsg(learnIntro());
+  }
+}
+
+function setGarment(g) {
+  currentGarment = g;
+  document.getElementById('gtJacket').classList.toggle('active', g === 'jacket');
+  document.getElementById('gtTrouser').classList.toggle('active', g === 'trouser');
+  addBotMsg(`تمام، دلوقتي بنشتغل على عيوب ${g === 'jacket' ? 'الجاكيت 👔' : 'البنطلون 👖'}`);
+}
+
+function addUserMsg(text) {
+  const area = document.getElementById('chatArea');
+  const div = document.createElement('div');
+  div.className = 'msg user';
+  div.textContent = text;
+  area.appendChild(div);
+  area.scrollTop = area.scrollHeight;
+}
+
+function stripHtmlForSpeech(html) {
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html.replace(/<br>/g, '. ').replace(/<\/div>/g, '. ');
+  return (tmp.textContent || tmp.innerText || '').replace(/\s+/g, ' ').trim();
+}
+
+function speakText(text) {
+  if (!('speechSynthesis' in window)) {
+    alert('المتصفح ده مش بيدعم القراءة الصوتية');
+    return;
+  }
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'ar-SA';
+  utter.rate = 0.95;
+  window.speechSynthesis.speak(utter);
+}
+
+function addBotMsg(html) {
+  const area = document.getElementById('chatArea');
+  const div = document.createElement('div');
+  div.className = 'msg bot';
+  const msgId = 'msg_' + Date.now() + '_' + Math.floor(Math.random()*1000);
+  div.innerHTML = html + '<div style="margin-top:8px;text-align:left"><button onclick="speakMsg(\'' + msgId + '\')" style="background:none;border:1.5px solid #1a3a6e;color:#1a3a6e;border-radius:14px;padding:4px 10px;font-size:11px;cursor:pointer">🔊 اسمع الشرح</button></div>';
+  div.id = msgId;
+  area.appendChild(div);
+  area.scrollTop = area.scrollHeight;
+}
+
+function speakMsg(msgId) {
+  const el = document.getElementById(msgId);
+  if (!el) return;
+  const clone = el.cloneNode(true);
+  const btn = clone.querySelector('button');
+  if (btn) btn.parentElement.remove();
+  const text = stripHtmlForSpeech(clone.innerHTML);
+  speakText(text);
+}
+
+function showTyping() {
+  const area = document.getElementById('chatArea');
+  const div = document.createElement('div');
+  div.className = 'typing';
+  div.id = 'typingIndicator';
+  div.innerHTML = '<span></span><span></span><span></span>';
+  area.appendChild(div);
+  area.scrollTop = area.scrollHeight;
+}
+function hideTyping() {
+  const t = document.getElementById('typingIndicator');
+  if (t) t.remove();
+}
+
+function defectCard(d) {
+  const eng = d[0], ara = d[1], cls = d[2];
+  const clsLower = cls.toLowerCase();
+  const badgeClass = 'badge-' + clsLower;
+  return '<div class="defect-card ' + clsLower + '">' +
+    '<div class="name">' + eng + '</div>' +
+    '<div class="ar">' + ara + '</div>' +
+    '<span class="badge ' + badgeClass + '">' + cls + '</span>' +
+    '</div>';
+}
+
+function searchDefect(query) {
+  const list = DEFECTS[currentGarment];
+  const q = query.toLowerCase().trim();
+  return list.filter(function(d) {
+    return d[0].toLowerCase().includes(q) || d[1].includes(q);
+  });
+}
+
+function learnIntro() {
+  return '📚 <b>أهلاً بيك في قسم التعلّم!</b><br><br>' +
+    'هنا تقدر تتعلم كل حاجة عن نظام AQL وطريقة الفحص خطوة بخطوة.<br><br>' +
+    'اضغط على أي زرار تحت، أو اسألني أي سؤال زي:<br>' +
+    '"ما معنى AQL؟" أو "إزاي أحسب Sample Size؟" أو "إيه خطوات الفحص؟"';
+}
+
+function explainAQL() {
+  return '📖 <b>إيه هو AQL؟</b><br><br>' +
+    'AQL = <b>Acceptable Quality Level</b> (مستوى الجودة المقبول)<br><br>' +
+    'هو نظام عالمي بيستخدم لفحص <b>عينة</b> من شحنة كبيرة بدل ما تفحص كل قطعة — وده بيوفر وقت ومجهود مع الحفاظ على دقة الجودة.<br><br>' +
+    '<div class="lesson-step"><b>🎯 الفكرة الأساسية</b>بدل ما تفحص 10,000 قطعة، بتاخد عينة عشوائية (مثلاً 200 قطعة) وتفحصها. لو العينة عدّت، الشحنة كلها بتتقبل. لو فشلت، الشحنة بترفض أو تتراجع.</div>' +
+    '<div class="lesson-step"><b>📐 المعيار المستخدم</b>بنطبق معيار <b>ANSI/ASQC Z1.4</b> (المعروف قديماً بـ MIL-STD-105E) — ده المعيار العالمي المعتمد في صناعة الملابس.</div>' +
+    '<div class="lesson-step"><b>📊 مستوى الفحص</b>بنستخدم <b>General Inspection Level II</b> — ده المستوى القياسي المستخدم في أغلب فحوصات الملابس.</div>';
+}
+
+function explainSampleSize() {
+  let table = '<table><tr><th>الكمية</th><th>حجم العينة</th></tr>';
+  SAMPLE_TABLE.forEach(function(row) {
+    table += '<tr><td>' + row[0] + ' - ' + row[1] + '</td><td>' + row[2] + '</td></tr>';
+  });
+  table += '</table>';
+  return '📐 <b>إزاي تحدد حجم العينة (Sample Size)؟</b><br><br>' +
+    'حجم العينة بيعتمد على <b>إجمالي كمية الشحنة (Total Quantity)</b>. كل ما الكمية أكبر، حجم العينة يكبر لكن بنسبة أقل.<br><br>' +
+    '<div class="lesson-step"><b>📋 مثال عملي</b>لو عندك شحنة 300 قطعة → حسب الجدول، حجم العينة = 50 قطعة فقط (مش 300!)</div>' +
+    table +
+    '<div class="lesson-step"><b>💡 ملاحظة</b>الجدول ده بيتطبق أوتوماتيك في الإكسل بتاعك عند كتابة الكمية الكلية.</div>';
+}
+
+function explainDefectAllowed() {
+  return '⚖️ <b>كام عيب مسموح بيه (Defect Allowed)؟</b><br><br>' +
+    'بعد ما تحدد حجم العينة، في عدد عيوب محدد مسموح بيه حسب التصنيف:<br><br>' +
+    '<div class="lesson-step"><b>🔴 Critical (AQL 0)</b>مفيش أي عيب Critical مسموح بيه — لو لقيت عيب واحد بس، الشحنة كلها بترفض فوراً.</div>' +
+    '<div class="lesson-step"><b>🟠 Major (AQL 2.5)</b>مسموح بعدد محدود حسب حجم العينة. مثلاً لو العينة 50 قطعة، مسموح بـ 3 عيوب Major كحد أقصى.</div>' +
+    '<div class="lesson-step"><b>🟡 Minor (AQL 4.0)</b>مسموح بعدد أكبر شوية. لو العينة 50 قطعة، مسموح بـ 5 عيوب Minor كحد أقصى.</div>' +
+    '<div class="lesson-step"><b>✅ النتيجة</b>لو عدد العيوب اللي لقيتها أقل من أو يساوي العدد المسموح → <b>PASS</b><br>لو أكتر → <b>FAIL</b></div>';
+}
+
+function explainSteps() {
+  return '🔍 <b>خطوات الفحص خطوة بخطوة</b><br><br>' +
+    '<div class="lesson-step"><b>1️⃣ استلام البيانات</b>سجل اسم العميل، رقم الـ PO، الموديل، والكمية الكلية للشحنة.</div>' +
+    '<div class="lesson-step"><b>2️⃣ تحديد حجم العينة</b>استخدم جدول AQL لمعرفة عدد القطع اللي لازم تفحصها بناءً على الكمية الكلية.</div>' +
+    '<div class="lesson-step"><b>3️⃣ سحب العينة</b>اسحب القطع بشكل عشوائي من أماكن مختلفة في الشحنة (مش كلها من نفس الكرتونة).</div>' +
+    '<div class="lesson-step"><b>4️⃣ الفحص البصري والقياسات</b>افحص كل قطعة: الخياطة، القماش، الألوان، الأزرار، السحابات، والقياسات.</div>' +
+    '<div class="lesson-step"><b>5️⃣ تصنيف العيوب</b>أي عيب تلاقيه صنّفه: Critical / Major / Minor، وسجله في الروبورت.</div>' +
+    '<div class="lesson-step"><b>6️⃣ توثيق بالصور</b>صوّر كل عيب بوضوح، واكتب اسمه تحت الصورة.</div>' +
+    '<div class="lesson-step"><b>7️⃣ المقارنة بالمسموح</b>قارن عدد العيوب اللي لقيتها بالعدد المسموح به في كل تصنيف.</div>' +
+    '<div class="lesson-step"><b>8️⃣ النتيجة النهائية</b>حدد Pass أو Fail بناءً على المقارنة، ووقّع الروبورت.</div>';
+}
+
+function explainCriticalMajorMinor() {
+  return '🎨 <b>الفرق بين Critical و Major و Minor</b><br><br>' +
+    '<div class="lesson-step"><b>🔴 Critical — عيب خطير</b>عيب ممكن يأثر على سلامة المستخدم أو يخالف مواصفات أساسية (زي مقاس غلط تماماً أو قماش غلط). <b>غير مسموح به إطلاقاً.</b></div>' +
+    '<div class="lesson-step"><b>🟠 Major — عيب كبير</b>عيب واضح بيأثر على شكل أو وظيفة المنتج بس مش خطير (زي خياطة مفتوحة أو سحاب معيب). <b>مسموح بنسبة محدودة جداً.</b></div>' +
+    '<div class="lesson-step"><b>🟡 Minor — عيب بسيط</b>عيب شكلي بسيط مش بيأثر على الاستخدام (زي خيوط زيادة أو بقعة بسيطة). <b>مسموح بنسبة أعلى شوية.</b></div>';
+}
+
+function explainTerminology() {
+  return '📘 <b>مصطلحات مهمة لازم تعرفها</b><br><br>' +
+    '<div class="lesson-step"><b>Shrinkage (الانكماش)</b>نسبة تقلص القماش بعد الغسيل. لو زادت عن الحد المسموح، القياسات تتغير وتبقى عيب.</div>' +
+    '<div class="lesson-step"><b>Colorfastness (ثبات اللون)</b>قدرة القماش إنه يحافظ على لونه بعد الغسيل أو الاحتكاك أو التعرض للشمس بدون ما يبهت أو ينزل لون.</div>' +
+    '<div class="lesson-step"><b>GSM (Grams per Square Meter)</b>وحدة قياس كثافة/وزن القماش. كل ما الرقم أعلى، القماش أتقل وأسمك.</div>' +
+    '<div class="lesson-step"><b>AQL (Acceptable Quality Level)</b>مستوى الجودة المقبول — أقصى نسبة عيوب مسموح بيها في العينة.</div>' +
+    '<div class="lesson-step"><b>CPK / Capability</b>مقياس إحصائي لقدرة عملية الإنتاج على الالتزام بالمواصفات بثبات.</div>' +
+    '<div class="lesson-step"><b>Tolerance (هامش التفاوت)</b>أقصى فرق مسموح بيه بين القياس الفعلي والقياس المطلوب (زي +/- 1 سم).</div>' +
+    '<div class="lesson-step"><b>Lot / Batch (الدفعة)</b>الكمية الكاملة من المنتج اللي بييجي من نفس خط الإنتاج وبتتفحص كوحدة واحدة.</div>' +
+    '<div class="lesson-step"><b>Pilot Run (التشغيلة التجريبية)</b>أول دفعة إنتاج صغيرة بتتعمل قبل الإنتاج الكامل للتأكد من جودة الخط.</div>';
+}
+
+function explainFabricDefects() {
+  return '🧵 <b>أنواع الأقمشة وعيوبها الشائعة</b><br><br>' +
+    '<div class="lesson-step"><b>قماش الصوف (Wool)</b>عيوب شائعة: Pilling (تكتل الألياف)، Shrinkage بعد الغسيل، عدم ثبات اللون.</div>' +
+    '<div class="lesson-step"><b>القطن (Cotton)</b>عيوب شائعة: Shrinkage عالي، تجعد بعد الغسيل، بهتان اللون مع الوقت.</div>' +
+    '<div class="lesson-step"><b>البوليستر (Polyester)</b>عيوب شائعة: Static (كهرباء ساكنة)، صعوبة امتصاص العرق، احتمالية الانصهار عند الكي بحرارة عالية.</div>' +
+    '<div class="lesson-step"><b>الكتان (Linen)</b>عيوب شائعة: تجعد سريع، Shrinkage، خشونة الملمس بعد عدة غسلات.</div>' +
+    '<div class="lesson-step"><b>المخاليط (Blends)</b>زي Wool-Polyester — بتجمع مميزات الاتنين لكن لازم تتأكد من نسبة الخلط مطابقة للمواصفات.</div>' +
+    '<div class="lesson-step"><b>🔍 فحص القماش</b>افحص دايماً: التوحيد في اللون، عدم وجود خروم أو بقع، ثبات النسيج، وعدم وجود تفاوت في السمك.</div>';
+}
+
+function explainTools() {
+  return '🛠️ <b>أدوات الفحص الأساسية</b><br><br>' +
+    '<div class="lesson-step"><b>📏 متر القياس (Measuring Tape)</b>لقياس الأطوال والعروض المختلفة في القطعة ومقارنتها بجدول القياسات.</div>' +
+    '<div class="lesson-step"><b>🌡️ ميزان حرارة (Thermometer)</b>للتأكد من حرارة الكي مناسبة لنوع القماش ومفيش حروق.</div>' +
+    '<div class="lesson-step"><b>🔦 لمبة فحص (Inspection Lamp)</b>إضاءة قوية موحدة لفحص العيوب البصرية واكتشاف اختلاف الألوان بدقة.</div>' +
+    '<div class="lesson-step"><b>🧪 جهاز فحص ثبات اللون</b>لاختبار مقاومة اللون للاحتكاك والعرق والماء (Crock Meter).</div>' +
+    '<div class="lesson-step"><b>📐 Right Angle / Square</b>للتأكد من استقامة الخطوط والزوايا في القطعة (زي الياقة والجيوب).</div>' +
+    '<div class="lesson-step"><b>📋 لوحة الألوان (Color Swatch)</b>للمقارنة المباشرة بين لون القطعة الفعلي ولون المواصفة المعتمدة.</div>' +
+    '<div class="lesson-step"><b>📸 كاميرا التوثيق</b>لتصوير كل عيب بوضوح كدليل في الروبورت.</div>';
+}
+
+function explainFAQ() {
+  return '❓ <b>أسئلة شائعة</b><br><br>' +
+    '<div class="lesson-step"><b>إيه الفرق بين AQL و ISO؟</b>AQL نظام لفحص العينات وتحديد قبول/رف

@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -14,72 +16,29 @@
 
 <body>
 
-<!-- Sidebar -->
+<!-- Overlay -->
 
-<div class="sidebar" id="sidebar">
+<div id="overlay"></div>
 
-    <div class="logo">
-
-        <h2>🛡️ QAI</h2>
-
-        <p>Quality AI Academy</p>
-
-    </div>
-
-    <ul>
-
-        <li data-en="Dashboard" data-ar="الرئيسية">🏠 Dashboard</li>
-
-        <li data-en="AI Expert" data-ar="المساعد الذكي">🤖 AI Expert</li>
-
-        <li data-en="Defect Library" data-ar="مكتبة العيوب">📸 Defect Library</li>
-
-        <li data-en="Measurement Library" data-ar="مكتبة القياسات">📏 Measurement Library</li>
-
-        <li data-en="AQL Calculator" data-ar="حاسبة AQL">📊 AQL Calculator</li>
-
-        <li data-en="Story Learning" data-ar="التعلم بالقصص">📖 Story Learning</li>
-
-        <li data-en="Customer Simulation" data-ar="محاكاة العملاء">🎭 Customer Simulation</li>
-
-        <li data-en="Smart Games" data-ar="الألعاب الذكية">🎮 Smart Games</li>
-
-        <li data-en="Creative Ideas" data-ar="الأفكار الإبداعية">💡 Creative Ideas</li>
-
-        <li data-en="Health Tips" data-ar="نصائح الصحة">🌱 Health Tips</li>
-
-        <li data-en="Clean Workplace" data-ar="النظافة والجودة">🧹 Clean Workplace</li>
-
-        <li data-en="Cultural Quiz" data-ar="المسابقات الثقافية">📝 Cultural Quiz</li>
-
-        <li data-en="Daily Quotes" data-ar="اقتباس اليوم">🏆 Daily Quotes</li>
-
-        <li data-en="Global Learning" data-ar="التعلم العالمي">🌍 Global Learning</li>
-
-        <li data-en="Camera" data-ar="الكاميرا">📷 Camera</li>
-
-        <li data-en="Profile" data-ar="الملف الشخصي">👤 Profile</li>
-
-        <li data-en="Notifications" data-ar="الإشعارات">🔔 Notifications</li>
-
-        <li data-en="Admin Panel" data-ar="لوحة المدير">👨‍💼 Admin Panel</li>
-
-    </ul>
-
-</div>
-
-<!-- Main -->
 <!-- Login Screen -->
 
 <div id="loginScreen" class="login-screen">
 
     <div class="login-card">
 
-        <h1>🛡️ QAI</h1>
+        <div class="logo-big">
+            🛡️ QAI
+        </div>
 
-        <h2>Quality AI Academy</h2>
+        <h1>Quality AI Academy</h1>
 
-        <p>By Hassan Megahed - Quality Manager</p>
+        <p>
+            Developed & Managed By
+            <br>
+            Hassan Megahed
+            <br>
+            Quality Manager
+        </p>
 
         <input
             type="text"
@@ -106,103 +65,335 @@
     </div>
 
 </div>
-<div class="main">
+
+<!-- Sidebar -->
+
+<aside id="sidebar" class="sidebar">
+
+    <div class="sidebar-logo">
+
+        <h2>🛡️ QAI</h2>
+
+        <span>Quality AI Academy</span>
+
+        <small>
+            Hassan Megahed
+        </small>
+
+    </div>
+
+    <ul>
+
+        <li data-page="dashboard">🏠 Dashboard</li>
+
+        <li data-page="ai">🤖 QAI Expert AI</li>
+
+        <li data-page="defects">📸 Defect Library</li>
+
+        <li data-page="measurements">📏 Measurement Library</li>
+
+        <li data-page="aql">📊 AQL Calculator</li>
+
+        <li data-page="stories">📖 Story Learning</li>
+
+        <li data-page="simulation">🎭 Customer Simulation</li>
+
+        <li data-page="games">🎮 Smart Games</li>
+
+        <li data-page="ideas">💡 Creative Ideas</li>
+
+        <li data-page="health">🌱 Health & Life Tips</li>
+
+        <li data-page="clean">🧹 Clean Workplace</li>
+
+        <li data-page="quiz">📝 Cultural Quiz</li>
+
+        <li data-page="quotes">🏆 Daily Quotes</li>
+
+        <li data-page="global">🌍 Global Learning</li>
+
+        <li data-page="camera">📷 Camera</li>
+
+        <li data-page="profile">👤 Profile</li>
+
+        <li data-page="notifications">🔔 Notifications</li>
+
+        <li data-page="admin">👨‍💼 Admin Panel</li>
+
+    </ul>
+
+</aside>
+
+<!-- Main -->
+
+<main class="main">
 
     <!-- Top Bar -->
 
-    <div class="topbar">
+    <header class="topbar">
 
-        <button id="menuBtn">☰</button>
+        <button id="menuBtn">
+            ☰
+        </button>
 
-        <div class="language-switch">
+        <div class="top-actions">
 
-            <button id="langBtn">🇪🇬 العربية</button>
+            <button id="langBtn">
+                🇪🇬 العربية
+            </button>
 
         </div>
 
-    </div>
+    </header>
 
-    <!-- Hero -->
+    <!-- Dashboard -->
 
-    <section class="hero">
+    <section id="dashboard" class="page active-page">
 
-        <h1>Quality AI Academy</h1>
+        <div class="hero">
 
-        <h3>Developed & Managed By</h3>
+            <h1>
+                Quality AI Academy
+            </h1>
 
-        <h2>Hassan Megahed</h2>
+            <h3>
+                Empowering Teams Through AI & Quality Excellence
+            </h3>
 
-        <p>Quality Manager</p>
+            <p>
+                Developed & Managed By
+            </p>
+
+            <h2>
+                Hassan Megahed
+            </h2>
+
+            <span>
+                Quality Manager
+            </span>
+
+        </div>
+
+        <!-- Statistics -->
+
+        <div class="stats-grid">
+
+            <div class="stat-card">
+
+                <h3>👥 Members</h3>
+
+                <p>0</p>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h3>🏆 Points</h3>
+
+                <p>0</p>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h3>📚 Trainings</h3>
+
+                <p>0</p>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h3>💡 Ideas</h3>
+
+                <p>0</p>
+
+            </div>
+
+        </div>
+
+        <!-- Mission Vision -->
+
+        <div class="info-grid">
+
+            <div class="info-card">
+
+                <h2>🎯 Mission</h2>
+
+                <p>
+                    Deliver world-class quality knowledge through AI-powered learning.
+                </p>
+
+            </div>
+
+            <div class="info-card">
+
+                <h2>🌍 Vision</h2>
+
+                <p>
+                    Build the most innovative quality learning platform for garment manufacturing.
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- Standards -->
+
+        <div class="standards">
+
+            <h2>
+                🏅 Quality Standards
+            </h2>
+
+            <div class="badges">
+
+                <span>ISO 9001</span>
+                <span>AQL</span>
+                <span>Lean</span>
+                <span>5S</span>
+                <span>PDCA</span>
+                <span>RCA</span>
+
+            </div>
+
+        </div>
+
+        <!-- Motivation -->
+
+        <div class="motivation-card">
+
+            <h2>
+                🏆 Daily Motivation
+            </h2>
+
+            <p id="motivationText">
+
+                Quality starts with attention to detail.
+
+            </p>
+
+        </div>
+
+        <!-- AI Status -->
+
+        <div class="status-card">
+
+            <h2>
+                🤖 QAI Expert AI
+            </h2>
+
+            <p>
+                Status: Online ✅
+            </p>
+
+            <small>
+                Powered by Gemini AI
+            </small>
+
+        </div>
 
     </section>
 
-    <!-- Welcome Card -->
+    <!-- AI CHAT -->
 
-    <div class="card">
+    <section id="ai" class="page">
 
-        <h2 id="welcomeTitle">Welcome</h2>
+        <div class="section-card">
 
-        <p id="welcomeText">
+            <h2>
+                🤖 QAI Expert AI
+            </h2>
 
-            Quality starts with attention to detail.
+            <div id="chatMessages" class="chat-messages">
 
-        </p>
+            </div>
 
-    </div>
+            <div class="chat-input">
 
-    <!-- Motivation Card -->
+                <input
+                    type="text"
+                    id="userInput"
+                    placeholder="Ask Anything..."
+                >
 
-    <div class="card">
+                <button id="sendBtn">
+                    Send
+                </button>
 
-        <h2 id="motivationTitle">Daily Motivation</h2>
-
-        <p id="motivationText">
-
-            Discovering one defect before shipment is better than apologizing for a thousand garments later.
-
-        </p>
-
-    </div>
-
-    <!-- Dashboard Cards -->
-
-    <div class="cards">
-
-        <div class="small-card">
-
-            <h3>⭐ Points</h3>
-
-            <span>0</span>
+            </div>
 
         </div>
 
-        <div class="small-card">
+    </section>
 
-            <h3>🏆 Level</h3>
+    <!-- Defects -->
 
-            <span>Beginner</span>
+    <section id="defects" class="page">
 
-        </div>
+        <div class="section-card">
 
-        <div class="small-card">
+            <h2>
+                📸 Defect Library
+            </h2>
 
-            <h3>👥 Members</h3>
-
-            <span>0</span>
-
-        </div>
-
-        <div class="small-card">
-
-            <h3>📚 Trainings</h3>
-
-            <span>0</span>
+            <p>
+                Jacket Defects & Trouser Defects
+            </p>
 
         </div>
 
-    </div>
+    </section>
 
-</div>
+    <!-- Measurements -->
+
+    <section id="measurements" class="page">
+
+        <div class="section-card">
+
+            <h2>
+                📏 Measurement Library
+            </h2>
+
+            <p>
+                Jacket Measurements & Trouser Measurements
+            </p>
+
+        </div>
+
+    </section>
+
+    <!-- Placeholder Sections -->
+
+    <section id="aql" class="page"><div class="section-card"><h2>AQL Calculator</h2></div></section>
+
+    <section id="stories" class="page"><div class="section-card"><h2>Story Learning</h2></div></section>
+
+    <section id="simulation" class="page"><div class="section-card"><h2>Customer Simulation</h2></div></section>
+
+    <section id="games" class="page"><div class="section-card"><h2>Smart Games</h2></div></section>
+
+    <section id="ideas" class="page"><div class="section-card"><h2>Creative Ideas</h2></div></section>
+
+    <section id="health" class="page"><div class="section-card"><h2>Health & Life Tips</h2></div></section>
+
+    <section id="clean" class="page"><div class="section-card"><h2>Clean Workplace</h2></div></section>
+
+    <section id="quiz" class="page"><div class="section-card"><h2>Cultural Quiz</h2></div></section>
+
+    <section id="quotes" class="page"><div class="section-card"><h2>Daily Quotes</h2></div></section>
+
+    <section id="global" class="page"><div class="section-card"><h2>Global Learning</h2></div></section>
+
+    <section id="camera" class="page"><div class="section-card"><h2>Camera</h2></div></section>
+
+    <section id="profile" class="page"><div class="section-card"><h2>Profile</h2></div></section>
+
+    <section id="notifications" class="page"><div class="section-card"><h2>Notifications</h2></div></section>
+
+    <section id="admin" class="page"><div class="section-card"><h2>Admin Panel</h2></div></section>
+
+</main>
 
 <script src="script.js"></script>
 

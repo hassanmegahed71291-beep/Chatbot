@@ -1,5 +1,5 @@
 // =========================
-// QAI Platform V1
+// QAI Platform V2
 // Hassan Megahed
 // =========================
 
@@ -10,46 +10,88 @@ const langBtn = document.getElementById("langBtn");
 const pages = document.querySelectorAll(".page");
 const menuItems = document.querySelectorAll(".menu li");
 
+// Login
+
+const loginBtn =
+document.getElementById("loginBtn");
+
+const loginScreen =
+document.getElementById("loginScreen");
+
+const platform =
+document.getElementById("platform");
+
+loginBtn?.addEventListener("click",()=>{
+
+const email =
+document.getElementById("loginEmail").value;
+
+const password =
+document.getElementById("loginPassword").value;
+
+if(email && password){
+
+loginScreen.style.display="none";
+
+platform.style.display="block";
+
+}else{
+
+alert("Enter Email & Password");
+
+}
+
+});
+
 // Sidebar
 
-menuBtn.addEventListener("click", () => {
+menuBtn?.addEventListener("click",()=>{
 
-    sidebar.classList.toggle("active");
+sidebar.classList.toggle("active");
 
 });
 
 // Navigation
 
-menuItems.forEach(item => {
+menuItems.forEach(item=>{
 
-    item.addEventListener("click", () => {
+item.addEventListener("click",()=>{
 
-        const pageId = item.dataset.page;
+const pageId =
+item.dataset.page;
 
-        pages.forEach(page => {
+pages.forEach(page=>{
 
-            page.classList.remove("active-page");
+page.classList.remove(
+"active-page"
+);
 
-        });
+});
 
-        document
-            .getElementById(pageId)
-            .classList.add("active-page");
+document
+.getElementById(pageId)
+.classList.add(
+"active-page"
+);
 
-        if(window.innerWidth < 900){
+if(window.innerWidth < 900){
 
-            sidebar.classList.remove("active");
+sidebar.classList.remove(
+"active"
+);
 
-        }
+}
 
-    });
+});
 
 });
 
 // Motivation
 
 const motivationText =
-document.getElementById("motivationText");
+document.getElementById(
+"motivationText"
+);
 
 const motivationMessages = [
 
@@ -73,143 +115,180 @@ const motivationMessages = [
 
 function updateMotivation(){
 
-    const random =
-    Math.floor(
-        Math.random() *
-        motivationMessages.length
-    );
+if(!motivationText) return;
 
-    motivationText.innerText =
-    motivationMessages[random];
+const random =
+Math.floor(
+Math.random() *
+motivationMessages.length
+);
+
+motivationText.innerText =
+motivationMessages[random];
 
 }
 
 updateMotivation();
 
-setInterval(updateMotivation,10000);
+setInterval(
+updateMotivation,
+10000
+);
 
 // Language
 
 let currentLanguage = "ar";
 
-langBtn.addEventListener("click",()=>{
+langBtn?.addEventListener("click",()=>{
 
-    if(currentLanguage === "ar"){
+if(currentLanguage==="ar"){
 
-        currentLanguage = "en";
+currentLanguage="en";
 
-        document.documentElement.lang = "en";
-        document.documentElement.dir = "ltr";
+document.documentElement.lang="en";
 
-        langBtn.innerHTML = "AR";
+document.documentElement.dir="ltr";
 
-    }
+langBtn.innerHTML="AR";
 
-    else{
+}else{
 
-        currentLanguage = "ar";
+currentLanguage="ar";
 
-        document.documentElement.lang = "ar";
-        document.documentElement.dir = "rtl";
+document.documentElement.lang="ar";
 
-        langBtn.innerHTML = "EN";
+document.documentElement.dir="rtl";
 
-    }
+langBtn.innerHTML="EN";
+
+}
 
 });
 
-// Chat Demo
+// AI Chat
 
 const sendBtn =
-document.getElementById("sendBtn");
+document.getElementById(
+"sendBtn"
+);
 
 const userInput =
-document.getElementById("userInput");
+document.getElementById(
+"userInput"
+);
 
 const chatMessages =
-document.getElementById("chatMessages");
+document.getElementById(
+"chatMessages"
+);
 
-sendBtn.addEventListener("click",sendMessage);
+sendBtn?.addEventListener(
+"click",
+sendMessage
+);
 
-userInput.addEventListener("keypress",(e)=>{
+userInput?.addEventListener(
+"keypress",
+(e)=>{
 
-    if(e.key === "Enter"){
+if(e.key==="Enter"){
 
-        sendMessage();
+sendMessage();
 
-    }
+}
 
-});
+}
+);
 
 function sendMessage(){
 
-    const text =
-    userInput.value.trim();
+const text =
+userInput.value.trim();
 
-    if(!text) return;
+if(!text) return;
 
-    addMessage(text,"user");
+addMessage(text,"user");
 
-    userInput.value = "";
+userInput.value="";
 
-    setTimeout(()=>{
+setTimeout(()=>{
 
-        addMessage(
-        "QAI Expert AI جاهز. سيتم ربط Gemini في المرحلة القادمة.",
-        "bot"
-        );
+addMessage(
 
-    },800);
+"QAI Expert AI جاهز. سيتم ربط Gemini AI قريباً.",
 
-}
+"bot"
 
-function addMessage(message,type){
+);
 
-    const div =
-    document.createElement("div");
-
-    div.style.padding = "12px";
-    div.style.marginBottom = "10px";
-    div.style.borderRadius = "10px";
-
-    if(type === "user"){
-
-        div.style.background =
-        "#06B6D4";
-
-    }else{
-
-        div.style.background =
-        "#1E293B";
-
-    }
-
-    div.innerText = message;
-
-    chatMessages.appendChild(div);
-
-    chatMessages.scrollTop =
-    chatMessages.scrollHeight;
+},700);
 
 }
 
-// Profile
+function addMessage(
+message,
+type
+){
 
-const profileData =
-document.getElementById("profileData");
+const div =
+document.createElement(
+"div"
+);
 
-profileData.innerHTML = `
+div.style.padding="12px";
 
-<p><strong>Name:</strong> Hassan Megahed</p>
+div.style.marginBottom="10px";
 
-<p><strong>Role:</strong> Quality Manager</p>
+div.style.borderRadius="10px";
 
-<p><strong>Platform:</strong> Quality AI Academy</p>
+if(type==="user"){
 
-`;
+div.style.background=
+"#06B6D4";
 
-// Startup Message
+}else{
+
+div.style.background=
+"#1E293B";
+
+}
+
+div.innerText=message;
+
+chatMessages.appendChild(
+div
+);
+
+chatMessages.scrollTop=
+chatMessages.scrollHeight;
+
+}
+
+// Members Demo
+
+const createMemberBtn =
+document.getElementById(
+"createMemberBtn"
+);
+
+createMemberBtn?.addEventListener(
+"click",
+()=>{
+
+const result =
+document.getElementById(
+"memberResult"
+);
+
+result.innerHTML =
+
+"✅ Member Created Successfully";
+
+}
+);
+
+// Startup
 
 console.log(
-"QAI Platform Loaded Successfully"
+"QAI Platform V2 Loaded"
 );

@@ -1,10 +1,9 @@
-
 // Firebase Config
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 const firebaseConfig = {
-  apiKey: "ضع API Key هنا",
+  apiKey: "AIzaSyDV18FO9dqrVOY3RkxNimbehI_PytCzr6w",
   authDomain: "qai-platform-7bd96.firebaseapp.com",
   projectId: "qai-platform-7bd96",
   storageBucket: "qai-platform-7bd96.firebasestorage.app",

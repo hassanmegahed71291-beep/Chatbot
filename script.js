@@ -1,193 +1,127 @@
-// =========================
+// ====================================
 // Quality AI Academy
 // Developed By Hassan Megahed
-// =========================
+// ====================================
 
-// Language System
-
-let currentLang = "en";
-
-const langBtn = document.getElementById("langBtn");
-
-langBtn.addEventListener("click", () => {
-
-    const items = document.querySelectorAll(".sidebar li");
-
-    if(currentLang === "en"){
-
-        currentLang = "ar";
-
-        document.body.dir = "rtl";
-
-        langBtn.innerHTML = "🇺🇸 English";
-
-        items.forEach(item=>{
-            item.innerHTML = item.getAttribute("data-ar");
-        });
-
-        document.getElementById("welcomeTitle").innerText = "أهلاً بك";
-
-        document.getElementById("welcomeText").innerText =
-        "الجودة تبدأ من الاهتمام بالتفاصيل الصغيرة.";
-
-        document.getElementById("motivationTitle").innerText =
-        "رسالة تحفيزية";
-
-    }else{
-
-        currentLang = "en";
-
-        document.body.dir = "ltr";
-
-        langBtn.innerHTML = "🇪🇬 العربية";
-
-        items.forEach(item=>{
-            item.innerHTML = item.getAttribute("data-en");
-        });
-
-        document.getElementById("welcomeTitle").innerText =
-        "Welcome";
-
-        document.getElementById("welcomeText").innerText =
-        "Quality starts with attention to detail.";
-
-        document.getElementById("motivationTitle").innerText =
-        "Daily Motivation";
-    }
-
-    showRandomMotivation();
-
-});
-
-// Sidebar Mobile
+// Elements
 
 const menuBtn = document.getElementById("menuBtn");
 const sidebar = document.getElementById("sidebar");
+const overlay = document.getElementById("overlay");
 
-menuBtn.addEventListener("click",()=>{
+const pages = document.querySelectorAll(".page");
+const menuItems = document.querySelectorAll(".sidebar li");
+
+const loginScreen = document.getElementById("loginScreen");
+const enterBtn = document.getElementById("enterBtn");
+
+const langBtn = document.getElementById("langBtn");
+
+// ======================
+// Sidebar
+// ======================
+
+menuBtn.addEventListener("click", () => {
 
     sidebar.classList.toggle("active");
+    overlay.classList.toggle("active");
 
 });
 
-// Motivational Messages
+// Close sidebar when click overlay
 
-const motivationEN = [
+overlay.addEventListener("click", () => {
 
-"Discovering one defect before shipment is better than apologizing later.",
+    sidebar.classList.remove("active");
+    overlay.classList.remove("active");
 
-"A clean workplace today prevents tomorrow's mistakes.",
+});
 
-"Quality is everyone's responsibility.",
+// ======================
+// Page Navigation
+// ======================
 
-"Small improvements create big results.",
+menuItems.forEach(item => {
 
-"Attention to detail makes the difference.",
+    item.addEventListener("click", () => {
 
-"Teamwork creates quality.",
+        const pageId = item.dataset.page;
 
-"Inspection prevents customer complaints.",
+        pages.forEach(page => {
 
-"Every garment tells a story of quality."
+            page.classList.remove("active-page");
 
-];
+        });
 
-const motivationAR = [
+        document
+        .getElementById(pageId)
+        .classList.add("active-page");
 
-"اكتشاف عيب قبل الشحن أفضل من الاعتذار لاحقاً.",
+        sidebar.classList.remove("active");
+        overlay.classList.remove("active");
 
-"نظافة مكان العمل اليوم تمنع أخطاء الغد.",
+    });
 
-"الجودة مسؤولية الجميع.",
+});
 
-"التحسينات الصغيرة تصنع نتائج كبيرة.",
+// ======================
+// Login System
+// ======================
 
-"الاهتمام بالتفاصيل يصنع الفارق.",
+const savedUser =
+localStorage.getItem("qai_user");
 
-"العمل الجماعي يصنع الجودة.",
+if(savedUser){
 
-"الفحص الجيد يقلل شكاوى العملاء.",
-
-"كل قطعة تحكي قصة جودة."
-];
-
-function showRandomMotivation(){
-
-    const text = document.getElementById("motivationText");
-
-    if(currentLang==="ar"){
-
-        text.innerText =
-        motivationAR[
-            Math.floor(
-                Math.random()*motivationAR.length
-            )
-        ];
-
-    }else{
-
-        text.innerText =
-        motivationEN[
-            Math.floor(
-                Math.random()*motivationEN.length
-            )
-        ];
-    }
+    loginScreen.style.display = "none";
 
 }
 
-showRandomMotivation();
+enterBtn.addEventListener("click", () => {
 
-// User Registration
+    const fullName =
+    document.getElementById("fullName").value;
 
-function initUser(){
+    const position =
+    document.getElementById("position").value;
 
-    let user = localStorage.getItem("qai_user");
+    const department =
+    document.getElementById("department").value;
 
-    if(!user){
+    if(fullName === ""){
 
-        const fullName =
-        prompt("Enter Your Full Name");
+        alert("Please Enter Your Name");
 
-        const position =
-        prompt("Enter Your Position");
+        return;
 
-        const department =
-        prompt("Enter Your Department");
-
-        const newUser = {
-
-            name:fullName || "Guest",
-
-            position:position || "",
-
-            department:department || "",
-
-            points:0,
-
-            level:"Beginner"
-
-        };
-
-        localStorage.setItem(
-            "qai_user",
-            JSON.stringify(newUser)
-        );
-
-        user = JSON.stringify(newUser);
     }
 
-    const userData = JSON.parse(user);
+    const user = {
 
-    console.log(userData);
+        name:fullName,
+        position:position,
+        department:department,
+        points:0,
+        level:"Beginner"
 
-}
+    };
 
-initUser();
+    localStorage.setItem(
+        "qai_user",
+        JSON.stringify(user)
+    );
 
-// Daily Welcome Message
+    loginScreen.style.display="none";
 
-function welcomeMessage(){
+    showWelcome();
+
+});
+
+// ======================
+// Welcome Message
+// ======================
+
+function showWelcome(){
 
     const user =
     JSON.parse(
@@ -196,70 +130,223 @@ function welcomeMessage(){
 
     setTimeout(()=>{
 
-        if(currentLang==="ar"){
+        alert(
 
-            alert(
-            "👋 مرحباً " +
+            "Welcome " +
             user.name +
-            "\n\nنتمنى لك رحلة تعليمية ممتعة.\n\nHassan Megahed\nQuality Manager"
-            );
+            "\n\nQuality AI Academy" +
+            "\n\nManaged By Hassan Megahed"
 
-        }else{
+        );
 
-            alert(
-            "👋 Welcome " +
-            user.name +
-            "\n\nWe wish you a successful learning journey.\n\nHassan Megahed\nQuality Manager"
-            );
-
-        }
-
-    },1000);
+    },500);
 
 }
 
-welcomeMessage();
+if(savedUser){
 
-// Points System
+    showWelcome();
 
-function addPoints(value){
+}
+
+// ======================
+// Motivation Messages
+// ======================
+
+const motivationMessages = [
+
+"Quality starts with attention to detail.",
+
+"A clean workplace prevents defects.",
+
+"Teamwork creates excellence.",
+
+"Every defect is an opportunity to improve.",
+
+"Inspection today prevents complaints tomorrow.",
+
+"Quality is everyone's responsibility.",
+
+"Continuous improvement creates world class results.",
+
+"Clean tables create better quality.",
+
+"Organization reduces mistakes.",
+
+"Small improvements make big differences."
+
+];
+
+const motivationText =
+document.getElementById("motivationText");
+
+function updateMotivation(){
+
+    const randomIndex =
+    Math.floor(
+        Math.random() *
+        motivationMessages.length
+    );
+
+    motivationText.innerText =
+    motivationMessages[randomIndex];
+
+}
+
+updateMotivation();
+
+setInterval(updateMotivation,10000);
+
+// ======================
+// Language System
+// ======================
+
+let currentLanguage = "en";
+
+langBtn.addEventListener("click",()=>{
+
+    if(currentLanguage === "en"){
+
+        currentLanguage = "ar";
+
+        document.body.dir = "rtl";
+
+        langBtn.innerHTML =
+        "🇺🇸 English";
+
+        motivationText.innerHTML =
+        "الجودة تبدأ من التفاصيل الصغيرة.";
+
+    }
+
+    else{
+
+        currentLanguage = "en";
+
+        document.body.dir = "ltr";
+
+        langBtn.innerHTML =
+        "🇪🇬 العربية";
+
+        motivationText.innerHTML =
+        "Quality starts with attention to detail.";
+
+    }
+
+});
+
+// ======================
+// User Profile
+// ======================
+
+function loadProfile(){
+
+    const profileSection =
+    document.getElementById("profile");
 
     const user =
     JSON.parse(
         localStorage.getItem("qai_user")
     );
 
-    user.points += value;
+    if(!user) return;
 
-    if(user.points >= 600){
+    profileSection.innerHTML =
 
-        user.level = "Quality Expert";
+    `
+    <div class="section-card">
 
-    }else if(user.points >= 300){
+        <h2>👤 Profile</h2>
 
-        user.level = "Senior Inspector";
+        <p><strong>Name:</strong> ${user.name}</p>
 
-    }else if(user.points >= 100){
+        <p><strong>Position:</strong> ${user.position}</p>
 
-        user.level = "Inspector";
+        <p><strong>Department:</strong> ${user.department}</p>
 
-    }
+        <p><strong>Points:</strong> ${user.points}</p>
 
-    localStorage.setItem(
-        "qai_user",
-        JSON.stringify(user)
-    );
+        <p><strong>Level:</strong> ${user.level}</p>
+
+    </div>
+    `;
 
 }
 
-// Daily Quote Rotation
+loadProfile();
 
-setInterval(()=>{
+// ======================
+// AI Chat UI
+// ======================
 
-    showRandomMotivation();
+const sendBtn =
+document.getElementById("sendBtn");
 
-},10000);
+const userInput =
+document.getElementById("userInput");
+
+const chatMessages =
+document.getElementById("chatMessages");
+
+sendBtn.addEventListener("click",sendMessage);
+
+userInput.addEventListener("keypress",(e)=>{
+
+    if(e.key==="Enter"){
+
+        sendMessage();
+
+    }
+
+});
+
+function sendMessage(){
+
+    const message =
+    userInput.value.trim();
+
+    if(!message) return;
+
+    addMessage(message,"user");
+
+    userInput.value="";
+
+    setTimeout(()=>{
+
+        addMessage(
+        "QAI Expert AI is ready. Gemini connection will be activated next step.",
+        "bot"
+        );
+
+    },700);
+
+}
+
+function addMessage(text,type){
+
+    const div =
+    document.createElement("div");
+
+    div.style.marginBottom="10px";
+
+    div.style.padding="12px";
+
+    div.style.borderRadius="10px";
+
+    div.style.background =
+    type==="user"
+    ? "#06B6D4"
+    : "#1E293B";
+
+    div.innerText = text;
+
+    chatMessages.appendChild(div);
+
+    chatMessages.scrollTop =
+    chatMessages.scrollHeight;
+
+}
 
 console.log(
-"Quality AI Academy Loaded Successfully"
+"QAI Platform Loaded Successfully"
 );

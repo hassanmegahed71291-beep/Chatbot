@@ -1,32 +1,82 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>QAI ONE - الجودة الرقمية الأولى</title>
+  <title>QAI ONE - Digital Quality First</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <!-- Header -->
   <header>
     <h1>QAI ONE</h1>
     <p class="tagline">Global Quality, Simplified</p>
-    <p class="founder">المؤسس: Hassan Megahed</p>
+    <p class="founder">Founder: Hassan Megahed</p>
   </header>
+
+  <!-- Sidebar -->
+  <nav id="sidebar">
+    <button id="menu-toggle">☰</button>
+    <ul>
+      <li><a href="#dashboard">Dashboard</a></li>
+      <li><a href="#reports">Reports</a></li>
+      <li><a href="#users">User Management</a></li>
+      <li><a href="#notifications">Notifications</a></li>
+      <li><a href="#academy">Academy</a></li>
+      <li><a href="#about">About QAI ONE</a></li>
+    </ul>
+  </nav>
+
+  <!-- KPIs -->
+  <section class="kpi-container" id="dashboard">
+    <div class="kpi"><h3>Total Inspections</h3><p>1248 ↑ 12.5%</p></div>
+    <div class="kpi"><h3>Pass Rate</h3><p>96.7% ↑ 3.2%</p></div>
+    <div class="kpi"><h3>Defects Found</h3><p>342 ↓ 8.4%</p></div>
+    <div class="kpi"><h3>Open CAPA</h3><p>18 ↓ 10%</p></div>
+  </section>
+
+  <!-- Charts -->
+  <section class="charts">
+    <canvas id="inspectionTrend"></canvas>
+    <canvas id="inspectionStatus"></canvas>
+  </section>
+
+  <!-- Recent Inspections Table -->
+  <section class="table-section">
+    <h2>Recent Inspections</h2>
+    <table>
+      <tr><th>No.</th><th>Product</th><th>Supplier</th><th>Status</th><th>Result</th><th>Date</th></tr>
+      <tr><td>INS-2024-1250</td><td>Wireless Earbuds X1</td><td>ABC Electronics</td><td>Completed</td><td>Pass</td><td>May 31</td></tr>
+      <tr><td>INS-2024-1249</td><td>Smart Watch Pro</td><td>XYZ Manufacturing</td><td>Completed</td><td>Pass</td><td>May 31</td></tr>
+      <tr><td>INS-2024-1248</td><td>LED Desk Lamp</td><td>Bright Light Co.</td><td>Completed</td><td>Fail</td><td>May 30</td></tr>
+      <tr><td>INS-2024-1247</td><td>Power Bank 10000mAh</td><td>PowerTech Ltd.</td><td>In Progress</td><td>—</td><td>May 30</td></tr>
+    </table>
+  </section>
+
+  <!-- Quick Access -->
+  <section class="quick-access">
+    <h2>Quick Access</h2>
+    <button>Final Inspection</button>
+    <button>AQL Calculator</button>
+    <button>Defect Library</button>
+    <button>Reports</button>
+    <button>QAI AI Assistant</button>
+    <button>Academy</button>
+  </section>
+
+  <!-- AI Recommendation -->
+  <section class="ai-note">
+    <p>AI Recommendation: Product 'Wireless Earbuds X1' shows higher defect rate in 'Cosmetic' category.</p>
+  </section>
 
   <!-- About Section -->
   <section id="about">
-    <h2>عن المنصة</h2>
-    <p>QAI ONE هي منصة عالمية لإدارة الجودة الرقمية والتدريب.</p>
-    <p>الهدف: رفع كفاءة المصانع والشركات باستخدام أدوات رقمية حديثة.</p>
-    <p>الرؤية: أن تصبح المنصة الأولى عالميًا في إدارة الجودة الرقمية.</p>
-    <p>الرسالة: توفير أدوات مبتكرة تساعد أي مصنع أو فريق على تحقيق أعلى مستويات الجودة.</p>
+    <h2>About QAI ONE</h2>
+    <p>QAI ONE is a global platform for digital quality management and training.</p>
+    <p>Goal: Enhance factories and companies with modern digital tools.</p>
+    <p>Vision: To become the leading global platform for digital quality.</p>
+    <p>Mission: Provide innovative tools that help any team achieve excellence.</p>
   </section>
-
-  <!-- Language Switch -->
-  <div id="language-switch">
-    <button onclick="setLanguage('ar')">العربية</button>
-    <button onclick="setLanguage('en')">English</button>
-  </div>
 
   <script src="script.js"></script>
 </body>

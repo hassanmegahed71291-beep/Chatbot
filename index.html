@@ -5,9 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>QAI ONE – Quality Assurance Intelligence</title>
   <style>
-    /* ===========================
-       RESET + BASE STYLES
-       =========================== */
+    /* RESET */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: Arial, sans-serif;
@@ -17,9 +15,7 @@
     }
     h1, h2 { margin-bottom: 10px; }
 
-    /* ===========================
-       SPLASH SCREEN
-       =========================== */
+    /* SPLASH SCREEN */
     #splash {
       position: fixed;
       width: 100%;
@@ -34,14 +30,9 @@
       z-index: 9999;
       animation: fadeIn 1s ease-in-out;
     }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-    /* ===========================
-       LOGIN PAGE
-       =========================== */
+    /* LOGIN */
     #login {
       display: none;
       text-align: center;
@@ -62,9 +53,7 @@
       cursor: pointer;
     }
 
-    /* ===========================
-       SIDEBAR
-       =========================== */
+    /* SIDEBAR */
     #sidebar {
       width: 220px;
       background: #1e1e1e;
@@ -95,9 +84,7 @@
       cursor: pointer;
     }
 
-    /* ===========================
-       DASHBOARD
-       =========================== */
+    /* DASHBOARD */
     #dashboard {
       margin-left: 240px;
       padding: 20px;
@@ -129,19 +116,25 @@
       padding: 10px;
     }
 
-    /* ===========================
-       AI + AQL + FINAL INSPECTION
-       =========================== */
+    /* AI + AQL + FINAL INSPECTION */
     .ai, .aql, .final {
       margin-top: 30px;
       background: #2c2c2c;
       padding: 20px;
       border-radius: 8px;
     }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    table, th, td {
+      border: 1px solid #444;
+      padding: 8px;
+      text-align: center;
+    }
 
-    /* ===========================
-       DARK MODE
-       =========================== */
+    /* LIGHT MODE */
     .light-mode {
       background-color: #f5f5f5;
       color: #000;
@@ -209,7 +202,7 @@
 
     <section class="final">
       <h2>Final Inspection</h2>
-      <table border="1" width="100%">
+      <table>
         <tr><th>Inspection No.</th><th>Product</th><th>Status</th><th>Result</th><th>Date</th></tr>
         <tr><td>INS-2024-1250</td><td>Wireless Earbuds X1</td><td>Completed</td><td>Pass</td><td>May 31</td></tr>
         <tr><td>INS-2024-1248</td><td>LED Desk Lamp</td><td>Completed</td><td>Fail</td><td>May 30</td></tr>
@@ -249,4 +242,11 @@
       data: {
         labels: ['Passed', 'Failed', 'Pending', 'In Progress'],
         datasets: [{
-          data: [1006,
+          data: [1006, 142, 67, 33],
+          backgroundColor: ['green', 'red', 'orange', 'gray']
+        }]
+      }
+    });
+  </script>
+</body>
+</html>

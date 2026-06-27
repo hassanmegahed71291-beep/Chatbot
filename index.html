@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QAI ONE – Quality Assurance Intelligence</title>
+  <style>
+    /* ===========================
+       RESET + BASE STYLES
+       =========================== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: #fff;
+      transition: background 0.3s, color 0.3s;
+    }
+    h1, h2 { margin-bottom: 10px; }
+
+    /* ===========================
+       SPLASH SCREEN
+       =========================== */
+    #splash {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #0d47a1, #1976d2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      color: #fff;
+      font-size: 2em;
+      z-index: 9999;
+      animation: fadeIn 1s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* ===========================
+       LOGIN PAGE
+       =========================== */
+    #login {
+      display: none;
+      text-align: center;
+      margin-top: 100px;
+    }
+    #login input {
+      padding: 10px;
+      margin: 10px;
+      border-radius: 5px;
+      border: none;
+    }
+    #login button {
+      padding: 10px 20px;
+      background: #1976d2;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    /* ===========================
+       SIDEBAR
+       =========================== */
+    #sidebar {
+      width: 220px;
+      background: #1e1e1e;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    #sidebar h2 { margin-bottom: 20px; }
+    #sidebar ul { list-style: none; }
+    #sidebar ul li {
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+    #sidebar ul li:hover { background: #1976d2; }
+    #darkToggle {
+      margin-top: 20px;
+      padding: 10px;
+      width: 100%;
+      background: #1976d2;
+      border: none;
+      color: #fff;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    /* ===========================
+       DASHBOARD
+       =========================== */
+    #dashboard {
+      margin-left: 240px;
+      padding: 20px;
+    }
+    .stats {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .card {
+      flex: 1;
+      min-width: 200px;
+      background: #2c2c2c;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+      transition: transform 0.3s;
+    }
+    .card:hover { transform: scale(1.05); }
+    .charts {
+      display: flex;
+      gap: 20px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    canvas {
+      background: #fff;
+      border-radius: 8px;
+      padding: 10px;
+    }
+
+    /* ===========================
+       AI + AQL + FINAL INSPECTION
+       =========================== */
+    .ai, .aql, .final {
+      margin-top: 30px;
+      background: #2c2c2c;
+      padding: 20px;
+      border-radius: 8px;
+    }
+
+    /* ===========================
+       DARK MODE
+       =========================== */
+    .light-mode {
+      background-color: #f5f5f5;
+      color: #000;
+    }
+    .light-mode #sidebar { background: #e0e0e0; }
+    .light-mode .card { background: #fff; color: #000; }
+  </style>
+</head>
+<body class="dark-mode">
+
+  <!-- Splash Screen -->
+  <div id="splash">
+    <h1>QAI ONE</h1>
+    <p>Quality Assurance Intelligence</p>
+  </div>
+
+  <!-- Login -->
+  <div id="login">
+    <h2>Login</h2>
+    <input type="text" placeholder="Username"><br>
+    <input type="password" placeholder="Password"><br>
+    <button id="loginBtn">Login</button>
+  </div>
+
+  <!-- Sidebar -->
+  <aside id="sidebar">
+    <h2>QAI ONE</h2>
+    <ul>
+      <li>Dashboard</li>
+      <li>Final Inspection</li>
+      <li>AQL Calculator</li>
+      <li>Defect Library</li>
+      <li>Reports</li>
+      <li>AI Assistant</li>
+      <li>Academy</li>
+      <li>Settings</li>
+    </ul>
+    <button id="darkToggle">Toggle Dark Mode</button>
+  </aside>
+
+  <!-- Dashboard -->
+  <main id="dashboard">
+    <h1>Dashboard Overview</h1>
+    <section class="stats">
+      <div class="card">Total Inspections: 1,248 ↑ 12.5%</div>
+      <div class="card">Pass Rate: 96.7% ↑ 3.2%</div>
+      <div class="card">Defects Found: 342 ↓ 8.4%</div>
+      <div class="card">Open CAPA: 18 ↓ 10%</div>
+    </section>
+
+    <section class="charts">
+      <canvas id="trendChart" width="400" height="200"></canvas>
+      <canvas id="statusChart" width="400" height="200"></canvas>
+    </section>
+
+    <section class="ai">
+      <h2>AI Recommendation</h2>
+      <p>Product “Wireless Earbuds X1” shows higher defect rate in Cosmetic category.</p>
+    </section>
+
+    <section class="aql">
+      <h2>AQL Calculator</h2>
+      <p>Enter sample size and defect limits...</p>
+    </section>
+
+    <section class="final">
+      <h2>Final Inspection</h2>
+      <table border="1" width="100%">
+        <tr><th>Inspection No.</th><th>Product</th><th>Status</th><th>Result</th><th>Date</th></tr>
+        <tr><td>INS-2024-1250</td><td>Wireless Earbuds X1</td><td>Completed</td><td>Pass</td><td>May 31</td></tr>
+        <tr><td>INS-2024-1248</td><td>LED Desk Lamp</td><td>Completed</td><td>Fail</td><td>May 30</td></tr>
+      </table>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Splash Screen Hide
+    setTimeout(() => {
+      document.getElementById('splash').style.display = 'none';
+      document.getElementById('login').style.display = 'block';
+    }, 2000);
+
+    // Dark Mode Toggle
+    document.getElementById('darkToggle').onclick = () => {
+      document.body.classList.toggle('light-mode');
+    };
+
+    // Charts
+    const trendCtx = document.getElementById('trendChart');
+    new Chart(trendCtx, {
+      type: 'line',
+      data: {
+        labels: ['May 1', 'May 10', 'May 20', 'May 31'],
+        datasets: [
+          { label: 'Inspections', data: [50, 80, 100, 120], borderColor: 'blue' },
+          { label: 'Defects', data: [20, 40, 30, 25], borderColor: 'red' }
+        ]
+      }
+    });
+
+    const statusCtx = document.getElementById('statusChart');
+    new Chart(statusCtx, {
+      type: 'pie',
+      data: {
+        labels: ['Passed', 'Failed', 'Pending', 'In Progress'],
+        datasets: [{
+          data: [1006,

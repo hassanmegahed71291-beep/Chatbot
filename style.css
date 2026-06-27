@@ -1,0 +1,65 @@
+/* إعدادات عامة */
+body {
+  font-family: "Tajawal", Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f4f6f9;
+  color: #333;
+}
+
+/* الهيدر */
+header {
+  background: #004aad;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2.5em;
+}
+
+header .tagline {
+  font-style: italic;
+  font-size: 1.2em;
+}
+
+header .founder {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+/* قسم التعريف */
+#about {
+  background: white;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 6px rgba(0,0,0,0.1);
+}
+
+#about h2 {
+  color: #004aad;
+  margin-bottom: 10px;
+}
+
+/* زر تغيير اللغة */
+#language-switch {
+  text-align: center;
+  margin: 20px;
+}
+
+#language-switch button {
+  background: #004aad;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#language-switch button:hover {
+  background: #0066cc;
+}

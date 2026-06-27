@@ -1,13 +1,12 @@
-/* إعدادات عامة */
 body {
   font-family: "Tajawal", Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background: #f4f6f9;
-  color: #333;
+  background: #1e1e2f;
+  color: #eee;
 }
 
-/* الهيدر */
+/* Header */
 header {
   background: #004aad;
   color: white;
@@ -30,27 +29,108 @@ header .founder {
   font-weight: bold;
 }
 
-/* قسم التعريف */
-#about {
-  background: white;
-  margin: 20px;
+/* Sidebar */
+#sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 220px;
+  height: 100%;
+  background: #111;
+  color: white;
+  padding-top: 20px;
+  transition: transform 0.3s ease;
+}
+
+#sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+#sidebar ul li {
+  margin: 15px 0;
+}
+
+#sidebar ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  display: block;
+  padding: 10px;
+}
+
+#sidebar ul li a:hover {
+  background: #004aad;
+  border-radius: 5px;
+}
+
+#menu-toggle {
+  background: #004aad;
+  color: white;
+  border: none;
+  font-size: 1.5em;
+  margin: 10px;
+  cursor: pointer;
+}
+
+/* KPIs */
+.kpi-container {
+  display: flex;
+  justify-content: space-around;
+  margin-left: 240px;
+  padding: 20px;
+}
+
+.kpi {
+  background: #2a2a3d;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0px 2px 6px rgba(0,0,0,0.1);
-}
-
-#about h2 {
-  color: #004aad;
-  margin-bottom: 10px;
-}
-
-/* زر تغيير اللغة */
-#language-switch {
   text-align: center;
-  margin: 20px;
+  flex: 1;
+  margin: 10px;
 }
 
-#language-switch button {
+/* Charts */
+.charts {
+  display: flex;
+  justify-content: space-around;
+  margin-left: 240px;
+  padding: 20px;
+}
+
+canvas {
+  background: #2a2a3d;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+/* Table */
+.table-section {
+  margin-left: 240px;
+  padding: 20px;
+}
+
+.table-section table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #2a2a3d;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table-section th, .table-section td {
+  padding: 10px;
+  border-bottom: 1px solid #444;
+  text-align: left;
+}
+
+/* Quick Access */
+.quick-access {
+  margin-left: 240px;
+  padding: 20px;
+}
+
+.quick-access button {
   background: #004aad;
   color: white;
   border: none;
@@ -60,6 +140,23 @@ header .founder {
   cursor: pointer;
 }
 
-#language-switch button:hover {
+.quick-access button:hover {
   background: #0066cc;
+}
+
+/* AI Note */
+.ai-note {
+  margin-left: 240px;
+  padding: 20px;
+  background: #2a2a3d;
+  border-radius: 8px;
+  font-style: italic;
+}
+
+/* About Section */
+#about {
+  background: #2a2a3d;
+  margin: 20px 240px;
+  padding: 20px;
+  border-radius: 8px;
 }

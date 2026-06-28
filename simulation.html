@@ -23,7 +23,7 @@
     <p id="cust-scenario"></p>
     <p id="cust-msg"></p>
     <textarea id="cust-response" placeholder="اكتب ردك هنا..."></textarea>
-    <button>إرسال الرد</button>
+    <button onclick="submitResponse('cust')">إرسال الرد</button>
   </section>
 
   <!-- Manager Simulation -->
@@ -32,7 +32,7 @@
     <p id="mgr-scenario"></p>
     <p id="mgr-msg"></p>
     <textarea id="mgr-response" placeholder="اكتب ردك هنا..."></textarea>
-    <button>إرسال الرد</button>
+    <button onclick="submitResponse('mgr')">إرسال الرد</button>
   </section>
 
   <!-- Daily Tips -->
@@ -41,7 +41,16 @@
     <ul id="tips-list"></ul>
   </section>
 
+  <!-- Experience Points -->
+  <section class="xp">
+    <h2 id="xp-title"></h2>
+    <p id="xp-points">0</p>
+    <p id="xp-level"></p>
+  </section>
+
   <script>
+    let xp = 0;
+
     const messages = {
       ar: {
         custTitle: "محاكاة العملاء",
@@ -55,7 +64,8 @@
           "✅ تأكد من مراجعة المقاسات مرتين قبل الاعتماد النهائي.",
           "💡 استخدم لغة واضحة ومحترمة مع العملاء.",
           "📊 لخص النتائج الرئيسية في التقارير لسهولة المراجعة."
-        ]
+        ],
+        xpTitle: "نقاط الخبرة",
       },
       en: {
         custTitle: "Customer Simulation",
@@ -69,7 +79,8 @@
           "✅ Always double-check measurements before final approval.",
           "💡 Use clear and polite language with customers.",
           "📊 Summarize key findings in reports for quick review."
-        ]
+        ],
+        xpTitle: "Experience Points",
       }
     };
 
@@ -90,6 +101,24 @@
         li.innerText = tip;
         tipsList.appendChild(li);
       });
+
+      document.getElementById("xp-title").innerText = messages[lang].xpTitle;
+      updateLevel();
+    }
+
+    function submitResponse(type) {
+      xp += 10; // كل رد يدي 10 نقاط
+      document.getElementById("xp-points").innerText = xp;
+      updateLevel();
+      alert("✅ تم تسجيل ردك وحصلت على 10 نقاط خبرة!");
+    }
+
+    function updateLevel() {
+      let level = "";
+      if (xp < 30) level = "🔰 مبتدئ";
+      else if (xp < 70) level = "⚡ متوسط";
+      else level = "🏆 محترف";
+      document.getElementById("xp-level").innerText = level;
     }
 
     // الافتراضي: اللغة العربية

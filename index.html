@@ -7,6 +7,9 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- زر القائمة للموبايل -->
+  <button id="menu-toggle">☰</button>
+
   <!-- Sidebar -->
   <nav id="sidebar">
     <div class="logo">QAI ONE</div>
@@ -133,6 +136,13 @@
           backgroundColor: ['green','red','orange','blue']
         }]
       }
+    });
+
+    // زر القائمة للموبايل
+    const menuToggle = document.getElementById("menu-toggle");
+    const sidebar = document.getElementById("sidebar");
+    menuToggle.addEventListener("click", () => {
+      sidebar.classList.toggle("active");
     });
   </script>
 </body>

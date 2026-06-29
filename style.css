@@ -14,21 +14,22 @@ header {
   background-color: #152238;
   padding: 10px 20px;
   color: #f5c518;
-  position: relative;
 }
 
-/* زر 3 شرط */
-#menu-toggle {
-  background: none;
-  border: none;
+header .logo h1 {
+  margin: 0;
+  font-size: 28px;
   color: #f5c518;
-  font-size: 26px;
-  cursor: pointer;
-  transition: transform 0.3s ease;
 }
 
-#menu-toggle:hover {
-  transform: scale(1.1);
+header .tagline {
+  font-size: 14px;
+  color: #ddd;
+}
+
+header .founder {
+  font-size: 12px;
+  color: #f5c518;
 }
 
 /* Sidebar */
@@ -58,8 +59,6 @@ header {
   font-size: 16px;
   cursor: pointer;
   transition: 0.3s;
-  display: flex;
-  align-items: center;
   color: #fff;
 }
 
@@ -73,35 +72,51 @@ header {
   margin-top: 20px;
 }
 
-#dashboard h1 {
-  margin-bottom: 20px;
+#dashboard h2 {
   color: #f5c518;
+  margin-bottom: 20px;
+}
+
+#dashboard p {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #fff;
+}
+
+/* Footer */
+footer {
+  background-color: #152238;
+  text-align: center;
+  padding: 15px;
+  font-size: 14px;
+  color: #ddd;
 }
 
 /* Responsive Design */
-@media (max-width: 1024px) {
-  #dashboard {
-    padding: 20px;
-  }
-}
-
 @media (max-width: 768px) {
-  #menu-toggle {
-    display: block;
+  header .logo h1 {
+    font-size: 22px;
   }
   #sidebar {
-    left: -250px;
+    width: 200px;
   }
-  #sidebar.active {
-    left: 0;
+  #dashboard p {
+    font-size: 14px;
+    text-align: center;
   }
 }
 
 @media (max-width: 480px) {
+  header .logo h1 {
+    font-size: 20px;
+  }
+  #sidebar {
+    width: 180px;
+  }
   #dashboard {
     padding: 15px;
   }
-  #sidebar li {
-    font-size: 14px;
+  #dashboard p {
+    font-size: 13px;
   }
 }

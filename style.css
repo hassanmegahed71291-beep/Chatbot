@@ -36,3 +36,36 @@ body {
 
 .logo {
   font-size: 24px
+/* حركة انزلاق ناعمة للقائمة */
+#sidebar {
+  position: fixed;
+  top: 0;
+  left: -250px;
+  width: 250px;
+  height: 100%;
+  background-color: #152238;
+  padding: 20px;
+  transition: left 0.4s ease;
+  z-index: 999;
+}
+
+#sidebar.active {
+  left: 0;
+}
+
+/* زر 3 شرط داخل الواجهة */
+#menu-toggle {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: #f5c518;
+  font-size: 26px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+#menu-toggle:hover {
+  transform: scale(1.1);
+}

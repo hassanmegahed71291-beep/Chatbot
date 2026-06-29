@@ -7,8 +7,11 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- زر القائمة للموبايل -->
-  <button id="menu-toggle">☰</button>
+  <!-- شريط علوي -->
+  <header>
+    <button id="menu-toggle">☰</button>
+    <h2 id="page-title"></h2>
+  </header>
 
   <!-- Sidebar -->
   <nav id="sidebar">
@@ -31,7 +34,6 @@
 
   <!-- Dashboard -->
   <main id="dashboard">
-    <h1 id="page-title"></h1>
     <div class="kpi-container">
       <div class="kpi-card" id="kpi-inspections"></div>
       <div class="kpi-card" id="kpi-passrate"></div>
@@ -39,16 +41,13 @@
       <div class="kpi-card" id="kpi-capa"></div>
     </div>
 
-    <!-- زر تفاعلي -->
     <button id="action-btn"></button>
 
-    <!-- Charts -->
     <div class="charts">
       <canvas id="inspectionTrend"></canvas>
       <canvas id="statusPie"></canvas>
     </div>
 
-    <!-- Recent Inspections Table -->
     <table class="recent">
       <thead>
         <tr>
@@ -60,32 +59,35 @@
           <th id="th-date"></th>
         </tr>
       </thead>
-      <tbody>
-        <tr><td>INS-2024-1250</td><td>Wireless Earbuds X1</td><td>ABC Electronics</td><td>Completed</td><td>Pass</td><td>May 31</td></tr>
-        <tr><td>INS-2024-1248</td><td>LED Desk Lamp</td><td>Bright Light Co.</td><td>Completed</td><td>Fail</td><td>May 30</td></tr>
-      </tbody>
+      <tbody></tbody>
     </table>
   </main>
 
-  <!-- Chart.js Library -->
+  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
     const messages = {
       ar: {
         title: "لوحة التحكم",
         menu: {dashboard:"الرئيسية",reports:"التقارير",users:"المستخدمين",academy:"الأكاديمية",simulation:"المحاكاة"},
-        kpi: {inspections:"📊 إجمالي الفحوصات: 1248 ↑12.5%",passrate:"✅ نسبة النجاح: 96.7% ↑3.2%",defects:"❌ العيوب المكتشفة: 342 ↓8.4%",capa:"⚠️ حالات مفتوحة: 18 ↓10%"},
+        kpi: {inspections:"📊 إجمالي الفحوصات: 1248",passrate:"✅ نسبة النجاح: 96.7%",defects:"❌ العيوب المكتشفة: 342",capa:"⚠️ حالات مفتوحة: 18"},
         button: "ابدأ الفحص",
         table: {id:"الرقم",product:"المنتج",supplier:"المورد",status:"الحالة",result:"النتيجة",date:"التاريخ"}
       },
       en: {
         title: "Dashboard",
         menu: {dashboard:"Dashboard",reports:"Reports",users:"Users",academy:"Academy",simulation:"Simulation"},
-        kpi: {inspections:"📊 Total Inspections: 1248 ↑12.5%",passrate:"✅ Pass Rate: 96.7% ↑3.2%",defects:"❌ Defects Found: 342 ↓8.4%",capa:"⚠️ Open CAPA: 18 ↓10%"},
+        kpi: {inspections:"📊 Total Inspections: 1248",passrate:"✅ Pass Rate: 96.7%",defects:"❌ Defects Found: 342",capa:"⚠️ Open CAPA: 18"},
         button: "Start Inspection",
         table: {id:"ID",product:"Product",supplier:"Supplier",status:"Status",result:"Result",date:"Date"}
       }
     };
+
+    let inspectionsData = [
+      {id:"INS-2024-1250", product:"Wireless Earbuds X1", supplier:"ABC Electronics", status:"Completed", result:"Pass", date:"May 31"},
+      {id:"INS-2024-1248", product:"LED Desk Lamp", supplier:"Bright Light Co.", status:"Completed", result:"Fail", date:"May 30"},
+      {id:"INS-2024-1247", product:"Smart Watch Z3", supplier:"TechTime Ltd.", status:"Pending", result:"-", date:"May 29"}
+    ];
 
     function setLanguage(lang) {
       document.getElementById("page-title").innerText = messages[lang].title;
@@ -110,33 +112,56 @@
       document.getElementById("th-date").innerText = messages[lang].table.date;
     }
 
-    // الافتراضي عربي
+    function renderTable() {
+      const tbody = document.querySelector("table.recent tbody");
+      tbody.innerHTML = "";
+      inspectionsData.forEach(item => {
+        const row = `<tr>
+          <td>${item.id}</td>
+          <td>${item.product}</td>
+          <td>${item.supplier}</td>
+          <td>${item.status}</td>
+          <td>${item.result}</td>
+          <td>${item.date}</td>
+        </tr>`;
+        tbody.innerHTML += row;
+      });
+    }
+
+    function updateCharts() {
+      const passed = inspectionsData.filter(i => i.result === "Pass").length;
+      const failed = inspectionsData.filter(i => i.result === "Fail").length;
+      const pending = inspectionsData.filter(i => i.status === "Pending").length;
+
+      const ctx1 = document.getElementById('inspectionTrend').getContext('2d');
+      new Chart(ctx1, {
+        type: 'line',
+        data: {
+          labels: ['May 1','May 10','May 20','May 30'],
+          datasets: [
+            { label: 'Inspections', data: [200, 300, 400, 348], borderColor: 'blue', fill: false },
+            { label: 'Defects', data: [50, 80, 60, 40], borderColor: 'red', fill: false }
+          ]
+        }
+      });
+
+      const ctx2 = document.getElementById('statusPie').getContext('2d');
+      new Chart(ctx2, {
+        type: 'pie',
+        data: {
+          labels: ['Passed','Failed','Pending'],
+          datasets: [{
+            data: [passed, failed, pending],
+            backgroundColor: ['green','red','orange']
+          }]
+        }
+      });
+    }
+
+    // افتراضي عربي
     setLanguage("ar");
-
-    // Charts
-    const ctx1 = document.getElementById('inspectionTrend').getContext('2d');
-    new Chart(ctx1, {
-      type: 'line',
-      data: {
-        labels: ['May 1','May 10','May 20','May 30'],
-        datasets: [
-          { label: 'Inspections', data: [200, 300, 400, 348], borderColor: 'blue', fill: false },
-          { label: 'Defects', data: [50, 80, 60, 40], borderColor: 'red', fill: false }
-        ]
-      }
-    });
-
-    const ctx2 = document.getElementById('statusPie').getContext('2d');
-    new Chart(ctx2, {
-      type: 'pie',
-      data: {
-        labels: ['Passed','Failed','Pending','In Progress'],
-        datasets: [{
-          data: [900, 200, 100, 48],
-          backgroundColor: ['green','red','orange','blue']
-        }]
-      }
-    });
+    renderTable();
+    updateCharts();
 
     // زر القائمة للموبايل
     const menuToggle = document.getElementById("menu-toggle");

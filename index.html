@@ -1,895 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>QUALIO | Smart Quality Platform</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-
-<link rel="stylesheet" href="style.css">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QUAILO | Smart Quality Platform</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
-
 <body>
-
-  <!-- ========================================= -->
-<!-- LOADER -->
-<!-- ========================================= -->
-
-<div id="loader">
-
-    <div class="loader-container">
-
-        <div class="loader-logo">
-
-            Q
-
-        </div>
-
-        <h1>
-
-            QUALIO
-
-        </h1>
-
-        <p>
-
-            Smart Quality Platform
-
-        </p>
-
-        <div class="loader-bar">
-
-            <div class="loader-progress"></div>
-
-        </div>
-
+  <!-- HEADER -->
+  <header>
+    <div class="toolbar">
+      <img src="quailo-logo.png" alt="QUAILO Logo" class="logo">
+      <button class="lang-btn" onclick="toggleLanguage()">🌐 اللغة</button>
+      <button class="menu-btn" onclick="toggleSidebar()">☰</button>
     </div>
+  </header>
 
-</div>
+  <!-- SIDEBAR -->
+  <aside id="sidebar">
+    <ul>
+      <li>🏠 Home</li>
+      <li>📊 Dashboard</li>
+      <li>📝 Inspection</li>
+      <li>📈 Reports</li>
+      <li>🏭 Factories</li>
+      <li>🤖 AI Assistant</li>
+      <li>👥 Members</li>
+      <li>🎮 Community</li>
+    </ul>
+  </aside>
 
-<!-- ========================================= -->
-<!-- BACKGROUND -->
-<!-- ========================================= -->
-
-<div class="background-animation">
-
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-
-</div>
-
-<!-- ========================================= -->
-<!-- HEADER -->
-<!-- ========================================= -->
-
-<header>
-
-    <div class="container">
-
-        <div class="logo">
-
-            <div class="logo-icon">
-
-                Q
-
-            </div>
-
-            <div class="logo-text">
-
-                <h2>QUALIO</h2>
-
-                <span>
-
-                    Smart Quality Platform
-
-                </span>
-
-            </div>
-
-        </div>
-
-        <nav>
-
-            <ul>
-
-                <li><a href="#">Home</a></li>
-
-                <li><a href="#">Platform</a></li>
-
-                <li><a href="#">Solutions</a></li>
-
-                <li><a href="#">Inspection</a></li>
-
-                <li><a href="#">Reports</a></li>
-
-                <li><a href="#">Contact</a></li>
-
-            </ul>
-
-        </nav>
-
-        <div class="header-buttons">
-
-            <button class="login-btn">
-
-                Login
-
-            </button>
-
-            <button class="start-btn">
-
-                Get Started
-
-            </button>
-
-        </div>
-
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <h1>Smart Quality Inspection Platform</h1>
+    <p>QUAILO helps manufacturers and global teams manage inspections, defects, and reports with AI-powered insights.</p>
+    <div class="hero-buttons">
+      <button class="primary-btn">Start Free Trial</button>
+      <button class="secondary-btn">Watch Demo</button>
     </div>
-
-</header>
-
-  <!-- ========================================= -->
-<!-- HERO SECTION -->
-<!-- ========================================= -->
-
-<section class="hero">
-
-    <div class="hero-container">
-
-        <div class="hero-left">
-
-            <div class="badge">
-
-                <i class="fa-solid fa-star"></i>
-
-                Next Generation Quality Platform
-
-            </div>
-
-            <h1>
-
-                Smart Quality
-
-                <br>
-
-                Inspection Platform
-
-            </h1>
-
-            <p>
-
-                QUALIO helps manufacturers, inspection companies and global
-                brands manage inspections, AQL sampling, defect tracking,
-                AI analysis and professional reports from one secure platform.
-
-            </p>
-
-            <div class="hero-buttons">
-
-                <button class="primary-btn">
-
-                    Start Free Trial
-
-                </button>
-
-                <button class="secondary-btn">
-
-                    Watch Demo
-
-                </button>
-
-            </div>
-
-            <div class="hero-stats">
-
-                <div class="stat-box">
-
-                    <h2>25K+</h2>
-
-                    <p>Inspections</p>
-
-                </div>
-
-                <div class="stat-box">
-
-                    <h2>580+</h2>
-
-                    <p>Factories</p>
-
-                </div>
-
-                <div class="stat-box">
-
-                    <h2>98%</h2>
-
-                    <p>Customer Satisfaction</p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="hero-right">
-
-            <div class="dashboard-preview">
-
-                <h3>
-
-                    QUALIO Dashboard
-
-                </h3>
-
-                <p>
-
-                    Live Production Monitoring
-
-                </p>
-
-                <div class="dashboard-cards">
-
-                    <div class="dashboard-card">
-
-                        <h3>Total Inspections</h3>
-
-                        <h2>12,540</h2>
-
-                    </div>
-
-                    <div class="dashboard-card">
-
-                        <h3>Open Defects</h3>
-
-                        <h2>146</h2>
-
-                    </div>
-
-                    <div class="dashboard-card">
-
-                        <h3>Factories</h3>
-
-                        <h2>580</h2>
-
-                    </div>
-
-                    <div class="dashboard-card">
-
-                        <h3>Quality Score</h3>
-
-                        <h2>98%</h2>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
+  </section>
+
+  <!-- MODULES -->
+  <section class="modules">
+    <h2>Platform Modules</h2>
+    <div class="module-grid">
+      <div class="module-card">📊 Dashboard</div>
+      <div class="module-card">📝 Inspection</div>
+      <div class="module-card">📈 Reports</div>
+      <div class="module-card">🏭 Factories</div>
+      <div class="module-card">🤖 AI Assistant</div>
     </div>
-
-</section>
-
-  <!-- ========================================= -->
-<!-- WHY QUALIO -->
-<!-- ========================================= -->
-
-<section class="why-qualio">
-
-    <div class="container">
-
-        <div class="section-title">
-
-            <span>
-
-                WHY QUALIO
-
-              <!-- ========================================= -->
-<!-- PLATFORM MODULES -->
-<!-- ========================================= -->
-
-<section class="modules">
-
-    <div class="container">
-
-        <div class="section-title">
-
-            <span>
-
-                PLATFORM MODULES
-
-            </span>
-
-            <h2>
-
-                Complete Quality Management Platform
-
-            </h2>
-
-            <p>
-
-                Every module works together to help your team inspect,
-                analyze, report and improve product quality worldwide.
-
-            </p>
-
-        </div>
-
-        <div class="module-grid">
-
-            <div class="module-card">
-
-                <i class="fa-solid fa-chart-pie"></i>
-
-                <h3>Dashboard</h3>
-
-                <p>
-
-                    Real-time KPIs, factory performance and inspection statistics.
-
-                </p>
-
-            </div>
-
-            <div class="module-card">
-
-                <i class="fa-solid fa-clipboard-check"></i>
-
-                <h3>Inspection</h3>
-
-                <p>
-
-                    Create and manage inspection reports with photos and comments.
-
-                </p>
-
-            </div>
-
-            <div class="module-card">
-
-                <i class="fa-solid fa-calculator"></i>
-
-                <h3>AQL Calculator</h3>
-
-                <p>
-
-                    Automatic ANSI/ASQ Z1.4 sampling plans.
-
-                </p>
-
-            </div>
-
-            <div class="module-card">
-
-                <i class="fa-solid fa-bug"></i>
-
-                <h3>Defect Library</h3>
-
-                <p>
-
-                    Organize and classify defects with images and severity.
-
-                </p>
-
-            </div>
-
-            <div class="module-card">
-
-                <i class="fa-solid fa-industry"></i>
-
-                <h3>Factories</h3>
-
-                <p>
-
-                    Manage factories, suppliers and production locations.
-
-                </p>
-
-            </div>
-
-            <div class="module-card">
-
-                <i class="fa-solid fa-users"></i>
-
-                <h3>Inspectors</h3>
-
-                <p>
-
-                    Assign inspectors and monitor their daily performance.
-
-                </p>
-
-            </div>
-
-            <div class="module-card">
-
-                <i class="fa-solid fa-file-lines"></i>
-
-                <h3>Reports</h3>
-
-                <p>
-
-                    Generate PDF, Excel and cloud reports instantly.
-
-                </p>
-
-            </div>
-
-            <div class="module-card">
-
-                <i class="fa-solid fa-robot"></i>
-
-                <h3>AI Assistant</h3>
-
-                <p>
-
-                    AI-powered recommendations to improve product quality.
-
-                </p>
-
-            </div>
-
-        </div>
-
+  </section>
+
+  <!-- DASHBOARD -->
+  <section class="dashboard">
+    <h2>Live Dashboard</h2>
+    <div class="dashboard-cards">
+      <div class="card">Total Inspections: 12,540</div>
+      <div class="card">Open Defects: 146</div>
+      <div class="card">Factories: 580</div>
+      <div class="card">Quality Score: 98%</div>
     </div>
-
-</section>
-
-<!-- ========================================= -->
-<!-- PLATFORM FEATURES -->
-<!-- ========================================= -->
-
-<section class="premium-features">
-
-    <div class="container">
-
-        <div class="section-title">
-
-            <span>
-
-                PREMIUM FEATURES
-
-              <!-- ========================================= -->
-<!-- DASHBOARD PREVIEW -->
-<!-- ========================================= -->
-
-<section class="dashboard-section">
-
-    <div class="container">
-
-        <div class="section-title">
-
-            <span>
-
-                LIVE DASHBOARD
-
-            </span>
-
-            <h2>
-
-                Monitor Everything
-                <br>
-                In Real Time
-
-            </h2>
-
-            <p>
-
-                Track inspections, production status, defect rates and factory
-                performance from one intelligent dashboard.
-
-            </p>
-
-        </div>
-
-        <div class="dashboard-wrapper">
-
-            <div class="dashboard-sidebar">
-
-                <ul>
-
-                    <li><i class="fa-solid fa-chart-line"></i> Dashboard</li>
-
-                    <li><i class="fa-solid fa-clipboard-check"></i> Inspection</li>
-
-                    <li><i class="fa-solid fa-calculator"></i> AQL</li>
-
-                    <li><i class="fa-solid fa-triangle-exclamation"></i> Defects</li>
-
-                    <li><i class="fa-solid fa-industry"></i> Factories</li>
-
-                    <li><i class="fa-solid fa-users"></i> Inspectors</li>
-
-                    <li><i class="fa-solid fa-file-lines"></i> Reports</li>
-
-                    <li><i class="fa-solid fa-gear"></i> Settings</li>
-
-                </ul>
-
-            </div>
-
-            <div class="dashboard-content">
-
-                <div class="dashboard-cards">
-
-                    <div class="dashboard-card">
-
-                        <h3>Total Inspections</h3>
-
-                        <h2>12,540</h2>
-
-                    </div>
-
-                    <div class="dashboard-card">
-
-                        <h3>Factories</h3>
-
-                        <h2>580</h2>
-
-                    </div>
-
-                    <div class="dashboard-card">
-
-                        <h3>Open Defects</h3>
-
-                        <h2>146</h2>
-
-                    </div>
-
-                    <div class="dashboard-card">
-
-                        <h3>Quality Score</h3>
-
-                        <h2>98.4%</h2>
-
-                    </div>
-
-                </div>
-
-                <div class="dashboard-chart">
-
-                    <h3>
-
-                        Monthly Quality Performance
-
-                    </h3>
-
-                    <div class="chart-placeholder">
-
-                        <div class="bar" style="height:65%;"></div>
-
-                        <div class="bar" style="height:82%;"></div>
-
-                        <div class="bar" style="height:90%;"></div>
-
-                        <div class="bar" style="height:76%;"></div>
-
-                        <div class="bar" style="height:95%;"></div>
-
-                        <div class="bar" style="height:88%;"></div>
-
-                        <div class="bar" style="height:98%;"></div>
-
-                    </div>
-
-                </div>
-
-                <div class="dashboard-table">
-
-                    <table>
-
-                        <thead>
-
-                            <tr>
-
-                                <th>Factory</th>
-
-                                <th>Status</th>
-
-                                <th>Inspection</th>
-
-                                <th>Score</th>
-
-                            </tr>
-
-                        </thead>
-
-                        <tbody>
-
-                            <tr>
-
-                                <td>Factory A</td>
-
-                                <td>Running</td>
-
-                                <td>Completed</td>
-
-                                <td>98%</td>
-
-                            </tr>
-
-                            <tr>
-
-                                <td>Factory B</td>
-
-                                <td>Running</td>
-
-                                <td>Pending</td>
-
-                                <td>95%</td>
-
-                            </tr>
-
-                            <tr>
-
-                                <td>Factory C</td>
-
-                                <td>Stopped</td>
-
-                                <td>Completed</td>
-
-                                <td>99%</td>
-
-                            </tr>
-
-                            <tr>
-
-                                <td>Factory D</td>
-
-                                <td>Running</td>
-
-                                <td>Completed</td>
-
-                                <td>97%</td>
-
-                            </tr>
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-            </div>
-
-        </div>
-
+    <div class="dashboard-chart">
+      <h3>Monthly Quality Performance</h3>
+      <div class="chart-placeholder">[Chart Here]</div>
     </div>
+  </section>
 
-</section>
+  <!-- MEMBERS -->
+  <section class="members">
+    <h2>Register Members</h2>
+    <form>
+      <input type="text" placeholder="Name">
+      <input type="email" placeholder="Email">
+      <button type="submit">Register</button>
+    </form>
+  </section>
 
-            </span>
+  <!-- COMMUNITY -->
+  <section class="community">
+    <h2>Community & Gamification</h2>
+    <p>Earn points, join challenges, and share ideas with your team.</p>
+  </section>
 
-            <h2>
-
-                Built For Global Manufacturing
-
-            </h2>
-
-        </div>
-
-        <div class="feature-grid">
-
-            <div class="feature-card">
-
-                <i class="fa-solid fa-cloud"></i>
-
-                <h3>Cloud Platform</h3>
-
-                <p>
-
-                    Secure cloud infrastructure with automatic backup.
-
-                </p>
-
-            </div>
-
-            <div class="feature-card">
-
-                <i class="fa-solid fa-mobile-screen-button"></i>
-
-                <h3>Mobile Ready</h3>
-
-                <p>
-
-                    Works perfectly on desktop, tablet and smartphone.
-
-                </p>
-
-            </div>
-
-            <div class="feature-card">
-
-                <i class="fa-solid fa-language"></i>
-
-                <h3>Multi Language</h3>
-
-                <p>
-
-                    Support for multiple languages for global teams.
-
-                </p>
-
-            </div>
-
-            <div class="feature-card">
-
-                <i class="fa-solid fa-shield-halved"></i>
-
-                <h3>Enterprise Security</h3>
-
-                <p>
-
-                    Advanced security with encrypted cloud storage.
-
-                </p>
-
-            </div>
-
-        </div>
-
+  <!-- FOOTER -->
+  <footer>
+    <div class="goal-box">
+      <h3>🎯 الهدف من المنصة</h3>
+      <p>منصة ذكية لإدارة الجودة والفحص، تهدف إلى رفع كفاءة الفرق باستخدام أدوات رقمية حديثة.</p>
     </div>
-
-</section>
-
-            </span>
-
-            <h2>
-
-                Everything You Need
-                <br>
-                To Manage Quality
-
-            </h2>
-
-            <p>
-
-                QUALIO combines inspections, AQL calculations, defect management,
-                reporting, analytics and artificial intelligence into one modern
-                cloud platform.
-
-            </p>
-
-        </div>
-
-        <div class="why-grid">
-
-            <div class="why-card">
-
-                <i class="fa-solid fa-clipboard-check"></i>
-
-                <h3>
-
-                    Smart Inspection
-
-                </h3>
-
-                <p>
-
-                    Perform professional inspections using customizable digital
-                    checklists with photo attachments and instant validation.
-
-                </p>
-
-            </div>
-
-            <div class="why-card">
-
-                <i class="fa-solid fa-calculator"></i>
-
-                <h3>
-
-                    AQL Calculator
-
-                </h3>
-
-                <p>
-
-                    Automatic ANSI / ASQ Z1.4 AQL calculations for every
-                    inspection with instant acceptance decisions.
-
-                </p>
-
-            </div>
-
-            <div class="why-card">
-
-                <i class="fa-solid fa-triangle-exclamation"></i>
-
-                <h3>
-
-                    Defect Tracking
-
-                </h3>
-
-                <p>
-
-                    Record, classify and analyze defects with photos,
-                    severity levels and complete history.
-
-                </p>
-
-            </div>
-
-            <div class="why-card">
-
-                <i class="fa-solid fa-chart-line"></i>
-
-                <h3>
-
-                    Live Dashboard
-
-                </h3>
-
-                <p>
-
-                    Monitor factories, inspections, inspectors and
-                    production quality from one dashboard.
-
-                </p>
-
-            </div>
-
-            <div class="why-card">
-
-                <i class="fa-solid fa-robot"></i>
-
-                <h3>
-
-                    AI Assistant
-
-                </h3>
-
-                <p>
-
-                    Artificial intelligence helps predict quality issues,
-                    analyze trends and recommend improvements.
-
-                </p>
-
-            </div>
-
-            <div class="why-card">
-
-                <i class="fa-solid fa-file-pdf"></i>
-
-                <h3>
-
-                    Professional Reports
-
-                </h3>
-
-                <p>
-
-                    Generate branded PDF and Excel reports automatically
-                    with charts, photos and statistics.
-
-                </p>
-
-            </div>
-
-        </div>
-
+    <div class="rights">
+      <p>© 2026 QUAILO. جميع الحقوق محفوظة.</p>
+      <p>📧 info@quailo.com | 📞 <a href="tel:01124250151">01124250151</a></p>
     </div>
-
-</section>
+  </footer>
+</body>
+</html>

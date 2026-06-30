@@ -95,5 +95,34 @@
       <p>📧 info@quailo.com | 📞 <a href="tel:01124250151">01124250151</a></p>
     </div>
   </footer>
+<section id="suggestions">
+  <h2>💡 قسم اقتراحات الفريق</h2>
+  <form id="suggestionForm">
+    <textarea id="suggestionText" placeholder="اكتب اقتراحك هنا..." required></textarea>
+    <button type="submit">إرسال</button>
+  </form>
+  <p id="responseMessage"></p>
+</section>
+
+<script>
+  document.getElementById("suggestionForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    let suggestion = document.getElementById("suggestionText").value;
+    let user = localStorage.getItem("user") || "عضو مجهول";
+
+    // حفظ الاقتراح في التخزين المحلي
+    let allSuggestions = JSON.parse(localStorage.getItem("suggestions")) || [];
+    allSuggestions.push({user: user, text: suggestion});
+    localStorage.setItem("suggestions", JSON.stringify(allSuggestions));
+
+    // رسالة شكر وتحفيز
+    document.getElementById("responseMessage").innerText = 
+      "شكراً يا " + user + "، هعرض فكرتك على المدير 👏";
+
+    // إضافة نقاط للعضو
+    let currentPoints = parseInt(localStorage.getItem("points")) || 0;
+    localStorage.setItem("points", currentPoints + 5);
+  });
+      </script>
 </body>
 </html>

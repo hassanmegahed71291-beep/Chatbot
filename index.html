@@ -122,5 +122,461 @@
       });
     });
   </script>
+  <!--
+=====================================================================
+  QUALIO AI BOT — ودجت المساعد الذكي (ألعاب / قصص تعليمية / محاكاة عميل)
+=====================================================================
+
+  طريقة التركيب:
+  1) انسخ هذا الكود بالكامل.
+  2) الصقه قبل وسم </body> مباشرة في ملف index.html بتاع موقعك.
+  3) هيظهر تاج (بطاقة) صغيرة في ركن الشاشة، بالضغط عليها يفتح البوت.
+
+  ⚠️ ملاحظة تقنية مهمة جداً قبل ما تنشر الموقع لايف:
+  الكود ده بينادي مباشرة على api.anthropic.com عشان يشتغل فوراً جوه
+  معاينة Claude. لكن لو نشرته كده على GitHub Pages "زي ما هو"، النداء
+  هيفشل، لأن:
+    - مفتاح الـ API لازم يفضل سري على سيرفر، مش في كود الموقع الظاهر للجميع.
+    - متصفحات الويب بتمنع نداء API مباشر بدون سيرفر وسيط (CORS).
+  الحل: عمل "Backend بسيط" (سيرفر صغير مجاني) زي Cloudflare Worker أو
+  Firebase Cloud Function يحتفظ بالمفتاح ويستقبل الرسائل من الموقع
+  ويرسلها لـ Claude ويرجع الرد. لو حابب أجهزلك السيرفر ده في رسالة تانية قولي.
+
+  دلوقتي غيّر متغير API_ENDPOINT تحت لعنوان السيرفر بتاعك لما يكون جاهز.
+=====================================================================
+-->
+
+<div id="qualio-bot-root" dir="rtl"></div>
+
+<style>
+  #qualio-bot-root, #qualio-bot-root * { box-sizing: border-box; }
+  #qualio-bot-root {
+    --navy: #152238;
+    --navy-light: #223357;
+    --thread: #C23616;
+    --thread-dark: #9c2b12;
+    --bone: #F6F1E7;
+    --bone-dim: #EDE6D6;
+    --charcoal: #262625;
+    --sage: #7C9885;
+    --gold: #F5C518;
+    font-family: 'Cairo', 'Tahoma', sans-serif;
+    position: fixed;
+    inset: auto 24px 24px auto;
+    z-index: 999999;
+    direction: rtl;
+  }
+
+  @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@700;800&family=Cairo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap');
+
+  /* ---------- زرار الفتح: نفس شكل شعار QUALIO (بطاقة صح ذهبية) ---------- */
+  #qb-toggle {
+    position: relative;
+    width: 64px;
+    height: 64px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    filter: drop-shadow(0 10px 20px rgba(22,35,63,0.35));
+    transition: transform .2s ease;
+  }
+  #qb-toggle:hover { transform: translateY(-3px) rotate(-2deg); }
+  #qb-toggle svg { width: 100%; height: 100%; display: block; }
+  #qb-toggle .qb-dot {
+    position: absolute;
+    top: -2px; left: -2px;
+    width: 14px; height: 14px;
+    background: var(--thread);
+    border-radius: 50%;
+    border: 2px solid var(--bone);
+    display: none;
+  }
+  #qb-toggle .qb-dot.show { display: block; }
+
+  /* ---------- لوحة الشات ---------- */
+  #qb-panel {
+    position: absolute;
+    bottom: 96px;
+    left: 0;
+    width: 360px;
+    max-width: calc(100vw - 32px);
+    height: 520px;
+    max-height: 70vh;
+    background: var(--bone);
+    border-radius: 14px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    border: 2px dashed rgba(22,35,63,0.25);
+  }
+  #qb-panel.open { display: flex; }
+
+  #qb-header {
+    background: var(--navy);
+    color: var(--bone);
+    padding: 14px 16px 10px;
+    position: relative;
+  }
+  #qb-header::after {
+    content: '';
+    position: absolute;
+    right: 16px; left: 16px; bottom: -1px;
+    border-bottom: 2px dashed rgba(246,241,231,0.25);
+  }
+  #qb-header .qb-title {
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  #qb-header .qb-title span.tag { color: var(--gold); font-family:'IBM Plex Mono',monospace; font-size:11px; }
+  #qb-header .qb-sub {
+    font-size: 11px;
+    color: rgba(246,241,231,0.65);
+    margin-top: 2px;
+  }
+  #qb-close {
+    position: absolute;
+    top: 12px; left: 12px;
+    background: none; border: none;
+    color: var(--bone);
+    font-size: 18px;
+    cursor: pointer;
+    opacity: .7;
+  }
+  #qb-close:hover { opacity: 1; }
+
+  /* ---------- تبويبات الأوضاع ---------- */
+  #qb-tabs {
+    display: flex;
+    gap: 6px;
+    padding: 10px 12px;
+    background: var(--bone-dim);
+  }
+  .qb-tab {
+    flex: 1;
+    border: none;
+    background: transparent;
+    color: var(--charcoal);
+    font-family: 'Cairo', sans-serif;
+    font-weight: 600;
+    font-size: 11.5px;
+    padding: 8px 4px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    opacity: .55;
+    transition: all .15s ease;
+  }
+  .qb-tab .qb-tab-icon { font-size: 16px; }
+  .qb-tab.active {
+    opacity: 1;
+    background: var(--navy);
+    color: var(--bone);
+  }
+
+  /* ---------- الرسائل ---------- */
+  #qb-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(22,35,63,0.03) 28px);
+  }
+  .qb-msg { max-width: 82%; display:flex; flex-direction:column; gap:2px; }
+  .qb-msg.bot { align-self: flex-start; }
+  .qb-msg.user { align-self: flex-end; }
+  .qb-bubble {
+    padding: 9px 13px;
+    border-radius: 12px;
+    font-size: 13.5px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+  }
+  .qb-msg.bot .qb-bubble {
+    background: var(--navy);
+    color: var(--bone);
+    border-start-start-radius: 3px;
+  }
+  .qb-msg.user .qb-bubble {
+    background: var(--thread);
+    color: #fff;
+    border-start-end-radius: 3px;
+  }
+  .qb-msg.system-note .qb-bubble {
+    background: transparent;
+    color: var(--charcoal);
+    opacity: .55;
+    font-size: 11.5px;
+    text-align: center;
+    padding: 2px;
+  }
+  .qb-msg.system-note { align-self: center; max-width: 100%; }
+
+  .qb-typing {
+    display: flex; gap: 4px; padding: 10px 13px;
+    background: var(--navy); border-radius: 12px;
+    align-self: flex-start; width: fit-content;
+  }
+  .qb-typing span {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--bone); opacity: .5;
+    animation: qb-bounce 1.2s infinite ease-in-out;
+  }
+  .qb-typing span:nth-child(2) { animation-delay: .15s; }
+  .qb-typing span:nth-child(3) { animation-delay: .3s; }
+  @keyframes qb-bounce { 0%,60%,100%{transform:translateY(0);opacity:.5} 30%{transform:translateY(-4px);opacity:1} }
+
+  /* ---------- منطقة الإدخال ---------- */
+  #qb-inputrow {
+    display: flex;
+    gap: 8px;
+    padding: 10px 12px 14px;
+    background: var(--bone);
+    border-top: 1px solid rgba(22,35,63,0.08);
+  }
+  #qb-input {
+    flex: 1;
+    border: 1.5px solid rgba(22,35,63,0.18);
+    background: #fff;
+    border-radius: 20px;
+    padding: 9px 14px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 13px;
+    color: var(--charcoal);
+    outline: none;
+  }
+  #qb-input:focus { border-color: var(--thread); }
+  #qb-send {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    border: none;
+    background: var(--thread);
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background .15s ease;
+  }
+  #qb-send:hover { background: var(--thread-dark); }
+  #qb-send:disabled { opacity: .5; cursor: not-allowed; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .qb-typing span, #qb-toggle { animation: none !important; transition: none !important; }
+  }
+
+  @media (max-width: 420px) {
+    #qb-panel { width: calc(100vw - 24px); left: -6px; }
+  }
+</style>
+
+<script>
+(function () {
+  // غيّر ده لعنوان السيرفر الوسيط بتاعك لما يكون جاهز (راجع الشرح فوق)
+  const API_ENDPOINT = 'https://api.anthropic.com/v1/messages';
+  const MODEL = 'claude-sonnet-4-6';
+
+  const MODES = {
+    games: {
+      label: 'ألعاب ذكاء',
+      icon: '🧩',
+      greeting: 'أهلاً! جاهز للعبة ذكاء سريعة؟ اكتب "ابدأ" وهقولك اللغز الأول 🎯',
+      system: `أنت "بوت QUALIO"، مساعد ترفيهي داخل منصة إدارة جودة في مصنع ملابس (جاكيتات وبناطيل).
+مهمتك: تقديم ألعاب ذكاء قصيرة وممتعة لأعضاء الفريق في وقت الاستراحة (ألغاز منطقية، أسئلة ذكاء، ألغاز أرقام أو كلمات بسيطة).
+القواعد:
+- اسأل سؤال أو لغز واحد فقط في كل مرة، قصير وواضح، بالعامية المصرية البسيطة.
+- انتظر إجابة العضو، قيّمها بمرح وشجعه سواء صح أو غلط، واذكر الحل لو غلط.
+- بعد كل سؤال اسأله "عايز سؤال تاني؟" ولو قال آه قدّم سؤال مختلف بمستوى صعوبة متنوع.
+- حافظ على أسلوب خفيف، إيجابي، ومحترم دايماً. متجبش أسئلة طويلة أو معقدة أوي.`
+    },
+    stories: {
+      label: 'قصص تعليمية',
+      icon: '📖',
+      greeting: 'اكتب "احكيلي" وهحكيلك موقف حصل في خط الإنتاج، وبعدها هنستخرج الدرس مع بعض 🧵',
+      system: `أنت "بوت QUALIO"، راوي قصص تدريبية داخل مصنع ملابس (جاكيتات وبناطيل).
+مهمتك: تحكي قصة قصيرة واقعية (٤-٦ جمل) عن موقف يحصل في خط الإنتاج أو الجودة (مثلاً: عيب فات من غير ما حد يلاحظه، سوء تواصل بين الورديات، تسرع في الفحص أدى لمشكلة، إلخ).
+بعد القصة اسأل عضو الفريق: "إيه رأيك، إيه الدرس اللي نتعلمه من الموقف ده؟" واستنى رده.
+بعد ما يرد، اشكره وأضف نقطة أو نقطتين تكمل رأيه بأسلوب بسيط وعملي مرتبط بمعايير الجودة.
+كل قصة جديدة لازم تكون مختلفة عن السابقة في التفاصيل والموقف. حافظ على أسلوب واقعي وقريب من بيئة مصنع الملابس فعلاً، مش عام.`
+    },
+    customer: {
+      label: 'محاكاة عميل',
+      icon: '🗣️',
+      greeting: 'اكتب "ابدأ المحاكاة" وهدخل في دور عميل عنده شكوى، ودورك ترد عليا باحترافية 📞',
+      system: `أنت تمثل دور "عميل" يشتكي من منتج (جاكيت أو بنطلون) اشتراه من الشركة، وأنت بتتكلم مع أحد أعضاء فريق الجودة اللي هيحاول يحل مشكلتك.
+القواعد:
+- ابدأ بشكوى واقعية ومحددة (عيب في الخياطة، مقاس غلط، لون مختلف عن الطلب، عيب في القماش أو الإكسسوارات، تأخير في التسليم... نوّع كل مرة).
+- حافظ على شخصية العميل طول المحادثة (ممكن يكون منزعج شوية بس مش مهين).
+- رد على كل رسالة من عضو الفريق كعميل حقيقي: لو رده كويس ومحترف، اهدأ تدريجياً. لو رده ضعيف أو غير واضح، اظهر إحباط أكبر بشكل واقعي (بدون إهانة).
+- لو عضو الفريق كتب "قيّم أدائي"، اخرج من دور العميل مؤقتاً وقيّم رده بموضوعية: نقاط القوة، ونقطة تحسين واحدة، بأسلوب بنّاء ومشجع.
+- خليك دايماً بالعامية المصرية.`
+    }
+  };
+
+  const state = {
+    mode: 'games',
+    histories: { games: [], stories: [], customer: [] },
+    loading: false
+  };
+
+  const root = document.getElementById('qualio-bot-root');
+  root.innerHTML = `
+    <button id="qb-toggle" aria-label="افتح مساعد QUALIO">
+      <span class="qb-dot"></span>
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <g transform="rotate(-8 50 50)">
+          <rect x="20" y="10" width="60" height="80" rx="14" fill="#F5C518"/>
+          <circle cx="34" cy="26" r="4.5" fill="#152238"/>
+          <path d="M31 51 L45 65 L71 37" stroke="#152238" stroke-width="9"
+                stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </g>
+      </svg>
+    </button>
+    <div id="qb-panel">
+      <div id="qb-header">
+        <button id="qb-close">✕</button>
+        <div class="qb-title">QUALIO BOT <span class="tag">// AI</span></div>
+        <div class="qb-sub">ألعاب، قصص تعليمية، ومحاكاة عملاء</div>
+      </div>
+      <div id="qb-tabs"></div>
+      <div id="qb-messages"></div>
+      <div id="qb-inputrow">
+        <input id="qb-input" type="text" placeholder="اكتب رسالتك هنا..." />
+        <button id="qb-send">↩</button>
+      </div>
+    </div>
+  `;
+
+  const tabsEl = document.getElementById('qb-tabs');
+  const msgsEl = document.getElementById('qb-messages');
+  const inputEl = document.getElementById('qb-input');
+  const sendBtn = document.getElementById('qb-send');
+  const toggleBtn = document.getElementById('qb-toggle');
+  const panelEl = document.getElementById('qb-panel');
+  const closeBtn = document.getElementById('qb-close');
+
+  Object.keys(MODES).forEach(key => {
+    const btn = document.createElement('button');
+    btn.className = 'qb-tab' + (key === state.mode ? ' active' : '');
+    btn.dataset.mode = key;
+    btn.innerHTML = `<span class="qb-tab-icon">${MODES[key].icon}</span><span>${MODES[key].label}</span>`;
+    btn.addEventListener('click', () => switchMode(key));
+    tabsEl.appendChild(btn);
+  });
+
+  function switchMode(key) {
+    state.mode = key;
+    document.querySelectorAll('.qb-tab').forEach(t => {
+      t.classList.toggle('active', t.dataset.mode === key);
+    });
+    renderMessages();
+    if (state.histories[key].length === 0) {
+      pushMessage(key, 'bot', MODES[key].greeting, false);
+    }
+  }
+
+  function pushMessage(mode, role, text, addToHistory = true) {
+    if (addToHistory) {
+      state.histories[mode].push({ role: role === 'bot' ? 'assistant' : 'user', content: text });
+    }
+    if (mode === state.mode) {
+      renderSingleMessage(role, text);
+    }
+  }
+
+  function renderSingleMessage(role, text) {
+    const div = document.createElement('div');
+    div.className = 'qb-msg ' + role;
+    div.innerHTML = `<div class="qb-bubble"></div>`;
+    div.querySelector('.qb-bubble').textContent = text;
+    msgsEl.appendChild(div);
+    msgsEl.scrollTop = msgsEl.scrollHeight;
+  }
+
+  function renderMessages() {
+    msgsEl.innerHTML = '';
+    const hist = state.histories[state.mode];
+    if (hist.length === 0) return;
+    hist.forEach(m => renderSingleMessage(m.role === 'assistant' ? 'bot' : 'user', m.content));
+  }
+
+  function showTyping() {
+    const div = document.createElement('div');
+    div.className = 'qb-typing';
+    div.id = 'qb-typing-indicator';
+    div.innerHTML = '<span></span><span></span><span></span>';
+    msgsEl.appendChild(div);
+    msgsEl.scrollTop = msgsEl.scrollHeight;
+  }
+  function hideTyping() {
+    const el = document.getElementById('qb-typing-indicator');
+    if (el) el.remove();
+  }
+
+  async function sendMessage() {
+    const text = inputEl.value.trim();
+    if (!text || state.loading) return;
+    inputEl.value = '';
+    pushMessage(state.mode, 'user', text);
+
+    state.loading = true;
+    sendBtn.disabled = true;
+    showTyping();
+
+    try {
+      const mode = MODES[state.mode];
+      const response = await fetch(API_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: MODEL,
+          max_tokens: 1000,
+          system: mode.system,
+          messages: state.histories[state.mode]
+        })
+      });
+      const data = await response.json();
+      hideTyping();
+
+      const replyText = (data.content || [])
+        .filter(block => block.type === 'text')
+        .map(block => block.text)
+        .join('\n') || 'معلش، حصل خطأ في الرد، جرب تاني.';
+
+      pushMessage(state.mode, 'bot', replyText);
+    } catch (err) {
+      hideTyping();
+      pushMessage(state.mode, 'bot',
+        'مش قادر أتواصل مع السيرفر دلوقتي. لو الموقع منشور فعلاً، اتأكد إن سيرفر الـ API الوسيط شغال ومربوط صح.',
+        false
+      );
+      console.error('QUALIO BOT error:', err);
+    } finally {
+      state.loading = false;
+      sendBtn.disabled = false;
+    }
+  }
+
+  toggleBtn.addEventListener('click', () => {
+    panelEl.classList.toggle('open');
+    if (panelEl.classList.contains('open') && state.histories[state.mode].length === 0) {
+      pushMessage(state.mode, 'bot', MODES[state.mode].greeting, false);
+    }
+  });
+  closeBtn.addEventListener('click', () => panelEl.classList.remove('open'));
+  sendBtn.addEventListener('click', sendMessage);
+  inputEl.addEventListener('keydown', e => { if (e.key === 'Enter') sendMessage(); });
+})();
+</script>
 </body>
 </html>

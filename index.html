@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QUALIO | Smart Quality Platform</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <script src="site.js" defer></script>
+</head>
+<body>
+  <div id="loader">QUALIO</div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="toolbar">
+      <div class="logo-mark"><svg class="q-icon" viewBox="0 0 200 200" width="34" height="34" xmlns="http://www.w3.org/2000/svg">
+  <g transform="rotate(-8 100 100)">
+    <rect x="42" y="32" width="116" height="136" rx="20" fill="#f5c518"/>
+    <circle cx="76" cy="56" r="10" fill="none" stroke="#152238" stroke-width="7"/>
+    <path d="M60 116 L90 146 L146 78" fill="none" stroke="#152238"
+          stroke-width="17" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg> QUALIO</div>
+      <div class="toolbar-actions">
+        <span id="authSlot"></span>
+        <button class="lang-btn" onclick="toggleLanguage()">🌐</button>
+        <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- SIDEBAR -->
+  <aside id="sidebar">
+    <ul>
+      <li><a href="index.html">🏠 <span data-en="Home" data-ar="الرئيسية">Home</span></a></li>
+      <li><a href="dashboard.html">📊 <span data-en="Dashboard" data-ar="لوحة التحكم">Dashboard</span></a></li>
+      <li><a href="inspection.html">📝 <span data-en="Inspection" data-ar="فحص جديد">Inspection</span></a></li>
+      <li><a href="aql.html">📈 <span data-en="AQL Calculator" data-ar="حاسبة AQL">AQL Calculator</span></a></li>
+      <li><a href="about.html">ℹ️ <span data-en="About" data-ar="عن المنصة">About</span></a></li>
+      <li><a href="suggestions.html">💡 <span data-en="Suggestions" data-ar="اقتراحات الفريق">Suggestions</span></a></li>
+    </ul>
+  </aside>
+  <div id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <h1 data-en="Smart Quality Inspection Platform" data-ar="منصة ذكية للفحص وإدارة الجودة">Smart Quality Inspection Platform</h1>
+    <p data-en="QUALIO helps manufacturers and quality teams manage inspections, defects, and reports in one place." data-ar="QUALIO تساعد المصانع وفرق الجودة على إدارة الفحوصات والعيوب والتقارير في مكان واحد.">QUALIO helps manufacturers and quality teams manage inspections, defects, and reports in one place.</p>
+    <div class="hero-buttons">
+      <a class="primary-btn" href="inspection.html" data-en="Start New Inspection" data-ar="ابدأ فحص جديد">Start New Inspection</a>
+      <a class="secondary-btn" href="dashboard.html" data-en="View Dashboard" data-ar="عرض لوحة التحكم">View Dashboard</a>
+    </div>
+  </section>
+
+  <!-- MODULES -->
+  <section class="modules">
+    <h2 data-en="Platform Modules" data-ar="أقسام المنصة">Platform Modules</h2>
+    <div class="module-grid">
+      <a class="module-card" href="dashboard.html">📊 <span data-en="Dashboard" data-ar="لوحة التحكم">Dashboard</span></a>
+      <a class="module-card" href="inspection.html">📝 <span data-en="Inspection" data-ar="فحص جديد">Inspection</span></a>
+      <a class="module-card" href="aql.html">📈 <span data-en="AQL Calculator" data-ar="حاسبة AQL">AQL Calculator</span></a>
+      <a class="module-card" href="about.html">🏭 <span data-en="About QUALIO" data-ar="عن المنصة">About QUALIO</span></a>
+      <a class="module-card" href="suggestions.html">💡 <span data-en="Team Suggestions" data-ar="اقتراحات الفريق">Team Suggestions</span></a>
+    </div>
+  </section>
+
+  <!-- DASHBOARD PREVIEW (real data) -->
+  <section class="dashboard">
+    <h2 data-en="Live Dashboard" data-ar="لوحة التحكم الحية">Live Dashboard</h2>
+    <div class="dashboard-cards" id="homeStats"></div>
+  </section>
+
+  <!-- MEMBERS -->
+  <section class="members">
+    <h2 data-en="Register Members" data-ar="تسجيل الأعضاء">Register Members</h2>
+    <form id="membersForm">
+      <input type="text" id="memberName" placeholder="Name" required>
+      <input type="email" id="memberEmail" placeholder="Email" required>
+      <button type="submit" data-en="Register" data-ar="تسجيل">Register</button>
+    </form>
+    <p id="memberMsg" class="small-muted" style="text-align:center;margin-top:8px;"></p>
+  </section>
+
+  <!-- COMMUNITY -->
+  <section class="community">
+    <h2 data-en="Community" data-ar="المجتمع">Community</h2>
+    <p data-en="Have an idea to improve QUALIO? Share it with the team." data-ar="عندك فكرة تحسّن بيها QUALIO؟ شاركها مع الفريق.">Have an idea to improve QUALIO? Share it with the team.</p>
+    <a class="primary-btn" href="suggestions.html" data-en="Share a Suggestion" data-ar="أضف اقتراحك">Share a Suggestion</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="goal-box">
+      <h3>🎯 <span data-en="Platform Goal" data-ar="الهدف من المنصة">Platform Goal</span></h3>
+      <p data-en="A smart platform for quality management and inspection, built to raise team efficiency with modern digital tools." data-ar="منصة ذكية لإدارة الجودة والفحص، تهدف إلى رفع كفاءة الفرق باستخدام أدوات رقمية حديثة.">A smart platform for quality management and inspection, built to raise team efficiency with modern digital tools.</p>
+    </div>
+    <div class="rights">
+      <p>© 2026 QUALIO. <span data-en="All rights reserved." data-ar="جميع الحقوق محفوظة.">All rights reserved.</span></p>
+      <p>📧 info@qualio.com | 📞 <a href="tel:01124250151">01124250151</a></p>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var stats = computeDashboardStats();
+      document.getElementById("homeStats").innerHTML =
+        '<div class="card"><div class="value">' + stats.total + '</div><div class="label">Total Inspections</div></div>' +
+        '<div class="card"><div class="value">' + stats.openDefects + '</div><div class="label">Total Defects Logged</div></div>' +
+        '<div class="card"><div class="value">' + stats.factories + '</div><div class="label">Factories Tracked</div></div>' +
+        '<div class="card"><div class="value">' + stats.score + '%</div><div class="label">Pass Rate</div></div>';
+
+      var form = document.getElementById("membersForm");
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var name = document.getElementById("memberName").value.trim();
+        var email = document.getElementById("memberEmail").value.trim();
+        if (!name || !email) return;
+        saveMember({ name: name, email: email, date: new Date().toISOString() });
+        document.getElementById("memberMsg").textContent = "✅ تم تسجيل " + name + " بنجاح";
+        form.reset();
+      });
+    });
+  </script>
+</body>
+</html>

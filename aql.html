@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AQL Calculator | QUALIO</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <script src="site.js" defer></script>
+</head>
+<body>
+  <header>
+    <div class="toolbar">
+      <div class="logo-mark"><svg class="q-icon" viewBox="0 0 200 200" width="34" height="34" xmlns="http://www.w3.org/2000/svg">
+  <g transform="rotate(-8 100 100)">
+    <rect x="42" y="32" width="116" height="136" rx="20" fill="#f5c518"/>
+    <circle cx="76" cy="56" r="10" fill="none" stroke="#152238" stroke-width="7"/>
+    <path d="M60 116 L90 146 L146 78" fill="none" stroke="#152238"
+          stroke-width="17" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg> QUALIO</div>
+      <div class="toolbar-actions">
+        <span id="authSlot"></span>
+        <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <aside id="sidebar">
+    <ul>
+      <li><a href="index.html">🏠 Home</a></li>
+      <li><a href="dashboard.html">📊 Dashboard</a></li>
+      <li><a href="inspection.html">📝 Inspection</a></li>
+      <li><a href="aql.html">📈 AQL Calculator</a></li>
+      <li><a href="about.html">ℹ️ About</a></li>
+      <li><a href="suggestions.html">💡 Suggestions</a></li>
+    </ul>
+  </aside>
+  <div id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+  <div class="page-wrap">
+    <h2 style="margin:24px 0 4px;">حاسبة AQL</h2>
+    <p class="small-muted" style="margin-bottom:20px;">حسب معيار ANSI/ASQ Z1.4 — مستوى فحص عام II، فحص عادي (Normal)</p>
+
+    <div class="page-card">
+      <div class="grid-2">
+        <label>حجم اللوت (عدد القطع)
+          <input id="lot" type="number" value="1200" min="2">
+        </label>
+        <label>مستوى AQL
+          <select id="aql">
+            <option value="1.0">1.0</option>
+            <option value="1.5">1.5</option>
+            <option value="2.5" selected>2.5</option>
+            <option value="4.0">4.0</option>
+          </select>
+        </label>
+      </div>
+      <button onclick="calc()" style="margin-top:16px;background:#152238;color:#fff;padding:12px 20px;font-weight:700;border-radius:4px;">احسب</button>
+      <div class="result-box" id="r" style="margin-top:18px;"></div>
+    </div>
+  </div>
+
+  <script>
+    function calc() {
+      var lot = parseInt(document.getElementById("lot").value) || 0;
+      var aql = parseFloat(document.getElementById("aql").value);
+      var result = calcAQL(lot, aql);
+      var box = document.getElementById("r");
+      if (!result) {
+        box.innerHTML = "أدخل حجم لوت صحيح (2 أو أكثر)";
+        return;
+      }
+      box.innerHTML =
+        '<b>حجم العينة: ' + result.sampleSize + ' قطعة</b>' +
+        '<div class="small-muted" style="margin-top:6px;">رمز حجم العينة: ' + result.code + '</div>' +
+        '<div style="margin-top:10px;">Accept (Ac): <b>' + result.accept + '</b> &nbsp;|&nbsp; Reject (Re): <b>' + result.reject + '</b></div>' +
+        '<div class="small-muted" style="margin-top:6px;">AQL: ' + aql + '</div>';
+    }
+    document.addEventListener("DOMContentLoaded", calc);
+  </script>
+</body>
+</html>

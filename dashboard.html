@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | QUALIO</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <script src="site.js" defer></script>
+</head>
+<body>
+  <header>
+    <div class="toolbar">
+      <div class="logo-mark"><svg class="q-icon" viewBox="0 0 200 200" width="34" height="34" xmlns="http://www.w3.org/2000/svg">
+  <g transform="rotate(-8 100 100)">
+    <rect x="42" y="32" width="116" height="136" rx="20" fill="#f5c518"/>
+    <circle cx="76" cy="56" r="10" fill="none" stroke="#152238" stroke-width="7"/>
+    <path d="M60 116 L90 146 L146 78" fill="none" stroke="#152238"
+          stroke-width="17" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg> QUALIO</div>
+      <div class="toolbar-actions">
+        <span id="authSlot"></span>
+        <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <aside id="sidebar">
+    <ul>
+      <li><a href="index.html">🏠 Home</a></li>
+      <li><a href="dashboard.html">📊 Dashboard</a></li>
+      <li><a href="inspection.html">📝 Inspection</a></li>
+      <li><a href="aql.html">📈 AQL Calculator</a></li>
+      <li><a href="about.html">ℹ️ About</a></li>
+      <li><a href="suggestions.html">💡 Suggestions</a></li>
+    </ul>
+  </aside>
+  <div id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+  <div class="page-wrap" style="max-width:960px;">
+    <h2 style="margin:24px 0 4px;">لوحة التحكم</h2>
+    <p class="small-muted" style="margin-bottom:20px;">بيانات حقيقية من الفحوصات المسجّلة فعليًا على هذا الجهاز</p>
+
+    <div class="dashboard-cards" id="statCards"></div>
+
+    <div class="dashboard-chart">
+      <h3 style="margin-bottom:12px;">توزيع نتائج الفحص</h3>
+      <div id="verdictBars"></div>
+    </div>
+
+    <div class="dashboard-chart">
+      <h3 style="margin-bottom:12px;">أحدث الفحوصات</h3>
+      <div id="recentList"></div>
+      <p id="emptyState" class="small-muted" style="display:none;">لا توجد فحوصات مسجّلة بعد. <a href="inspection.html">ابدأ فحص جديد</a></p>
+    </div>
+  </div>
+
+  <script>
+    requireLogin();
+
+    function render() {
+      var stats = computeDashboardStats();
+
+      document.getElementById("statCards").innerHTML =
+        '<div class="card"><div class="value">' + stats.total + '</div><div class="label">Total Inspections</div></div>' +
+        '<div class="card"><div class="value">' + stats.openDefects + '</div><div class="label">Total Defects Logged</div></div>' +
+        '<div class="card"><div class="value">' + stats.factories + '</div><div class="label">Factories</div></div>' +
+        '<div class="card"><div class="value">' + stats.score + '%</div><div class="label">Pass Rate</div></div>';
+
+      var pass = stats.list.filter(function (i) { return i.verdict === "pass"; }).length;
+      var fail = stats.total - pass;
+      var passPct = stats.total ? Math.round((pass / stats.total) * 100) : 0;
+      var failPct = stats.total ? Math.round((fail / stats.total) * 100) : 0;
+
+      document.getElementById("verdictBars").innerHTML =
+        '<div class="bar-row"><div class="bar-label">Pass (' + pass + ')</div><div class="bar-track"><div class="bar-fill" style="width:' + passPct + '%;background:#2e7d4f;"></div></div></div>' +
+        '<div class="bar-row"><div class="bar-label">Fail (' + fail + ')</div><div class="bar-track"><div class="bar-fill" style="width:' + failPct + '%;background:#c1443a;"></div></div></div>';
+
+      var recentBox = document.getElementById("recentList");
+      var empty = document.getElementById("emptyState");
+      recentBox.innerHTML = "";
+      if (stats.list.length === 0) {
+        empty.style.display = "block";
+      } else {
+        empty.style.display = "none";
+        stats.list.slice(0, 8).forEach(function (ins) {
+          var div = document.createElement("div");
+          div.className = "list-item";
+          div.innerHTML =
+            '<div><b>' + ins.factory + '</b> <span class="badge ' + ins.verdict + '">' + ins.verdict.toUpperCase() + '</span>' +
+            '<div class="small-muted">اللوت: ' + ins.lotSize + ' — العينة: ' + ins.sampleSize +
+            ' — Critical/Major/Minor: ' + ins.found.critical + '/' + ins.found.major + '/' + ins.found.minor + '</div></div>' +
+            '<span class="small-muted">' + new Date(ins.date).toLocaleDateString('ar-EG') + '</span>';
+          recentBox.appendChild(div);
+        });
+      }
+    }
+    render();
+  </script>
+</body>
+</html>

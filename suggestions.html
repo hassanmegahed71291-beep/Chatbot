@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>اقتراحات الفريق | QUALIO</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <script src="site.js" defer></script>
+</head>
+<body>
+  <header>
+    <div class="toolbar">
+      <div class="logo-mark"><svg class="q-icon" viewBox="0 0 200 200" width="34" height="34" xmlns="http://www.w3.org/2000/svg">
+  <g transform="rotate(-8 100 100)">
+    <rect x="42" y="32" width="116" height="136" rx="20" fill="#f5c518"/>
+    <circle cx="76" cy="56" r="10" fill="none" stroke="#152238" stroke-width="7"/>
+    <path d="M60 116 L90 146 L146 78" fill="none" stroke="#152238"
+          stroke-width="17" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg> QUALIO</div>
+      <div class="toolbar-actions">
+        <span id="authSlot"></span>
+        <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <aside id="sidebar">
+    <ul>
+      <li><a href="index.html">🏠 Home</a></li>
+      <li><a href="dashboard.html">📊 Dashboard</a></li>
+      <li><a href="inspection.html">📝 Inspection</a></li>
+      <li><a href="aql.html">📈 AQL Calculator</a></li>
+      <li><a href="about.html">ℹ️ About</a></li>
+      <li><a href="suggestions.html">💡 Suggestions</a></li>
+    </ul>
+  </aside>
+  <div id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+  <div class="page-wrap">
+    <h2 style="margin:24px 0 4px;">💡 قسم اقتراحات الفريق</h2>
+    <p class="small-muted" style="margin-bottom:16px;">شارك أي فكرة لتحسين المنصة — كل اقتراح بيسجّل باسمك ويوصل للوحة المدير</p>
+
+    <div class="page-card" style="max-width:520px;">
+      <form id="suggestionForm" class="form-card">
+        <textarea id="suggestionText" rows="4" placeholder="اكتب اقتراحك هنا..." required></textarea>
+        <button type="submit">إرسال</button>
+      </form>
+      <p id="responseMessage" class="small-muted" style="color:#2e7d4f;margin-top:10px;"></p>
+    </div>
+
+    <div id="managerPanel" style="display:none;margin-top:30px;">
+      <h3 style="margin-bottom:12px;">📋 لوحة المدير — كل الاقتراحات</h3>
+      <div id="suggestionsList"></div>
+    </div>
+    <p id="managerHint" class="small-muted" style="margin-top:20px;"></p>
+  </div>
+
+  <script>
+    document.getElementById("suggestionForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      var text = document.getElementById("suggestionText").value.trim();
+      if (!text) return;
+      saveSuggestion(text);
+      var user = currentUser();
+      document.getElementById("responseMessage").textContent =
+        "شكراً يا " + (user ? user.name : "عضو مجهول") + "، هعرض فكرتك على المدير 👏";
+      document.getElementById("suggestionText").value = "";
+      renderManagerPanel();
+    });
+
+    function renderManagerPanel() {
+      var user = currentUser();
+      var panel = document.getElementById("managerPanel");
+      var hint = document.getElementById("managerHint");
+      if (!user) {
+        panel.style.display = "none";
+        hint.innerHTML = 'سجّل دخول كمدير لعرض كل الاقتراحات — <a href="login.html">تسجيل الدخول</a>';
+        return;
+      }
+      hint.textContent = "";
+      panel.style.display = "block";
+      var list = getSuggestions();
+      var box = document.getElementById("suggestionsList");
+      box.innerHTML = "";
+      if (list.length === 0) {
+        box.innerHTML = '<p class="small-muted">لا توجد اقتراحات حتى الآن</p>';
+        return;
+      }
+      list.slice().reverse().forEach(function (s) {
+        var div = document.createElement("div");
+        div.className = "list-item";
+        div.innerHTML = '<div>👤 <b>' + s.user + '</b> اقترح: ' + s.text + '</div>' +
+          '<span class="small-muted">' + new Date(s.date).toLocaleDateString('ar-EG') + '</span>';
+        box.appendChild(div);
+      });
+    }
+    document.addEventListener("DOMContentLoaded", renderManagerPanel);
+  </script>
+</body>
+</html>

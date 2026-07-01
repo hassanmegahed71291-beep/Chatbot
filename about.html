@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About | QUALIO</title>
+<link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+<script src="site.js" defer></script>
+</head>
+<body>
+  <header>
+    <div class="toolbar">
+      <div class="logo-mark"><svg class="q-icon" viewBox="0 0 200 200" width="34" height="34" xmlns="http://www.w3.org/2000/svg">
+  <g transform="rotate(-8 100 100)">
+    <rect x="42" y="32" width="116" height="136" rx="20" fill="#f5c518"/>
+    <circle cx="76" cy="56" r="10" fill="none" stroke="#152238" stroke-width="7"/>
+    <path d="M60 116 L90 146 L146 78" fill="none" stroke="#152238"
+          stroke-width="17" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg> QUALIO</div>
+      <div class="toolbar-actions">
+        <span id="authSlot"></span>
+        <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <aside id="sidebar">
+    <ul>
+      <li><a href="index.html">🏠 Home</a></li>
+      <li><a href="dashboard.html">📊 Dashboard</a></li>
+      <li><a href="inspection.html">📝 Inspection</a></li>
+      <li><a href="aql.html">📈 AQL Calculator</a></li>
+      <li><a href="about.html">ℹ️ About</a></li>
+      <li><a href="suggestions.html">💡 Suggestions</a></li>
+    </ul>
+  </aside>
+  <div id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+  <section class="hero">
+    <h1>About QUALIO</h1>
+    <p>Building the Future of Quality Management with Smart Digital Tools.</p>
+  </section>
+
+  <section class="page-section">
+    <div class="grid-2" style="max-width:900px;margin:auto;">
+      <div class="page-card"><h2 style="font-size:18px;">Our Vision</h2><p>To become a leading quality management platform for manufacturing teams.</p></div>
+      <div class="page-card"><h2 style="font-size:18px;">Our Mission</h2><p>Help manufacturers improve quality, reduce defects, and make smarter decisions.</p></div>
+      <div class="page-card"><h2 style="font-size:18px;">Core Values</h2><ul><li>Innovation</li><li>Integrity</li><li>Quality</li><li>Customer Success</li></ul></div>
+      <div class="page-card"><h2 style="font-size:18px;">Founder</h2><p>Hassan Megahed<br>Founder & CEO</p></div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 QUALIO. All rights reserved.</p>
+  </footer>
+</body>
+</html>

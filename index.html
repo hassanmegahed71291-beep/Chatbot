@@ -1624,5 +1624,216 @@
   renderTopics();
 })();
 </script>
+  <!--
+=====================================================================
+  QUALIO GLOSSARY & FAQ — مكتبة المصطلحات + الأسئلة الشائعة
+=====================================================================
+  طريقة التركيب:
+  1) انسخ الكود ده بالكامل.
+  2) الصقه في index.html في المكان اللي عايزه يظهر فيه (تحت الأكاديمية
+     مثلاً، أو في أي مكان تاني).
+  3) خلاص، بيشتغل فوراً من غير سيرفر.
+=====================================================================
+-->
+
+<section id="qualio-glossary-faq" dir="rtl"></section>
+
+<style>
+  #qualio-glossary-faq, #qualio-glossary-faq * { box-sizing: border-box; }
+  #qualio-glossary-faq {
+    --navy: #152238;
+    --gold: #F5C518;
+    --bone: #F6F1E7;
+    --bone-dim: #EDE6D6;
+    --charcoal: #262625;
+    --sage: #4F8A63;
+    --thread: #C23616;
+    font-family: 'Cairo', 'Tahoma', sans-serif;
+    direction: rtl;
+    background: var(--bone);
+    padding: 48px 20px;
+    color: var(--charcoal);
+  }
+
+  @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@700;800&family=Cairo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap');
+
+  #gf-wrap { max-width: 880px; margin: 0 auto; }
+
+  #gf-header { text-align: center; margin-bottom: 28px; }
+  #gf-header .gf-eyebrow {
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 2px;
+    color: var(--thread); text-transform: uppercase;
+  }
+  #gf-header h2 { font-family:'Tajawal',sans-serif; font-weight: 800; font-size: 28px; color: var(--navy); margin: 6px 0 8px; }
+  #gf-header p { font-size: 13.5px; color: #55554f; max-width: 460px; margin: 0 auto; }
+
+  /* ---------- تبويبات رئيسية ---------- */
+  #gf-tabs { display: flex; gap: 8px; justify-content: center; margin-bottom: 24px; }
+  .gf-main-tab {
+    border: 2px solid var(--bone-dim); background: #fff; cursor: pointer;
+    padding: 9px 20px; border-radius: 22px;
+    font-family:'Cairo',sans-serif; font-weight: 700; font-size: 13px; color: var(--charcoal);
+  }
+  .gf-main-tab.active { background: var(--navy); border-color: var(--navy); color: var(--bone); }
+
+  #gf-panels > div { display: none; }
+  #gf-panels > div.active { display: block; }
+
+  /* ---------- مكتبة المصطلحات ---------- */
+  #gf-search-wrap { margin-bottom: 18px; }
+  #gf-search {
+    width: 100%; border: 1.5px solid var(--bone-dim); background: #fff;
+    border-radius: 22px; padding: 11px 18px; font-family:'Cairo',sans-serif; font-size: 13.5px;
+    outline: none;
+  }
+  #gf-search:focus { border-color: var(--thread); }
+
+  #gf-terms { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 12px; }
+  .gf-term-card {
+    background: #fff; border: 1.5px solid var(--bone-dim); border-radius: 12px; padding: 14px 16px;
+  }
+  .gf-term-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .gf-term-en { font-family:'IBM Plex Mono',monospace; font-size: 11px; color: var(--thread); direction: ltr; }
+  .gf-term-ar { font-family:'Tajawal',sans-serif; font-weight: 800; font-size: 14.5px; color: var(--navy); }
+  .gf-term-def { font-size: 12.5px; line-height: 1.8; color: #4a4a44; }
+  .gf-no-results { text-align: center; color: #8a8a80; font-size: 13px; padding: 30px 0; display: none; }
+
+  /* ---------- الأسئلة الشائعة ---------- */
+  #gf-faq { display: flex; flex-direction: column; gap: 10px; }
+  .gf-faq-item { border: 1.5px solid var(--bone-dim); border-radius: 12px; overflow: hidden; background: #fff; }
+  .gf-faq-q {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 14px 16px; cursor: pointer;
+  }
+  .gf-faq-q span.txt { font-weight: 700; font-size: 13.5px; }
+  .gf-faq-q span.plus {
+    width: 22px; height: 22px; border-radius: 50%; background: var(--bone-dim);
+    display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0;
+    transition: transform .2s ease;
+  }
+  .gf-faq-item.open .gf-faq-q span.plus { transform: rotate(45deg); background: var(--gold); }
+  .gf-faq-a { max-height: 0; overflow: hidden; transition: max-height .25s ease; font-size: 13px; line-height: 1.85; color: #4a4a44; }
+  .gf-faq-item.open .gf-faq-a { max-height: 300px; }
+  .gf-faq-a-inner { padding: 0 16px 16px; }
+
+  @media (max-width: 480px) {
+    #gf-terms { grid-template-columns: 1fr; }
+  }
+</style>
+
+<script>
+(function () {
+  const TERMS = [
+    { en: 'Tension', ar: 'توتر الخيط', def: 'مدى شد الخيط أثناء الحياكة. لو عالي القماش بيتجعد، ولو ضعيف الغرزة بتبقى مرتخية وسهل تتقطع.' },
+    { en: 'Tolerance', ar: 'هامش التفاوت المسموح', def: 'فرق بسيط جداً في القياس مقبول ومسموح به رغم إنه مش مطابق 100% للرقم المطلوب في جدول المقاس.' },
+    { en: 'Colorfastness', ar: 'ثبات اللون', def: 'مدى مقاومة لون القماش للنزول أو التلاشي بسبب الفرك، الغسيل، أو التعرض للضوء.' },
+    { en: 'Batch', ar: 'الطلبية / الدفعة', def: 'مجموعة قطع تم تصنيعها في نفس الوقت من نفس الخامة، وبتتفحص أحياناً كمجموعة واحدة للتأكد من التماثل بينها.' },
+    { en: 'Puckering', ar: 'التجعد الخفي', def: 'تجعد صغير جداً حوالين خط الغرزة، غالباً بسبب توتر خيط زيادة، وبيبان أكتر تحت الإضاءة أو الشد اللطيف.' },
+    { en: 'QC (Quality Control)', ar: 'مراقبة الجودة', def: 'العملية اللي بيتم فيها فحص المنتج في مراحل مختلفة من التصنيع للتأكد إنه مطابق للمعايير المطلوبة.' },
+    { en: 'Defect Rate', ar: 'معدل العيوب', def: 'نسبة القطع اللي فيها عيب من إجمالي عدد القطع المفحوصة، وبتستخدم كمؤشر لقياس جودة خط الإنتاج.' },
+    { en: 'AQL (Acceptable Quality Level)', ar: 'مستوى الجودة المقبول', def: 'نسبة معيارية متفق عليها بتحدد أقصى عدد عيوب مسموح بيه في عينة معينة قبل رفض الطلبية كلها.' },
+    { en: 'Size Chart', ar: 'جدول المقاسات', def: 'جدول مرجعي بيحدد القياسات المطلوبة لكل مقاس (S, M, L...) بالتفصيل، زي الطول والعرض ومحيط الخصر.' },
+    { en: 'Trims', ar: 'الإكسسورات', def: 'كل العناصر الإضافية في القطعة غير القماش الأساسي، زي الأزرار، السحابات، الخيوط، والتسميات.' },
+    { en: 'Seam Allowance', ar: 'هامش الحياكة', def: 'المسافة بين حافة القماش وخط الغرزة، بتحدد قد ايه من القماش مستخدم فعلياً في تثبيت الجزء.' },
+    { en: 'Shade Variation', ar: 'تفاوت درجة اللون', def: 'اختلاف بسيط في درجة اللون بين قطع من نفس الطلبية، ممكن يحصل بسبب اختلاف دفعات الصبغ.' },
+    { en: 'Inspection Point', ar: 'نقطة الفحص', def: 'مرحلة محددة في خط الإنتاج بيتم فيها إيقاف القطعة وفحصها قبل ما تكمل للمرحلة اللي بعدها.' },
+    { en: 'Rework', ar: 'إعادة التصنيع', def: 'تصحيح عيب موجود في قطعة بدل رفضها بالكامل، زي إعادة خياطة جزء أو تغيير زرار.' }
+  ];
+
+  const FAQ = [
+    { q: 'إيه الفرق بين العيب المقبول والعيب اللي لازم يترفض؟', a: 'العيب المقبول هو اللي بيقع جوه هامش التفاوت المسموح ومش بيأثر على شكل أو أداء القطعة. أما العيب اللي لازم يترفض فهو أي حاجة بتأثر على استخدام القطعة أو مظهرها بشكل واضح، زي تمزق أو فرق لون واضح.' },
+    { q: 'لو لقيت عيب، أعمل إيه أول حاجة؟', a: 'سجّل العيب في النظام مع وصف واضح ومكانه بالظبط، وحط القطعة جانباً في المنطقة المخصصة للمراجعة، وبلّغ المشرف المباشر لو العيب متكرر في أكتر من قطعة.' },
+    { q: 'هل لازم أفحص كل قطعة ولا عينة بس؟', a: 'حسب مرحلة الفحص: بعض المراحل بتحتاج فحص 100% للقطع، وبعضها بيعتمد على فحص عينة عشوائية ممثلة للطلبية كلها حسب معيار الـ AQL المتفق عليه.' },
+    { q: 'إيه الفرق بين Tension وTolerance؟', a: 'Tension بيخص توتر الخيط نفسه أثناء الحياكة، أما Tolerance فهو هامش الفرق المسموح في القياسات النهائية للقطعة. الاتنين مختلفين تماماً رغم تشابه الاسم.' },
+    { q: 'هل ممكن أصلّح العيب بنفسي ولا لازم أبلّغ؟', a: 'يعتمد على نوع العيب وسياسة المصنع، بس بشكل عام أي عيب لازم يتسجل الأول حتى لو هيتصلح، عشان نقدر نتابع تكرار العيوب ونحسن العملية من مصدرها.' },
+    { q: 'إيه أهمية تسجيل مين اكتشف العيب؟', a: 'مش عشان المحاسبة، لكن عشان نقدر نتعلم من نمط اكتشاف العيوب ونديله تقدير على دقته في الملاحظة، وكمان يساعد لو احتجنا نرجع لتفاصيل أكتر عن العيب.' },
+    { q: 'الفرق بين Rework والرفض الكامل إيه؟', a: 'Rework معناه إصلاح جزء بسيط في القطعة وإكمالها، أما الرفض الكامل فبيكون لما العيب كبير أو مؤثر بشكل ما يخلي القطعة صالحة للإصلاح الاقتصادي.' },
+    { q: 'هل تفاوت درجة اللون البسيط بين قطعتين يعتبر عيب؟', a: 'لو التفاوت داخل الهامش المسموح (Shade Variation المعتاد) فمش بيعتبر عيب. لكن لو واضح بالعين المجردة عند مقارنة القطعتين جنب بعض، لازم يتسجل.' }
+  ];
+
+  const root = document.getElementById('qualio-glossary-faq');
+  root.innerHTML = `
+    <div id="gf-wrap">
+      <div id="gf-header">
+        <div class="gf-eyebrow">QUALIO REFERENCE</div>
+        <h2>مكتبة المصطلحات والأسئلة الشائعة</h2>
+        <p>مرجع سريع لأي مصطلح أو سؤال يقابلك وانت شغال على الجودة.</p>
+      </div>
+      <div id="gf-tabs">
+        <button class="gf-main-tab active" data-tab="terms">📘 مكتبة المصطلحات</button>
+        <button class="gf-main-tab" data-tab="faq">❓ أسئلة شائعة</button>
+      </div>
+      <div id="gf-panels">
+        <div id="gf-panel-terms" class="active">
+          <div id="gf-search-wrap">
+            <input id="gf-search" type="text" placeholder="دوّر عن مصطلح... (عربي أو إنجليزي)" />
+          </div>
+          <div id="gf-terms"></div>
+          <div class="gf-no-results" id="gf-no-results">مفيش نتايج مطابقة، جرب كلمة تانية.</div>
+        </div>
+        <div id="gf-panel-faq">
+          <div id="gf-faq"></div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // تبويبات رئيسية
+  document.querySelectorAll('.gf-main-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.gf-main-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('gf-panel-terms').classList.toggle('active', tab.dataset.tab === 'terms');
+      document.getElementById('gf-panel-faq').classList.toggle('active', tab.dataset.tab === 'faq');
+    });
+  });
+
+  // مكتبة المصطلحات
+  const termsEl = document.getElementById('gf-terms');
+  const noResultsEl = document.getElementById('gf-no-results');
+
+  function renderTerms(filter) {
+    const f = (filter || '').trim().toLowerCase();
+    const filtered = TERMS.filter(t =>
+      t.ar.toLowerCase().includes(f) || t.en.toLowerCase().includes(f) || t.def.toLowerCase().includes(f)
+    );
+    termsEl.innerHTML = '';
+    filtered.forEach(t => {
+      const card = document.createElement('div');
+      card.className = 'gf-term-card';
+      card.innerHTML = `
+        <div class="gf-term-head">
+          <span class="gf-term-ar">${t.ar}</span>
+          <span class="gf-term-en">${t.en}</span>
+        </div>
+        <div class="gf-term-def">${t.def}</div>
+      `;
+      termsEl.appendChild(card);
+    });
+    noResultsEl.style.display = filtered.length === 0 ? 'block' : 'none';
+  }
+  renderTerms('');
+  document.getElementById('gf-search').addEventListener('input', e => renderTerms(e.target.value));
+
+  // الأسئلة الشائعة
+  const faqEl = document.getElementById('gf-faq');
+  FAQ.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'gf-faq-item';
+    div.innerHTML = `
+      <div class="gf-faq-q">
+        <span class="txt">${item.q}</span>
+        <span class="plus">+</span>
+      </div>
+      <div class="gf-faq-a"><div class="gf-faq-a-inner">${item.a}</div></div>
+    `;
+    div.querySelector('.gf-faq-q').addEventListener('click', () => {
+      div.classList.toggle('open');
+    });
+    faqEl.appendChild(div);
+  });
+})();
+</script>
+
 </body>
 </html>

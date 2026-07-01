@@ -1101,5 +1101,528 @@
   renderTopics();
 })();
 </script>
+  <!--
+=====================================================================
+  QUALIO ACADEMY — أكاديمية تعلّم الجودة داخل المنصة
+=====================================================================
+  طريقة التركيب:
+  1) انسخ الكود ده بالكامل.
+  2) الصقه في المكان اللي عايز الأكاديمية تظهر فيه جوه صفحة index.html
+     بتاعتك (مش لازم يكون آخر الصفحة، حط الـ <section> في أي مكان
+     تحب تظهر فيه، مثلاً بعد قسم "عن المنصة").
+  3) خلاص. الأكاديمية دي بتشتغل فوراً من غير أي سيرفر، لأن كل الدروس
+     والاختبارات جوه الكود نفسه، والتقدم بيتحفظ في متصفح كل عضو تلقائي.
+=====================================================================
+-->
+
+<section id="qualio-academy" dir="rtl"></section>
+
+<style>
+  #qualio-academy, #qualio-academy * { box-sizing: border-box; }
+  #qualio-academy {
+    --navy: #152238;
+    --gold: #F5C518;
+    --gold-dim: #F7D658;
+    --bone: #F6F1E7;
+    --bone-dim: #EDE6D6;
+    --charcoal: #262625;
+    --sage: #4F8A63;
+    --thread: #C23616;
+    font-family: 'Cairo', 'Tahoma', sans-serif;
+    direction: rtl;
+    background: var(--bone);
+    padding: 48px 20px;
+    color: var(--charcoal);
+  }
+
+  @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@700;800&family=Cairo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap');
+
+  #qa-wrap { max-width: 920px; margin: 0 auto; }
+
+  #qa-header { text-align: center; margin-bottom: 32px; }
+  #qa-header .qa-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--thread);
+    text-transform: uppercase;
+  }
+  #qa-header h2 {
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 800;
+    font-size: 30px;
+    color: var(--navy);
+    margin: 6px 0 8px;
+  }
+  #qa-header p { font-size: 14px; color: #55554f; max-width: 480px; margin: 0 auto; }
+
+  /* ---------- شريط التقدم العام ---------- */
+  #qa-overall {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--navy);
+    color: var(--bone);
+    border-radius: 14px;
+    padding: 16px 20px;
+    margin-bottom: 28px;
+  }
+  #qa-overall .qa-overall-badge {
+    width: 46px; height: 46px; border-radius: 50%;
+    background: var(--gold); color: var(--navy);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 15px; flex-shrink: 0;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  #qa-overall .qa-overall-text { flex: 1; }
+  #qa-overall .qa-overall-title { font-weight: 700; font-size: 13.5px; margin-bottom: 6px; }
+  .qa-bar-track { height: 8px; border-radius: 5px; background: rgba(246,241,231,0.18); overflow: hidden; }
+  .qa-bar-fill { height: 100%; background: var(--gold); border-radius: 5px; transition: width .4s ease; }
+
+  /* ---------- شبكة الأقسام ---------- */
+  #qa-topics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 16px;
+  }
+  .qa-card {
+    background: #fff;
+    border: 2px solid var(--bone-dim);
+    border-radius: 14px;
+    padding: 18px;
+    cursor: pointer;
+    transition: border-color .15s ease, transform .15s ease;
+  }
+  .qa-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+  .qa-card.active { border-color: var(--thread); }
+  .qa-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+  .qa-card-icon { font-size: 26px; }
+  .qa-card-badge {
+    font-size: 16px; opacity: .25; transition: opacity .15s ease;
+  }
+  .qa-card-badge.earned { opacity: 1; }
+  .qa-card h3 { font-family:'Tajawal',sans-serif; font-weight: 800; font-size: 15px; color: var(--navy); margin: 0 0 10px; }
+  .qa-card .qa-bar-track { background: var(--bone-dim); margin-bottom: 6px; }
+  .qa-card .qa-bar-fill { background: var(--thread); }
+  .qa-card .qa-progress-label { font-family:'IBM Plex Mono',monospace; font-size: 10.5px; color: #8a8a80; }
+
+  /* ---------- لوحة القسم المفتوح ---------- */
+  #qa-detail {
+    display: none;
+    margin-top: 20px;
+    background: #fff;
+    border-radius: 14px;
+    border: 2px dashed rgba(21,34,56,0.18);
+    overflow: hidden;
+  }
+  #qa-detail.open { display: block; }
+  #qa-detail-header {
+    background: var(--navy); color: var(--bone);
+    padding: 16px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  #qa-detail-header .qa-dt-title { font-family:'Tajawal',sans-serif; font-weight: 800; font-size: 16px; display:flex; align-items:center; gap:8px; }
+  #qa-detail-close { background: none; border: none; color: var(--bone); font-size: 16px; cursor: pointer; opacity: .7; }
+  #qa-detail-close:hover { opacity: 1; }
+
+  #qa-levels { display: flex; gap: 6px; padding: 12px 16px; background: var(--bone-dim); }
+  .qa-level-tab {
+    flex: 1; border: none; background: transparent; cursor: pointer;
+    padding: 8px 6px; border-radius: 8px;
+    font-family:'Cairo',sans-serif; font-weight: 700; font-size: 12px;
+    color: var(--charcoal); opacity: .5;
+  }
+  .qa-level-tab.active { opacity: 1; background: var(--navy); color: var(--bone); }
+  .qa-level-tab .lock { font-size: 10px; margin-inline-start: 4px; }
+
+  #qa-lessons { padding: 14px 16px 20px; display: flex; flex-direction: column; gap: 10px; }
+  .qa-lesson {
+    border: 1.5px solid var(--bone-dim);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .qa-lesson-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 14px; cursor: pointer; background: var(--bone);
+  }
+  .qa-lesson-head .qa-l-title { font-weight: 700; font-size: 13.5px; display: flex; align-items: center; gap: 8px; }
+  .qa-lesson-head .qa-l-check {
+    width: 20px; height: 20px; border-radius: 50%;
+    border: 2px solid #cfc8b4; display: flex; align-items:center; justify-content:center;
+    font-size: 11px; color: transparent; flex-shrink: 0;
+  }
+  .qa-lesson.done .qa-l-check { background: var(--sage); border-color: var(--sage); color: #fff; }
+  .qa-lesson-body { display: none; padding: 4px 16px 16px; font-size: 13.5px; line-height: 1.9; }
+  .qa-lesson.expanded .qa-lesson-body { display: block; }
+  .qa-lesson-body .qa-content { margin-bottom: 12px; color: #3b3b36; }
+
+  .qa-quiz-btn {
+    border: none; background: var(--thread); color: #fff;
+    font-family:'Cairo',sans-serif; font-weight: 700; font-size: 12.5px;
+    padding: 8px 16px; border-radius: 18px; cursor: pointer;
+  }
+  .qa-quiz-btn:hover { background: #9c2b12; }
+
+  .qa-quiz { margin-top: 14px; border-top: 1px dashed #d9d2bf; padding-top: 14px; }
+  .qa-q { margin-bottom: 14px; }
+  .qa-q-text { font-weight: 700; margin-bottom: 8px; font-size: 13px; }
+  .qa-opt {
+    display: block; width: 100%; text-align: right;
+    border: 1.5px solid var(--bone-dim); background: #fff;
+    padding: 8px 12px; border-radius: 8px; margin-bottom: 6px;
+    font-family:'Cairo',sans-serif; font-size: 12.5px; cursor: pointer;
+  }
+  .qa-opt:hover { border-color: var(--gold); }
+  .qa-opt.correct { border-color: var(--sage); background: #eef6f0; }
+  .qa-opt.wrong { border-color: var(--thread); background: #fbeae6; }
+  .qa-opt[disabled] { cursor: default; }
+
+  .qa-quiz-result {
+    margin-top: 8px; font-size: 12.5px; font-weight: 700; color: var(--navy);
+  }
+
+  @media (max-width: 480px) {
+    #qa-levels { flex-wrap: wrap; }
+    .qa-level-tab { flex: 1 1 30%; }
+  }
+</style>
+
+<script>
+(function () {
+  const STORAGE_KEY = 'qualio_academy_progress_v1';
+
+  const TOPICS = [
+    {
+      id: 'sewing', icon: '🧵', title: 'الخياطة والحياكة',
+      levels: {
+        beginner: { label: 'مبتدئ', lessons: [
+          { id: 'sw-b1', title: 'أساسيات الغرزة السليمة',
+            content: 'الغرزة السليمة لازم تكون منتظمة وثابتة الطول من أول القطعة لآخرها. أهم حاجة نتأكد منها هي توتر الخيط (Tension): لو التوتر عالي أوي، القماش هيتجعد حوالين الغرزة، ولو ضعيف أوي، الغرزة هتبان مرتخية وسهل تتقطع. علامات الغرزة الضعيفة اللي لازم نلاحظها: قفشات مفتوحة بين الغرز، خيط بارز أو زايد من تحت القماش، أو غرز متفاوتة الطول في نفس الخط.',
+            quiz: [
+              { q: 'إيه أول حاجة نفحصها في الغرزة؟', options: ['لون الخيط', 'توتر الخيط (Tension)', 'نوع الإبرة'], correct: 1 },
+              { q: 'الغرزة اللي تجعد القماش حواليها معناها إيه؟', options: ['التوتر عالي أوي', 'التوتر ضعيف أوي', 'القماش تالف'], correct: 0 }
+            ]}
+        ]},
+        intermediate: { label: 'متوسط', lessons: [
+          { id: 'sw-i1', title: 'فحص المسافات والتماثل',
+            content: 'بعد التأكد من سلامة الغرزة نفسها، الخطوة الجاية هي فحص التماثل: هل المسافة بين الغرز ثابتة على طول الخط؟ وهل الجيوب أو الياقة متطابقة في الشكل والمكان على الجانب الأيمن والأيسر؟ كمان نفحص زوايا القص عند نقاط الالتقاء (زي زاوية الياقة أو حافة الجيب) للتأكد إنها زاوية واضحة ومظبوطة، مش مايلة أو غير متساوية.',
+            quiz: [
+              { q: 'التماثل بين الجانبين بيتفحص في إيه؟', options: ['الجيوب والياقة بس', 'الجيوب، الياقة، وزوايا القص', 'لون القماش'], correct: 1 },
+              { q: 'الزاوية عند نقطة التقاء الياقة لازم تكون؟', options: ['مايلة شوية', 'واضحة ومظبوطة', 'مش مهم شكلها'], correct: 1 }
+            ]}
+        ]},
+        expert: { label: 'خبير', lessons: [
+          { id: 'sw-e1', title: 'اكتشاف العيوب الدقيقة',
+            content: 'في المستوى المتقدم، بنفحص عيوب مش بتبان من أول نظرة: التجعد الخفي (Puckering) اللي بيظهر بس تحت الإضاءة أو لما تشد القماش بلطف، وانزلاق طبقتين القماش عن بعض تحت الإبرة اللي بيسبب عدم تطابق الحواف من جوة. كمان لازم نفحص متانة نقاط التقوية زي حواف الجيوب وعروات الأزرار، لأن دي أكتر نقط بتتعرض لشد متكرر من العميل.',
+            quiz: [
+              { q: 'التجعد الخفي (Puckering) بيظهر إمتى؟', options: ['بس تحت الإضاءة أو الشد اللطيف', 'دايماً واضح بالعين المجردة', 'بعد الغسيل بس'], correct: 0 },
+              { q: 'نقاط التقوية زي عروات الأزرار مهمة ليه؟', options: ['شكلها حلو', 'بتتعرض لشد متكرر من العميل', 'بتاخد وقت أطول في الخياطة'], correct: 1 }
+            ]}
+        ]}
+      }
+    },
+    {
+      id: 'sizing', icon: '📏', title: 'المقاسات والقياسات',
+      levels: {
+        beginner: { label: 'مبتدئ', lessons: [
+          { id: 'sz-b1', title: 'أساسيات أخذ القياس الصحيح',
+            content: 'القياس الصحيح بيبدأ باستخدام شريط قياس مسطح غير مشدود، لأن الشد الزيادة بيدي رقم أصغر من الحقيقي. أهم القياسات الأساسية: الطول الكلي، عرض الصدر، ومحيط الخصر. لازم القطعة تكون مفرودة تماماً وغير مطوية وقت القياس، عشان الرقم يطلع دقيق ومطابق لجدول المقاسات.',
+            quiz: [
+              { q: 'ليه لازم شريط القياس يكون غير مشدود؟', options: ['عشان يدي رقم أكبر من الحقيقي', 'الشد بيدي رقم أصغر من الحقيقي', 'مفيش فرق'], correct: 1 },
+              { q: 'القطعة وقت القياس لازم تكون؟', options: ['مطوية', 'مفرودة تماماً', 'ملبوسة'], correct: 1 }
+            ]}
+        ]},
+        intermediate: { label: 'متوسط', lessons: [
+          { id: 'sz-i1', title: 'المطابقة مع جدول المقاس',
+            content: 'كل مقاس له جدول مرجعي (Size Chart) بيحدد الرقم المطلوب لكل قياس، ومعاه هامش تفاوت مسموح (Tolerance) — يعني فرق بسيط جداً مقبول (عادة نص سنتيمتر لسنتيمتر حسب نوع القطعة). لو القياس خرج عن الهامش ده، القطعة تتحط جانباً للمراجعة قبل ما تكمل في خط الإنتاج.',
+            quiz: [
+              { q: 'هامش التفاوت المسموح اسمه إيه؟', options: ['Size Chart', 'Tolerance', 'Batch'], correct: 1 },
+              { q: 'لو القياس خرج عن الهامش المسموح نعمل إيه؟', options: ['نكمله عادي', 'نحطه جانباً للمراجعة', 'نتجاهله لو فرق بسيط'], correct: 1 }
+            ]}
+        ]},
+        expert: { label: 'خبير', lessons: [
+          { id: 'sz-e1', title: 'اكتشاف التفاوت بين قطع نفس الطلبية',
+            content: 'أدق مرحلة هي مقارنة عدة قطع من نفس الطلبية (Batch) مع بعض، مش بس مع الجدول المرجعي، لأن أحياناً القطع كلها تطابق الجدول لكن فيه تفاوت بينها في بعض، وده بيبان لما العميل يشتري أكتر من قطعة بنفس المقاس ويلاقي فرق. كمان بنفحص التماثل بين الجانب الأيمن والأيسر في نفس القطعة (مثلاً طول الكم الأيمن مقابل الأيسر).',
+            quiz: [
+              { q: 'مقارنة قطع الطلبية مع بعض مهمة ليه؟', options: ['عشان نوفر وقت', 'ممكن كل قطعة تطابق الجدول لكن فيه فرق بينها', 'مش مهمة فعلاً'], correct: 1 },
+              { q: 'التماثل بين الكم الأيمن والأيسر بيتفحص في أنهي مستوى؟', options: ['مبتدئ', 'متوسط', 'خبير'], correct: 2 }
+            ]}
+        ]}
+      }
+    },
+    {
+      id: 'fabric', icon: '🧶', title: 'الأقمشة والإكسسورات',
+      levels: {
+        beginner: { label: 'مبتدئ', lessons: [
+          { id: 'fb-b1', title: 'التعرف على القماش والعيوب الظاهرة',
+            content: 'من أهم الأساسيات معرفة نوع القماش المستخدم (زي القطن أو البوليستر أو الخليط بينهم) لأن كل نوع له طريقة فحص مختلفة شوية. الفحص الأول والأسهل هو العيوب اللي بتبان بالعين: بقع، خيوط سايبة، تمزق بسيط، أو فرق واضح في اللون بين أجزاء نفس القطعة.',
+            quiz: [
+              { q: 'من أمثلة العيوب الظاهرة بالعين؟', options: ['بقع وخيوط سايبة', 'توتر الخيط', 'هامش التفاوت'], correct: 0 },
+              { q: 'ليه نحتاج نعرف نوع القماش؟', options: ['مش مهم', 'كل نوع له طريقة فحص مختلفة شوية', 'عشان اللون بس'], correct: 1 }
+            ]}
+        ]},
+        intermediate: { label: 'متوسط', lessons: [
+          { id: 'fb-i1', title: 'فحص الإكسسورات وثبات التثبيت',
+            content: 'الإكسسورات زي الأزرار، السحابات (الزيبات)، والتسميات لازم تتفحص بشكل منفصل عن القماش. أهم حاجة نتأكد منها هي ثبات التثبيت: هل الزرار مربوط كويس ومش هيقع بسهولة؟ هل السحاب بيتحرك بسلاسة من غير ما يعلق أو يتخلع؟ وهل التسمية (الإتيكيت) مثبتة في المكان الصح وواضحة القراءة؟',
+            quiz: [
+              { q: 'أهم حاجة نتأكدها في الأزرار والسحابات؟', options: ['اللون', 'ثبات التثبيت', 'الشكل الخارجي بس'], correct: 1 },
+              { q: 'السحاب الجيد لازم يكون؟', options: ['يعلق شوية عادي', 'يتحرك بسلاسة من غير ما يعلق', 'صعب الفتح'], correct: 1 }
+            ]}
+        ]},
+        expert: { label: 'خبير', lessons: [
+          { id: 'fb-e1', title: 'اختبارات الثبات والمتانة',
+            content: 'في المستوى المتقدم بنعمل اختبارات فعلية بسيطة: فحص ثبات اللون (Colorfastness) بفرك القماش برفق بقطعة قماش بيضا ونشوف هل اللون بينزل ولا لأ. وكمان اختبار شد بسيط للأزرار والسحابات للتأكد إنها هتقاوم الاستخدام اليومي المتكرر من غير ما تتخلع بسرعة.',
+            quiz: [
+              { q: 'اختبار ثبات اللون بيتم إزاي بشكل بسيط؟', options: ['غسيل القطعة كاملة', 'فرك بقطعة قماش بيضا', 'تعريضها للشمس أسبوع'], correct: 1 },
+              { q: 'اختبار الشد للأزرار والسحابات بيتأكد من إيه؟', options: ['اللون', 'مقاومة الاستخدام اليومي المتكرر', 'السعر'], correct: 1 }
+            ]}
+        ]}
+      }
+    },
+    {
+      id: 'packing', icon: '📦', title: 'التعبئة والتغليف',
+      levels: {
+        beginner: { label: 'مبتدئ', lessons: [
+          { id: 'pk-b1', title: 'أساسيات الطي والتغليف',
+            content: 'الطي الصحيح مش بس شكل حلو، لازم يحافظ على شكل القطعة من غير تجعيد وقت الشحن. كل قطعة لازم تتحط في كيس واقي مناسب لحجمها، والملصق (الإتيكيت) يتحط في مكان ظاهر وواضح من برة الكيس، عشان يسهل التعرف على المقاس واللون من غير ما نفتح الكيس.',
+            quiz: [
+              { q: 'الطي الصحيح بيحافظ على إيه؟', options: ['شكل القطعة من التجعيد', 'وزن القطعة', 'لون القطعة'], correct: 0 },
+              { q: 'الملصق لازم يتحط فين؟', options: ['جوة الكيس مخفي', 'مكان ظاهر وواضح من برة الكيس', 'مش لازم أصلاً'], correct: 1 }
+            ]}
+        ]},
+        intermediate: { label: 'متوسط', lessons: [
+          { id: 'pk-i1', title: 'فحص اكتمال الملحقات',
+            content: 'قبل قفل العبوة النهائية، لازم نتأكد إن كل الملحقات موجودة: بطاقة المقاس، الشماعة (لو القطعة بتتباع بيها)، وأي كروت إضافية زي كارت العناية بالقماش. كمان نتأكد إن ترتيب القطع جوه الكرتونة منظم وموزون، من غير ضغط زيادة يقدر يشوه شكل القطع اللي تحت.',
+            quiz: [
+              { q: 'من أمثلة الملحقات اللي لازم نتأكد منها؟', options: ['بطاقة المقاس والشماعة', 'لون الخيط', 'نوع الإبرة'], correct: 0 },
+              { q: 'ترتيب القطع جوه الكرتونة لازم يكون؟', options: ['مضغوط قد ما يمكن', 'منظم وموزون من غير ضغط زيادة', 'مش مهم'], correct: 1 }
+            ]}
+        ]},
+        expert: { label: 'خبير', lessons: [
+          { id: 'pk-e1', title: 'الفحص النهائي قبل الشحن',
+            content: 'المرحلة الأخيرة قبل الشحن فيها ثلاث خطوات أساسية: مطابقة الكمية الفعلية في الكرتونة مع الفاتورة أو أمر الشحن، فحص سلامة الكرتونة نفسها من أي تلف أو رطوبة ممكن تأثر على المحتوى، والتأكد إن طريقة الغلق (شريط لاصق أو ربط) قوية بما يكفي تتحمل النقل والمناولة.',
+            quiz: [
+              { q: 'مطابقة الكمية بتكون مع إيه؟', options: ['الفاتورة أو أمر الشحن', 'رأي المشرف بس', 'حجم الكرتونة'], correct: 0 },
+              { q: 'من ضمن الفحص النهائي فحص سلامة إيه؟', options: ['الكرتونة من التلف والرطوبة', 'لون القماش بس', 'شكل الشعار'], correct: 0 }
+            ]}
+        ]}
+      }
+    }
+  ];
+
+  function loadProgress() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) { return {}; }
+  }
+  function saveProgress(p) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(p)); } catch (e) {}
+  }
+
+  let progress = loadProgress();
+  let activeTopic = null;
+  let activeLevel = 'beginner';
+
+  const root = document.getElementById('qualio-academy');
+  root.innerHTML = `
+    <div id="qa-wrap">
+      <div id="qa-header">
+        <div class="qa-eyebrow">QUALIO ACADEMY</div>
+        <h2>أكاديمية تعلّم الجودة</h2>
+        <p>دروس قصيرة واختبارات سريعة لكل قسم، من مبتدئ لخبير، بالسرعة اللي تناسبك.</p>
+      </div>
+      <div id="qa-overall">
+        <div class="qa-overall-badge" id="qa-overall-pct">0%</div>
+        <div class="qa-overall-text">
+          <div class="qa-overall-title" id="qa-overall-title">لسه في البداية — كمّل أول درس!</div>
+          <div class="qa-bar-track"><div class="qa-bar-fill" id="qa-overall-bar" style="width:0%"></div></div>
+        </div>
+      </div>
+      <div id="qa-topics"></div>
+      <div id="qa-detail">
+        <div id="qa-detail-header">
+          <div class="qa-dt-title" id="qa-dt-title"></div>
+          <button id="qa-detail-close">✕</button>
+        </div>
+        <div id="qa-levels"></div>
+        <div id="qa-lessons"></div>
+      </div>
+    </div>
+  `;
+
+  const topicsEl = document.getElementById('qa-topics');
+  const detailEl = document.getElementById('qa-detail');
+  const dtTitleEl = document.getElementById('qa-dt-title');
+  const levelsEl = document.getElementById('qa-levels');
+  const lessonsEl = document.getElementById('qa-lessons');
+
+  function totalLessonsCount() {
+    let n = 0;
+    TOPICS.forEach(t => Object.values(t.levels).forEach(l => n += l.lessons.length));
+    return n;
+  }
+  function doneLessonsCount() {
+    return Object.keys(progress).filter(k => progress[k]).length;
+  }
+  function topicDoneCount(topic) {
+    let n = 0;
+    Object.values(topic.levels).forEach(l => l.lessons.forEach(les => { if (progress[les.id]) n++; }));
+    return n;
+  }
+  function topicTotalCount(topic) {
+    let n = 0;
+    Object.values(topic.levels).forEach(l => n += l.lessons.length);
+    return n;
+  }
+
+  function renderOverall() {
+    const total = totalLessonsCount();
+    const done = doneLessonsCount();
+    const pct = total ? Math.round((done / total) * 100) : 0;
+    document.getElementById('qa-overall-pct').textContent = pct + '%';
+    document.getElementById('qa-overall-bar').style.width = pct + '%';
+    const titleEl = document.getElementById('qa-overall-title');
+    if (pct === 0) titleEl.textContent = 'لسه في البداية — كمّل أول درس!';
+    else if (pct < 50) titleEl.textContent = 'شغل حلو، كمّل كده';
+    else if (pct < 100) titleEl.textContent = 'قربت توصل لخبير جودة كامل';
+    else titleEl.textContent = '🏆 مبروك! خلّصت كل دروس الأكاديمية';
+  }
+
+  function renderTopics() {
+    topicsEl.innerHTML = '';
+    TOPICS.forEach(topic => {
+      const done = topicDoneCount(topic);
+      const total = topicTotalCount(topic);
+      const pct = total ? Math.round((done / total) * 100) : 0;
+      const card = document.createElement('div');
+      card.className = 'qa-card' + (activeTopic === topic.id ? ' active' : '');
+      card.innerHTML = `
+        <div class="qa-card-top">
+          <span class="qa-card-icon">${topic.icon}</span>
+          <span class="qa-card-badge ${pct === 100 ? 'earned' : ''}">🏅</span>
+        </div>
+        <h3>${topic.title}</h3>
+        <div class="qa-bar-track"><div class="qa-bar-fill" style="width:${pct}%"></div></div>
+        <div class="qa-progress-label">${done} / ${total} درس مكتمل</div>
+      `;
+      card.addEventListener('click', () => openTopic(topic.id));
+      topicsEl.appendChild(card);
+    });
+  }
+
+  function openTopic(topicId) {
+    activeTopic = topicId;
+    activeLevel = 'beginner';
+    renderTopics();
+    const topic = TOPICS.find(t => t.id === topicId);
+    dtTitleEl.innerHTML = `<span>${topic.icon}</span> ${topic.title}`;
+    detailEl.classList.add('open');
+    renderLevels(topic);
+    renderLessons(topic);
+    detailEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function renderLevels(topic) {
+    levelsEl.innerHTML = '';
+    Object.keys(topic.levels).forEach(key => {
+      const btn = document.createElement('button');
+      btn.className = 'qa-level-tab' + (activeLevel === key ? ' active' : '');
+      btn.textContent = topic.levels[key].label;
+      btn.addEventListener('click', () => {
+        activeLevel = key;
+        renderLevels(topic);
+        renderLessons(topic);
+      });
+      levelsEl.appendChild(btn);
+    });
+  }
+
+  function renderLessons(topic) {
+    lessonsEl.innerHTML = '';
+    const lessons = topic.levels[activeLevel].lessons;
+    lessons.forEach(lesson => {
+      const wrap = document.createElement('div');
+      wrap.className = 'qa-lesson' + (progress[lesson.id] ? ' done' : '');
+      wrap.innerHTML = `
+        <div class="qa-lesson-head">
+          <span class="qa-l-title">${lesson.title}</span>
+          <span class="qa-l-check">✓</span>
+        </div>
+        <div class="qa-lesson-body">
+          <div class="qa-content">${lesson.content}</div>
+          <button class="qa-quiz-btn">ابدأ الاختبار السريع</button>
+          <div class="qa-quiz-holder"></div>
+        </div>
+      `;
+      const head = wrap.querySelector('.qa-lesson-head');
+      head.addEventListener('click', () => {
+        wrap.classList.toggle('expanded');
+      });
+      const quizBtn = wrap.querySelector('.qa-quiz-btn');
+      quizBtn.addEventListener('click', () => renderQuiz(lesson, wrap));
+      lessonsEl.appendChild(wrap);
+    });
+  }
+
+  function renderQuiz(lesson, wrap) {
+    const holder = wrap.querySelector('.qa-quiz-holder');
+    const btn = wrap.querySelector('.qa-quiz-btn');
+    btn.style.display = 'none';
+    let answered = 0;
+    let correctCount = 0;
+
+    const quizDiv = document.createElement('div');
+    quizDiv.className = 'qa-quiz';
+    lesson.quiz.forEach((q, qi) => {
+      const qDiv = document.createElement('div');
+      qDiv.className = 'qa-q';
+      qDiv.innerHTML = `<div class="qa-q-text">${qi + 1}. ${q.q}</div>`;
+      q.options.forEach((opt, oi) => {
+        const optBtn = document.createElement('button');
+        optBtn.className = 'qa-opt';
+        optBtn.textContent = opt;
+        optBtn.addEventListener('click', () => {
+          if (optBtn.dataset.locked) return;
+          qDiv.querySelectorAll('.qa-opt').forEach(o => { o.disabled = true; o.dataset.locked = '1'; });
+          if (oi === q.correct) {
+            optBtn.classList.add('correct');
+            correctCount++;
+          } else {
+            optBtn.classList.add('wrong');
+            qDiv.querySelectorAll('.qa-opt')[q.correct].classList.add('correct');
+          }
+          answered++;
+          if (answered === lesson.quiz.length) finishQuiz();
+        });
+        qDiv.appendChild(optBtn);
+      });
+      quizDiv.appendChild(qDiv);
+    });
+    holder.appendChild(quizDiv);
+
+    function finishQuiz() {
+      const resultDiv = document.createElement('div');
+      resultDiv.className = 'qa-quiz-result';
+      resultDiv.textContent = `النتيجة: ${correctCount} من ${lesson.quiz.length} — تم تسجيل الدرس كمكتمل ✓`;
+      quizDiv.appendChild(resultDiv);
+      progress[lesson.id] = true;
+      saveProgress(progress);
+      wrap.classList.add('done');
+      renderTopics();
+      renderOverall();
+    }
+  }
+
+  document.getElementById('qa-detail-close').addEventListener('click', () => {
+    detailEl.classList.remove('open');
+    activeTopic = null;
+    renderTopics();
+  });
+
+  renderOverall();
+  renderTopics();
+})();
+</script>
 </body>
 </html>

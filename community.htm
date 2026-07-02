@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QUALIO - المجتمع</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- القائمة الجانبية -->
+  <aside class="sidebar">
+    <div class="logo">
+      <h2>QUALIO</h2>
+    </div>
+    <ul class="menu">
+      <li><a href="index.html">🏠 الرئيسية</a></li>
+      <li><a href="academy.html">🎓 قسم التعلّم</a></li>
+      <li><a href="aql.html">📊 قسم AQL</a></li>
+      <li><a href="reports.html">📑 التقارير</a></li>
+      <li><a href="community.html" class="active">👥 المجتمع</a></li>
+      <li><a href="suppliers.html">🏭 الموردين</a></li>
+      <li><a href="users.html">👤 المستخدمين</a></li>
+      <li><a href="settings.html">⚙️ الإعدادات</a></li>
+    </ul>
+  </aside>
+
+  <!-- المحتوى الرئيسي -->
+  <main class="content">
+    <header>
+      <h1>👥 مجتمع QUALIO</h1>
+      <p>مساحة لتبادل الأفكار والخبرات بين أعضاء المنصة</p>
+    </header>
+
+    <!-- المشاركات -->
+    <section class="dashboard">
+      <div class="card">
+        <h3>💬 مشاركة من أحمد</h3>
+        <p>كيف يمكن تحسين عملية الفحص النهائي لتقليل نسبة العيوب؟</p>
+        <button onclick="alert('✅ تم الرد على مشاركة أحمد')">رد</button>
+      </div>
+
+      <div class="card">
+        <h3>💬 مشاركة من سارة</h3>
+        <p>ما هي أفضل طريقة لتدريب الفريق الجديد على معايير الجودة؟</p>
+        <button onclick="alert('✅ تم الرد على مشاركة سارة')">رد</button>
+      </div>
+
+      <div class="card">
+        <h3>💬 مشاركة من محمد</h3>
+        <p>هل يمكن مشاركة أمثلة عملية من تقارير الجودة السابقة؟</p>
+        <button onclick="alert('✅ تم الرد على مشاركة محمد')">رد</button>
+      </div>
+    </section>
+
+    <!-- إضافة مشاركة جديدة -->
+    <section class="card">
+      <h3>➕ إضافة مشاركة جديدة</h3>
+      <textarea id="newPost" rows="4" style="width:100%;" placeholder="اكتب مشاركتك هنا..."></textarea>
+      <button onclick="alert('✅ تم نشر المشاركة بنجاح')">نشر المشاركة</button>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

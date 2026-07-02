@@ -1,10 +1,84 @@
-/* إعدادات عامة */
+/* خلفية عامة */
 body {
   margin: 0;
   font-family: "Tahoma", Arial, sans-serif;
-  background-color: #f4f6f9;
-  color: #333;
-  display: flex;
+  background: radial-gradient(circle at center, #000 60%, #001a33 100%);
+  color: #fff;
+  height: 100vh;
+  overflow-x: hidden;
+}
+
+/* زر اللغة */
+.lang-switch {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+.lang-switch button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  background: #00c896;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* رسالة الترحيب */
+.welcome {
+  text-align: center;
+  margin-top: 10%;
+}
+.welcome h1 {
+  font-size: 48px;
+  color: #00c896;
+}
+.welcome .founder {
+  font-size: 16px;
+  color: #aaa;
+}
+.welcome .slogan {
+  font-size: 20px;
+  margin: 10px 0;
+}
+.welcome .desc {
+  font-size: 16px;
+  color: #ccc;
+  margin-bottom: 20px;
+}
+.enter-btn {
+  padding: 10px 20px;
+  background: #0077ff;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* الكرة الأرضية */
+.globe {
+  width: 200px;
+  height: 200px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #00c896, #003344);
+  box-shadow: 0 0 40px rgba(0, 200, 150, 0.8);
+  animation: rotateGlobe 20s linear infinite;
+}
+@keyframes rotateGlobe {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* زر القائمة */
+.menu-toggle {
+  font-size: 28px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  position: absolute;
+  top: 20px;
+  right: 20px;
 }
 
 /* القائمة الجانبية */
@@ -15,29 +89,29 @@ body {
   height: 100vh;
   position: fixed;
   top: 0;
-  right: 0;
+  right: -250px; /* مخفية افتراضيًا */
+  transition: right 0.3s ease;
   padding: 20px;
+  z-index: 1000;
 }
-
+.sidebar.active {
+  right: 0; /* تظهر عند الضغط */
+}
 .sidebar .logo {
   text-align: center;
   margin-bottom: 30px;
 }
-
 .sidebar .logo h2 {
   color: #00c896;
   font-size: 24px;
 }
-
 .sidebar .menu {
   list-style: none;
   padding: 0;
 }
-
 .sidebar .menu li {
   margin: 15px 0;
 }
-
 .sidebar .menu li a {
   color: #fff;
   text-decoration: none;
@@ -47,55 +121,7 @@ body {
   border-radius: 5px;
   transition: background 0.3s;
 }
-
 .sidebar .menu li a:hover {
   background-color: #00c896;
   color: #000;
-}
-
-/* المحتوى الرئيسي */
-.content {
-  margin-right: 270px;
-  padding: 20px;
-  flex: 1;
-}
-
-header {
-  margin-bottom: 20px;
-}
-
-header h1 {
-  color: #1e2a38;
-  font-size: 28px;
-}
-
-header p {
-  color: #555;
-  font-size: 18px;
-}
-
-/* بطاقات Dashboard */
-.dashboard {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.card {
-  background-color: #fff;
-  border-radius: 8px;
-  padding: 20px;
-  flex: 1;
-  min-width: 250px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  transition: transform 0.3s;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-}
-
-.card h3 {
-  margin-top: 0;
-  color: #00c896;
 }

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QUALIO - مركز التقارير</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- القائمة الجانبية -->
+  <aside class="sidebar">
+    <div class="logo">
+      <h2>QUALIO</h2>
+    </div>
+    <ul class="menu">
+      <li><a href="index.html">🏠 الرئيسية</a></li>
+      <li><a href="academy.html">🎓 قسم التعلّم</a></li>
+      <li><a href="aql.html">📊 قسم AQL</a></li>
+      <li><a href="reports.html" class="active">📑 التقارير</a></li>
+      <li><a href="community.html">👥 المجتمع</a></li>
+      <li><a href="suppliers.html">🏭 الموردين</a></li>
+      <li><a href="users.html">👤 المستخدمين</a></li>
+      <li><a href="settings.html">⚙️ الإعدادات</a></li>
+    </ul>
+  </aside>
+
+  <!-- المحتوى الرئيسي -->
+  <main class="content">
+    <header>
+      <h1>📑 مركز التقارير</h1>
+      <p>هنا يمكنك الاطّلاع على أحدث تقارير الجودة وتحميلها</p>
+    </header>
+
+    <!-- قائمة التقارير -->
+    <section class="dashboard">
+      <div class="card">
+        <h3>📅 تقرير شهري - يونيو 2026</h3>
+        <p>يتضمن مؤشرات الأداء، نسبة العيوب، وتحليل الموردين.</p>
+        <button onclick="alert('📥 تم تحميل تقرير يونيو 2026')">تحميل التقرير</button>
+      </div>
+
+      <div class="card">
+        <h3>📅 تقرير ربع سنوي - Q2 2026</h3>
+        <p>مراجعة شاملة لنتائج الجودة خلال الربع الثاني.</p>
+        <button onclick="alert('📥 تم تحميل تقرير Q2 2026')">تحميل التقرير</button>
+      </div>
+
+      <div class="card">
+        <h3>📅 تقرير سنوي - 2025</h3>
+        <p>تحليل كامل لأداء الجودة خلال العام الماضي.</p>
+        <button onclick="alert('📥 تم تحميل تقرير 2025')">تحميل التقرير</button>
+      </div>
+    </section>
+
+    <!-- رفع تقرير جديد -->
+    <section class="card">
+      <h3>⬆️ رفع تقرير جديد</h3>
+      <p>يمكنك رفع تقرير جودة جديد لإضافته إلى النظام.</p>
+      <input type="file" id="uploadReport">
+      <button onclick="alert('✅ تم رفع التقرير بنجاح')">رفع التقرير</button>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
